@@ -1,0 +1,13 @@
+{
+  "name": "EMI-Inspired Tube Desk",
+  "drive": 0.26,
+  "railStressAmount": 0.38,
+  "railRecoveryMs": 680,
+  "transformerWeight": 0.5,
+  "tapeMemoryAmount": 0.26,
+  "crosstalkAmount": 0.075,
+  "impedanceInteraction": 0.28,
+  "lowFrequencyLoadBias": 0.36,
+  "highFrequencySlewSoftening": 0.22,
+  "outputTrimDb": -0.7
+}

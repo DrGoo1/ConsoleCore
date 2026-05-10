@@ -1,0 +1,13 @@
+{
+  "name": "German Tube Broadcast",
+  "drive": 0.22,
+  "railStressAmount": 0.28,
+  "railRecoveryMs": 760,
+  "transformerWeight": 0.55,
+  "tapeMemoryAmount": 0.22,
+  "crosstalkAmount": 0.07,
+  "impedanceInteraction": 0.24,
+  "lowFrequencyLoadBias": 0.42,
+  "highFrequencySlewSoftening": 0.18,
+  "outputTrimDb": -0.5
+}

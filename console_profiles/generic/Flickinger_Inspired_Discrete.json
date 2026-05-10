@@ -1,0 +1,13 @@
+{
+  "name": "Flickinger-Inspired Discrete",
+  "drive": 0.3,
+  "railStressAmount": 0.44,
+  "railRecoveryMs": 410,
+  "transformerWeight": 0.38,
+  "tapeMemoryAmount": 0.16,
+  "crosstalkAmount": 0.085,
+  "impedanceInteraction": 0.33,
+  "lowFrequencyLoadBias": 0.31,
+  "highFrequencySlewSoftening": 0.12,
+  "outputTrimDb": -0.45
+}

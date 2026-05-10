@@ -50,6 +50,12 @@ phase3_staging/
 phase4_staging/
 phase5_staging/
 milestonec_staging/
+milestoned_staging/
+
+# Capture sessions (can be large / user-specific)
+captures/
+!captures/example_capture_session/
+!captures/example_capture_session/**
 
 # Duplicate workspace copy (do not track)
 ConsoleCore/

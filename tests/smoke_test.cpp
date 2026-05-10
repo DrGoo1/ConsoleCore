@@ -1,6 +1,7 @@
 #include "ConsoleCoreEngine.h"
 #include "TopologyGraph.h"
 #include "AnalogPhysicsCore.h"
+#include "ProfileValidator.h"
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -50,6 +51,16 @@ int main()
             if (std::abs(l[i]) > 4.0f || std::abs(r[i]) > 4.0f)
                 return 1;
         }
+    }
+
+    {
+        AnalogPhysicsParameters params;
+        params.drive = 0.20f;
+        params.railStressAmount = 0.30f;
+        params.transformerWeight = 0.25f;
+        auto report = ProfileValidator::validate(params);
+        if (!report.stable)
+            return 1;
     }
 
     consolecore::ConsoleCoreEngine engine;
