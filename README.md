@@ -1,22 +1,20 @@
-# ConsoleCore Phase 3
+# ConsoleCore Phase 4
 
 ConsoleCore is a macOS console-emulation infrastructure for routing audio from any DAW through Loopback into a modular console engine.
 
-Phase 3 is architecture-heavy and expands the project toward:
+Phase 4 introduces the first bridge-layer architecture between DAWs and the ConsoleCore engine.
 
-- Dynamic topology graph engine
-- Shared rail manager
-- Console profile schema
-- Temporal analog memory scaffolding
-- Sender/Return plugin architecture planning
-- REAPER bridge abstraction layer
-- OSC synchronization stubs
+Major additions:
+
+- OSC transport synchronization scaffold
+- REAPER bridge service abstraction
+- Shared rail IPC design
 
 This phase intentionally avoids exact console cloning and uses legally-safe behavior-family profiles.
 
 ## Immediate Copilot task
 
-Open `docs/COPILOT_PHASE3_PROMPT.md` and apply it to the current codebase.
+Open `docs/COPILOT_PHASE4_PROMPT.md` and apply it to the current codebase.
 
 ## Clone (with JUCE submodule)
 

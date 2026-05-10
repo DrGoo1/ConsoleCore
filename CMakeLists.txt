@@ -24,6 +24,8 @@ add_subdirectory(modules/topology)
 add_subdirectory(modules/routing)
 add_subdirectory(modules/meters)
 add_subdirectory(modules/ipc)
+add_subdirectory(modules/osc)
+add_subdirectory(modules/reaper_bridge)
 add_subdirectory(apps/ConsoleCoreStandalone)
 
 if(CONSOLECORE_BUILD_TESTS)

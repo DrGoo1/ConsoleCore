@@ -47,6 +47,7 @@ phase0_staging/
 phase1_staging/
 phase2_staging/
 phase3_staging/
+phase4_staging/
 
 # Duplicate workspace copy (do not track)
 ConsoleCore/
