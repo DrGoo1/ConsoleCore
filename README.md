@@ -29,6 +29,14 @@ Not implemented yet:
 
 Install Xcode command line tools and JUCE, then either clone JUCE into `external/JUCE` or pass `-DJUCE_DIR=/path/to/JUCE`.
 
+If you cloned this repo from GitHub, JUCE is a submodule:
+
+```bash
+git clone https://github.com/DrGoo1/ConsoleCore.git
+cd ConsoleCore
+git submodule update --init --recursive
+```
+
 ```bash
 ./scripts/configure_macos.sh
 ./scripts/build_debug.sh
