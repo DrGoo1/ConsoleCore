@@ -1,0 +1,10 @@
+{
+  "name": "British Class-A Discrete",
+  "railRecoveryMs": 420,
+  "transformerWeight": 0.35,
+  "oddHarmonicBias": 0.21,
+  "evenHarmonicBias": 0.18,
+  "slewSoftening": 0.22,
+  "crosstalkDb": -72,
+  "headroomDbu": 24
+}

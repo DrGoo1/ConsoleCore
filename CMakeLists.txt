@@ -20,6 +20,7 @@ else()
 endif()
 
 add_subdirectory(modules/console_core)
+add_subdirectory(modules/topology)
 add_subdirectory(modules/routing)
 add_subdirectory(modules/meters)
 add_subdirectory(modules/ipc)
