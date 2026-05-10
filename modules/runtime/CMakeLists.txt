@@ -1,5 +1,7 @@
 add_library(runtime STATIC
     RuntimeSessionController.cpp
+    StemBusManager.cpp
+    PerStemTapeRuntime.cpp
 )
 
 target_include_directories(runtime PUBLIC
@@ -7,3 +9,4 @@ target_include_directories(runtime PUBLIC
 )
 
 target_compile_features(runtime PUBLIC cxx_std_20)
+

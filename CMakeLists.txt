@@ -49,11 +49,13 @@ add_subdirectory(modules/tape_core)
 add_subdirectory(modules/osc)
 add_subdirectory(modules/reaper_bridge)
 add_subdirectory(apps/ConsoleCoreStandalone)
+add_subdirectory(tools/realtime_validation_cli)
 
 if(CONSOLECORE_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
 
 
 
