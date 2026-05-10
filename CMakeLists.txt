@@ -38,6 +38,7 @@ add_subdirectory(modules/render)
 add_subdirectory(modules/ai)
 add_subdirectory(modules/spatial)
 add_subdirectory(modules/product)
+add_subdirectory(modules/hardware)
 add_subdirectory(modules/osc)
 add_subdirectory(modules/reaper_bridge)
 add_subdirectory(apps/ConsoleCoreStandalone)
@@ -46,6 +47,7 @@ if(CONSOLECORE_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
 
 
 
