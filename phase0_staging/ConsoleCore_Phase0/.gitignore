@@ -1,0 +1,40 @@
+# Build outputs
+build/
+cmake-build-*/
+DerivedData/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcuserstate
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Audio/render artifacts
+*.wav
+*.aif
+*.aiff
+*.flac
+*.mp3
+*.m4a
+*.caf
+renders/
+captures/
+measurements/
+
+# Large/generated assets
+*.zip
+*.7z
+*.tar.gz
+*.dmg
+*.pkg
+
+# IDE
+.vscode/*.db
+.vscode/*.log
+.idea/
+
+# Secrets
+.env
+.env.*
+!.env.example

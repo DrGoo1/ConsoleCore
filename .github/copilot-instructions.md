@@ -1,0 +1,3 @@
+- Keep changes minimal and focused.
+- Prefer standard library over new dependencies.
+- Add runnable examples and a small test when introducing new code.

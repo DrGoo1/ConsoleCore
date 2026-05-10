@@ -1,0 +1,23 @@
+name: macOS Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch JUCE
+        run: |
+          mkdir -p external
+          git clone --depth 1 https://github.com/juce-framework/JUCE.git external/JUCE
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+      - name: Build
+        run: cmake --build build --config Debug -j 3
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
