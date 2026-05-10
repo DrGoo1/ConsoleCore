@@ -1,8 +1,8 @@
-# ConsoleCore Milestone F
+# ConsoleCore Milestone G
 
 ConsoleCore is a macOS console-emulation infrastructure for routing audio from any DAW through Loopback into a modular console engine.
 
-Milestone F transitions ConsoleCore toward production-scale realtime processing.
+Milestone G introduces AI-oriented scaffolding for comparing session fingerprints to datasets and suggesting legally-safe behavior-family profiles.
 
 Key additions:
 
@@ -17,7 +17,7 @@ This milestone intentionally avoids exact console cloning and uses legally-safe 
 
 ## Immediate Copilot task
 
-Open `docs/COPILOT_MILESTONE_F_PROMPT.md` and apply it to the current codebase.
+Open `docs/COPILOT_MILESTONE_G_PROMPT.md` and apply it to the current codebase.
 
 ## Clone (with JUCE submodule)
 

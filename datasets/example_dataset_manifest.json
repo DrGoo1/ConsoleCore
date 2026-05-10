@@ -1,0 +1,10 @@
+{
+  "datasetName": "ConsoleCore Example Dataset",
+  "entries": [
+    {
+      "captureName": "ExampleCapture",
+      "featurePath": "features/example_features.json",
+      "profilePath": "profiles/example_profile.json"
+    }
+  ]
+}
