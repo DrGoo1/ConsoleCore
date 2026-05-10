@@ -52,6 +52,7 @@ phase5_staging/
 milestonec_staging/
 milestoned_staging/
 milestonee_staging/
+milestonef_staging/
 
 # Capture sessions (can be large / user-specific)
 captures/

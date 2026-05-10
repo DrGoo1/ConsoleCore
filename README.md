@@ -1,23 +1,23 @@
-# ConsoleCore Milestone E
+# ConsoleCore Milestone F
 
 ConsoleCore is a macOS console-emulation infrastructure for routing audio from any DAW through Loopback into a modular console engine.
 
-Milestone E connects the growing ConsoleCore engine to practical DAW workflows.
+Milestone F transitions ConsoleCore toward production-scale realtime processing.
 
-This milestone adds:
+Key additions:
 
-- Runtime session controller
-- Loopback routing profile schema + I/O
-- Latency calibration data model
-- Transport sync state model
-- Preset automation/snapshot schema
-- OSC command map
+- Realtime-safe memory pools
+- Lock-free telemetry transport
+- Multiband analog physics routing
+- Dynamic oversampling scaffold
+- Performance profiler
+- Background worker architecture scaffolding
 
 This milestone intentionally avoids exact console cloning and uses legally-safe behavior-family profiles.
 
 ## Immediate Copilot task
 
-Open `docs/COPILOT_MILESTONE_E_PROMPT.md` and apply it to the current codebase.
+Open `docs/COPILOT_MILESTONE_F_PROMPT.md` and apply it to the current codebase.
 
 ## Clone (with JUCE submodule)
 
@@ -51,4 +51,10 @@ ctest --preset macos-debug -V
 
 ```bash
 ./scripts/build_runtime_profile_cli.sh
+```
+
+## Performance runtime CLI (standalone tool)
+
+```bash
+./scripts/build_performance_runtime_cli.sh
 ```
