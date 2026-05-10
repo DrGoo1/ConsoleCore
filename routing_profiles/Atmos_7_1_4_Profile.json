@@ -1,0 +1,10 @@
+{
+  "profileName": "Atmos 7.1.4",
+  "speakers": [
+    "L", "R", "C", "LFE",
+    "Ls", "Rs",
+    "Lrs", "Rrs",
+    "Ltf", "Rtf",
+    "Ltr", "Rtr"
+  ]
+}

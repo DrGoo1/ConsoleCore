@@ -36,6 +36,7 @@ add_subdirectory(modules/profiler)
 add_subdirectory(modules/dsp_runtime)
 add_subdirectory(modules/render)
 add_subdirectory(modules/ai)
+add_subdirectory(modules/spatial)
 add_subdirectory(modules/osc)
 add_subdirectory(modules/reaper_bridge)
 add_subdirectory(apps/ConsoleCoreStandalone)
@@ -44,4 +45,5 @@ if(CONSOLECORE_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
 

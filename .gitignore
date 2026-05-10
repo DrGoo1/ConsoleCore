@@ -54,6 +54,7 @@ milestoned_staging/
 milestonee_staging/
 milestonef_staging/
 milestoneg_staging/
+milestoneh_staging/
 
 # Capture sessions (can be large / user-specific)
 captures/
