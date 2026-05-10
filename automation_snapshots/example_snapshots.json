@@ -1,0 +1,25 @@
+{
+  "sessionName": "Example ConsoleCore Snapshot Set",
+  "snapshots": [
+    {
+      "name": "Clean Console",
+      "parameters": {
+        "drive": 0.12,
+        "railStressAmount": 0.18,
+        "transformerWeight": 0.16,
+        "crosstalkAmount": 0.04,
+        "tapeMemoryAmount": 0.06
+      }
+    },
+    {
+      "name": "Driven Mix",
+      "parameters": {
+        "drive": 0.34,
+        "railStressAmount": 0.48,
+        "transformerWeight": 0.42,
+        "crosstalkAmount": 0.08,
+        "tapeMemoryAmount": 0.18
+      }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "profileName": "LUNA 8 Stem Console",
+  "inputDeviceName": "ConsoleCore Sends",
+  "outputDeviceName": "ConsoleCore Returns",
+  "sampleRate": 48000,
+  "bufferSize": 256,
+  "reportedRoundtripLatencySamples": 1024,
+  "stems": [
+    {
+      "name": "Drums",
+      "inputL": 1,
+      "inputR": 2,
+      "consoleStemId": 1
+    },
+    {
+      "name": "Bass",
+      "inputL": 3,
+      "inputR": 4,
+      "consoleStemId": 2
+    },
+    {
+      "name": "Guitars",
+      "inputL": 5,
+      "inputR": 6,
+      "consoleStemId": 3
+    },
+    {
+      "name": "Keys",
+      "inputL": 7,
+      "inputR": 8,
+      "consoleStemId": 4
+    },
+    {
+      "name": "Vocals",
+      "inputL": 9,
+      "inputR": 10,
+      "consoleStemId": 5
+    },
+    {
+      "name": "FX",
+      "inputL": 11,
+      "inputR": 12,
+      "consoleStemId": 6
+    },
+    {
+      "name": "Parallel",
+      "inputL": 13,
+      "inputR": 14,
+      "consoleStemId": 7
+    },
+    {
+      "name": "Spare",
+      "inputL": 15,
+      "inputR": 16,
+      "consoleStemId": 8
+    }
+  ],
+  "returns": [
+    {
+      "name": "Mix Return",
+      "outputL": 1,
+      "outputR": 2
+    }
+  ]
+}

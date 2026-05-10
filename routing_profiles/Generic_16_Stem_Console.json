@@ -1,0 +1,113 @@
+{
+  "profileName": "Generic 16 Stem Console",
+  "inputDeviceName": "ConsoleCore Sends 32ch",
+  "outputDeviceName": "ConsoleCore Returns",
+  "sampleRate": 48000,
+  "bufferSize": 256,
+  "reportedRoundtripLatencySamples": 1024,
+  "stems": [
+    {
+      "name": "Stem 1",
+      "inputL": 1,
+      "inputR": 2,
+      "consoleStemId": 1
+    },
+    {
+      "name": "Stem 2",
+      "inputL": 3,
+      "inputR": 4,
+      "consoleStemId": 2
+    },
+    {
+      "name": "Stem 3",
+      "inputL": 5,
+      "inputR": 6,
+      "consoleStemId": 3
+    },
+    {
+      "name": "Stem 4",
+      "inputL": 7,
+      "inputR": 8,
+      "consoleStemId": 4
+    },
+    {
+      "name": "Stem 5",
+      "inputL": 9,
+      "inputR": 10,
+      "consoleStemId": 5
+    },
+    {
+      "name": "Stem 6",
+      "inputL": 11,
+      "inputR": 12,
+      "consoleStemId": 6
+    },
+    {
+      "name": "Stem 7",
+      "inputL": 13,
+      "inputR": 14,
+      "consoleStemId": 7
+    },
+    {
+      "name": "Stem 8",
+      "inputL": 15,
+      "inputR": 16,
+      "consoleStemId": 8
+    },
+    {
+      "name": "Stem 9",
+      "inputL": 17,
+      "inputR": 18,
+      "consoleStemId": 9
+    },
+    {
+      "name": "Stem 10",
+      "inputL": 19,
+      "inputR": 20,
+      "consoleStemId": 10
+    },
+    {
+      "name": "Stem 11",
+      "inputL": 21,
+      "inputR": 22,
+      "consoleStemId": 11
+    },
+    {
+      "name": "Stem 12",
+      "inputL": 23,
+      "inputR": 24,
+      "consoleStemId": 12
+    },
+    {
+      "name": "Stem 13",
+      "inputL": 25,
+      "inputR": 26,
+      "consoleStemId": 13
+    },
+    {
+      "name": "Stem 14",
+      "inputL": 27,
+      "inputR": 28,
+      "consoleStemId": 14
+    },
+    {
+      "name": "Stem 15",
+      "inputL": 29,
+      "inputR": 30,
+      "consoleStemId": 15
+    },
+    {
+      "name": "Stem 16",
+      "inputL": 31,
+      "inputR": 32,
+      "consoleStemId": 16
+    }
+  ],
+  "returns": [
+    {
+      "name": "Mix Return",
+      "outputL": 1,
+      "outputR": 2
+    }
+  ]
+}

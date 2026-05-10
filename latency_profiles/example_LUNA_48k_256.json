@@ -1,0 +1,8 @@
+{
+  "profileName": "LUNA 8 Stem Console",
+  "dawName": "LUNA",
+  "sampleRate": 48000,
+  "bufferSize": 256,
+  "measuredRoundtripSamples": 1024,
+  "manualOffsetSamples": 0
+}

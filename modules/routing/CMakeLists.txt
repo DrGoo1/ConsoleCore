@@ -1,5 +1,6 @@
 add_library(routing STATIC
     src/RoutingMatrix.cpp
+    LoopbackRoutingProfileIO.cpp
 )
 
 target_include_directories(routing PUBLIC include)

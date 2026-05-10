@@ -2,6 +2,8 @@
 #include "TopologyGraph.h"
 #include "AnalogPhysicsCore.h"
 #include "ProfileValidator.h"
+#include "RuntimeSessionController.h"
+#include "LatencyCalibration.h"
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -60,6 +62,29 @@ int main()
         params.transformerWeight = 0.25f;
         auto report = ProfileValidator::validate(params);
         if (!report.stable)
+            return 1;
+    }
+
+    {
+        RuntimeSessionController runtime;
+        RuntimeSnapshot a;
+        a.name = "A";
+        a.drive = 0.10f;
+        RuntimeSnapshot b;
+        b.name = "B";
+        b.drive = 0.30f;
+        runtime.addSnapshot(a);
+        runtime.addSnapshot(b);
+        if (!runtime.recallSnapshot("B"))
+            return 1;
+        auto current = runtime.getCurrentSnapshot();
+        if (!current.has_value() || current->name != "B")
+            return 1;
+
+        LatencyCalibration cal;
+        cal.measuredRoundtripSamples = 100;
+        cal.manualOffsetSamples = -12;
+        if (cal.compensatedLatencySamples() != 88)
             return 1;
     }
 
