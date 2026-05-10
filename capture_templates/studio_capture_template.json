@@ -1,0 +1,15 @@
+{
+  "templateName": "ConsoleCore Studio Capture Template",
+  "sampleRate": 48000,
+  "referenceLevelDbfs": -18,
+  "passes": [
+    "calibration_tone",
+    "sweep",
+    "multitone",
+    "impulse",
+    "burst",
+    "noise_floor",
+    "crosstalk"
+  ],
+  "notes": "Document converter path, hardware chain, and gain staging."
+}
