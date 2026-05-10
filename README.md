@@ -1,35 +1,23 @@
-# ConsoleCore
+# ConsoleCore Phase 2
 
-ConsoleCore is a commercial-safe, topology-aware console-emulation infrastructure for macOS. The target system routes audio from any Mac DAW through Loopback into a proprietary standalone processing engine, then returns the processed signal to a DAW, monitor path, or audio interface.
+ConsoleCore is a macOS console-emulation infrastructure for routing audio from any DAW through Loopback into a topology-aware console engine.
 
-## Phase 1 status
+Phase 2 adds the first DSP engine layer:
 
-Phase 1 is an environment and routing validation build.
+- topology-aware stem configuration
+- shared rail sag model
+- generic console profile library
+- nonlinear stem summing engine
+- dynamic crosstalk
+- transformer/drive/stress macro parameters
+- Copilot build prompt and acceptance tests
 
-Implemented:
-- JUCE/CMake standalone app scaffold
-- CoreAudio device selector
-- Loopback-oriented pass-through path
-- 64-channel app callback configuration
-- routing matrix module
-- RMS/peak meter state
-- device preset JSON save scaffold
-- latency probe scaffold
-- Git bootstrap scripts
-- Copilot Phase 1 prompt
+This phase intentionally avoids exact console cloning and uses legally-safe behavior-family profiles.
 
-Not implemented yet:
-- console modeling
-- branded console profiles
-- distributed rail topology
-- AU/VST bridge plugins
-- REAPER bridge
+## Immediate Copilot task
+Open `docs/COPILOT_PHASE2_PROMPT.md` and apply it to the existing Phase 1 app shell.
 
-## Build
-
-Install Xcode command line tools and JUCE, then either clone JUCE into `external/JUCE` or pass `-DJUCE_DIR=/path/to/JUCE`.
-
-If you cloned this repo from GitHub, JUCE is a submodule:
+## Clone (with JUCE submodule)
 
 ```bash
 git clone https://github.com/DrGoo1/ConsoleCore.git
@@ -37,25 +25,18 @@ cd ConsoleCore
 git submodule update --init --recursive
 ```
 
+## Build + test (preset)
+
+```bash
+cmake --preset macos-debug
+cmake --build --preset macos-debug
+ctest --preset macos-debug -V
+```
+
+## Build (scripts)
+
 ```bash
 ./scripts/configure_macos.sh
 ./scripts/build_debug.sh
 ./scripts/run_tests.sh
 ```
-
-## Git backup
-
-```bash
-./scripts/bootstrap_git.sh
-```
-
-Then add a remote manually if needed:
-
-```bash
-git remote add origin git@github.com:YOUR_ACCOUNT/ConsoleCore.git
-git push -u origin main
-```
-
-## Safety/IP
-
-ConsoleCore should model generic console behaviors from lawful public information, original measurements, and original DSP research. Do not copy third-party plugin, JSFX, or hardware documentation code.

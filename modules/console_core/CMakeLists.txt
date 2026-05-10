@@ -2,6 +2,8 @@ add_library(console_core STATIC
     src/ConsoleCoreEngine.cpp
     src/DevicePreset.cpp
     src/LatencyProbe.cpp
+    src/ConsoleProfileLibrary.cpp
+    src/TopologyAwareMixEngine.cpp
 )
 
 target_include_directories(console_core PUBLIC include)
