@@ -1,0 +1,13 @@
+{
+  "name": "American Discrete Op-Amp",
+  "drive": 0.24,
+  "railStressAmount": 0.36,
+  "railRecoveryMs": 260,
+  "transformerWeight": 0.34,
+  "tapeMemoryAmount": 0.1,
+  "crosstalkAmount": 0.065,
+  "impedanceInteraction": 0.25,
+  "lowFrequencyLoadBias": 0.3,
+  "highFrequencySlewSoftening": 0.08,
+  "outputTrimDb": -0.35
+}

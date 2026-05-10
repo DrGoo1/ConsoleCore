@@ -1,0 +1,13 @@
+{
+  "name": "British VCA Large Format",
+  "drive": 0.18,
+  "railStressAmount": 0.3,
+  "railRecoveryMs": 320,
+  "transformerWeight": 0.18,
+  "tapeMemoryAmount": 0.08,
+  "crosstalkAmount": 0.055,
+  "impedanceInteraction": 0.18,
+  "lowFrequencyLoadBias": 0.22,
+  "highFrequencySlewSoftening": 0.1,
+  "outputTrimDb": -0.25
+}

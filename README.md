@@ -1,22 +1,25 @@
-# ConsoleCore Phase 5
+# ConsoleCore Milestone C
 
 ConsoleCore is a macOS console-emulation infrastructure for routing audio from any DAW through Loopback into a modular console engine.
 
-Phase 5 introduces the first Sender/Return plugin infrastructure.
+Milestone C consolidates the next major DSP workstream into one integrated drop.
 
-New systems:
+This milestone adds:
 
-- Sender plugin scaffold
-- Return plugin scaffold
-- Shared state registry
-- Console session manager
-- Channel identity mapping
+- Distributed rail physics engine
+- Temporal analog memory model
+- Transformer/tape hysteresis scaffolding
+- Dynamic crosstalk matrix
+- Spectral load analyzer
+- Adaptive nonlinear headroom
+- Physics parameter schema
+- Offline DSP test harness
 
-This phase intentionally avoids exact console cloning and uses legally-safe behavior-family profiles.
+This milestone intentionally avoids exact console cloning and uses legally-safe behavior-family profiles.
 
 ## Immediate Copilot task
 
-Open `docs/COPILOT_PHASE5_PROMPT.md` and apply it to the current codebase.
+Open `docs/COPILOT_MILESTONE_C_PROMPT.md` and apply it to the current codebase.
 
 ## Clone (with JUCE submodule)
 
@@ -34,10 +37,8 @@ cmake --build --preset macos-debug
 ctest --preset macos-debug -V
 ```
 
-## Build (scripts)
+## Offline physics test
 
 ```bash
-./scripts/configure_macos.sh
-./scripts/build_debug.sh
-./scripts/run_tests.sh
+./scripts/build_offline_physics_test.sh
 ```

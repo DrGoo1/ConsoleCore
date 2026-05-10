@@ -1,0 +1,13 @@
+{
+  "name": "British Class-A Discrete",
+  "drive": 0.28,
+  "railStressAmount": 0.42,
+  "railRecoveryMs": 520,
+  "transformerWeight": 0.48,
+  "tapeMemoryAmount": 0.12,
+  "crosstalkAmount": 0.08,
+  "impedanceInteraction": 0.24,
+  "lowFrequencyLoadBias": 0.38,
+  "highFrequencySlewSoftening": 0.2,
+  "outputTrimDb": -0.5
+}

@@ -1,6 +1,9 @@
 #include "ConsoleCoreEngine.h"
 #include "TopologyGraph.h"
+#include "AnalogPhysicsCore.h"
 #include <iostream>
+#include <vector>
+#include <cmath>
 
 int main()
 {
@@ -9,6 +12,45 @@ int main()
     graph.update(0.5f);
     if (graph.getNodes().empty() || graph.getNodes()[0].interaction != 1.0f)
         return 1;
+
+    {
+        constexpr double fs = 48000.0;
+        constexpr int n = 1024;
+
+        std::vector<float> l(n), r(n);
+        for (int i = 0; i < n; ++i)
+        {
+            const float tone = 0.2f * std::sin(2.0 * 3.141592653589793 * 440.0 * static_cast<double>(i) / fs);
+            const float impulse = (i == 64) ? 0.8f : 0.0f;
+            l[i] = tone + impulse;
+            r[i] = 0.9f * tone - 0.5f * impulse;
+        }
+
+        AnalogPhysicsCore core;
+        core.prepare(fs, n);
+
+        AnalogPhysicsParameters params;
+        params.drive = 0.25f;
+        params.railStressAmount = 0.45f;
+        params.transformerWeight = 0.35f;
+        params.crosstalkAmount = 0.10f;
+        params.tapeMemoryAmount = 0.15f;
+        core.setParameters(params);
+
+        core.processBlock(l.data(), r.data(), n, 8);
+        const auto& t = core.getTelemetry();
+
+        if (!std::isfinite(t.railVoltage) || !std::isfinite(t.railStress) || !std::isfinite(t.peakOutput))
+            return 1;
+
+        for (int i = 0; i < n; ++i)
+        {
+            if (!std::isfinite(l[i]) || !std::isfinite(r[i]))
+                return 1;
+            if (std::abs(l[i]) > 4.0f || std::abs(r[i]) > 4.0f)
+                return 1;
+        }
+    }
 
     consolecore::ConsoleCoreEngine engine;
     engine.prepare(48000.0, 512, 2);
