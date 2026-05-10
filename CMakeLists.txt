@@ -42,6 +42,7 @@ add_subdirectory(modules/hardware)
 add_subdirectory(modules/control)
 add_subdirectory(modules/network)
 add_subdirectory(modules/morphing)
+add_subdirectory(modules/integration)
 add_subdirectory(modules/osc)
 add_subdirectory(modules/reaper_bridge)
 add_subdirectory(apps/ConsoleCoreStandalone)
@@ -50,6 +51,7 @@ if(CONSOLECORE_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
 
 
 
