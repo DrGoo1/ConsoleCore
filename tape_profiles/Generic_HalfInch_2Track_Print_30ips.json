@@ -1,0 +1,14 @@
+{
+  "name": "Generic 1/2-inch 2-track print deck 30 ips",
+  "tapeSpeedIps": 30.0,
+  "trackWidth": 2.0,
+  "biasAmount": 0.58,
+  "saturationAmount": 0.32,
+  "headBumpAmount": 0.16,
+  "wowFlutterAmount": 0.018,
+  "hissAmount": 0.01,
+  "hysteresisAmount": 0.3,
+  "reproSoftness": 0.1,
+  "crosstalkAmount": 0.02,
+  "outputTrimDb": -0.2
+}

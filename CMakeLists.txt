@@ -45,6 +45,7 @@ add_subdirectory(modules/morphing)
 add_subdirectory(modules/integration)
 add_subdirectory(modules/ui)
 add_subdirectory(modules/advanced_analog)
+add_subdirectory(modules/tape_core)
 add_subdirectory(modules/osc)
 add_subdirectory(modules/reaper_bridge)
 add_subdirectory(apps/ConsoleCoreStandalone)
@@ -53,6 +54,7 @@ if(CONSOLECORE_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
 
 
 

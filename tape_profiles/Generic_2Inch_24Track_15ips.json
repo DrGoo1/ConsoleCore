@@ -1,0 +1,14 @@
+{
+  "name": "Generic 2-inch 24-track",
+  "tapeSpeedIps": 15.0,
+  "trackWidth": 1.0,
+  "biasAmount": 0.55,
+  "saturationAmount": 0.38,
+  "headBumpAmount": 0.32,
+  "wowFlutterAmount": 0.045,
+  "hissAmount": 0.018,
+  "hysteresisAmount": 0.34,
+  "reproSoftness": 0.2,
+  "crosstalkAmount": 0.05,
+  "outputTrimDb": -0.25
+}

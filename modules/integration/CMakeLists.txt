@@ -1,5 +1,6 @@
 add_library(integration STATIC
     ProductionDspEngine.cpp
+    IntegratedAnalogPathEngine.cpp
 )
 
 target_include_directories(integration PUBLIC

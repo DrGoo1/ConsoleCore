@@ -61,6 +61,7 @@ milestonek_staging/
 milestonel_staging/
 milestonem_staging/
 milestonen_to_t_staging/
+tapecore_staging/
 
 # Capture sessions (can be large / user-specific)
 captures/
