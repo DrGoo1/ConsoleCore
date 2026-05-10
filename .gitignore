@@ -41,3 +41,7 @@ measurements/
 
 # Local preserved scaffolds
 legacy_python/
+
+# Local extraction staging
+phase0_staging/
+phase1_staging/

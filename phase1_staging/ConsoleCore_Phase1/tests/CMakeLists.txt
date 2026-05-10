@@ -1,3 +1,0 @@
-add_executable(ConsoleCoreSmokeTest smoke_test.cpp)
-target_link_libraries(ConsoleCoreSmokeTest PRIVATE console_core juce::juce_audio_basics)
-add_test(NAME ConsoleCoreSmokeTest COMMAND ConsoleCoreSmokeTest)
