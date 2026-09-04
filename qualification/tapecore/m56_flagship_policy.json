@@ -1,0 +1,26 @@
+{
+  "schema_version":"1.0.0",
+  "machine_id":"3m.m56",
+  "product_goal":"Flagship TapeCore model reproducing the unusually large, authoritative 3M M56 character from measurable machine behavior rather than a generic head-bump preset.",
+  "evidence_order":["hardware_measurement","manufacturer_manual","manufacturer_paper","authoritative_spec","schematic_exact","schematic_inferred","component_topology_prior","commercial_reference","listening_memory"],
+  "authoritative_anchors":{
+    "format":"2-inch 16-track",
+    "transport":"3M Isoloop",
+    "supported_speeds_ips":[7.5,15.0,30.0],
+    "bias_frequency_hz":{"nominal":120000,"tolerance":500},
+    "15ips_overbias":"4 dB at 15 kHz for documented 3M heads / 202 or 203 tape alignment procedure",
+    "15ips_flutter_limit_percent":0.04,
+    "record_repro_wideband_flutter_max_percent":0.075,
+    "speed_drift_typical_percent":0.01,
+    "line_output":"transformer-coupled 600 ohm, +28 dBm with <1% distortion 30 Hz–15 kHz",
+    "linearizer":"3% H3 setup with linearizer off; <0.8% H3 expected with linearizer on"
+  },
+  "big_sound_hypothesis":[
+    "Do not equate 'big' with a fixed low-frequency boost.",
+    "Test LF magnitude together with phase/group delay and level dependence.",
+    "Test transformer output headroom and nonlinear progression separately from tape magnetics.",
+    "Test 16-track crosstalk/shared transport behavior and transient recovery.",
+    "Use remembered subjective size as listening validation only after objective constraints are met."
+  ],
+  "commercial_reference_policy":"UAD, Pulsar Modular, or other trusted tape products may constrain macroscopic behavior but cannot establish M56 hardware truth."
+}

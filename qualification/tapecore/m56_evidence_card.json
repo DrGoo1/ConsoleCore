@@ -1,0 +1,34 @@
+{
+  "schema_version":"1.0.0",
+  "machine_id":"3m.m56",
+  "claim_level":"m56_behavior_family",
+  "track_count":16,
+  "tape_width_in":2.0,
+  "supported_speeds_ips":[7.5,15.0,30.0],
+  "evidence_domains":[
+    {"domain":"machine_identity","status":"pass","evidence":[{"type":"manufacturer_paper","source_id":"m56-aes-1968"},{"type":"manufacturer_manual","source_id":"m56-manual-1968"}]},
+    {"domain":"speed_transport","status":"pass","evidence":[{"type":"manufacturer_manual","source_id":"m56-manual-1968"},{"type":"manufacturer_paper","source_id":"m56-aes-1968"}]},
+    {"domain":"bias_record_eq","status":"pass","evidence":[{"type":"manufacturer_manual","source_id":"m56-manual-1968"}]},
+    {"domain":"playback_frequency_phase","status":"partial","evidence":[{"type":"manufacturer_manual","source_id":"m56-manual-1968","note":"magnitude tolerances available; phase/group delay still missing"}]},
+    {"domain":"record_frequency_phase","status":"partial","evidence":[{"type":"manufacturer_manual","source_id":"m56-manual-1968","note":"magnitude tolerances available; phase/group delay still missing"}]},
+    {"domain":"level_transfer","status":"partial","evidence":[{"type":"manufacturer_paper","source_id":"m56-aes-1968","note":"+28 dBm transformer output anchor; record/repro level sweep missing"}]},
+    {"domain":"harmonic_level_sweep","status":"partial","evidence":[{"type":"manufacturer_manual","source_id":"m56-manual-1968","note":"linearizer H3 anchors only"}]},
+    {"domain":"imd","status":"blocked","evidence":[{"type":"behavioral_reference","source_id":"pending-reference-campaign"}]},
+    {"domain":"lf_head_bump_magnitude_phase","status":"blocked","evidence":[{"type":"listening_memory","source_id":"owner-listening-memory","note":"big sound is hypothesis only"}]},
+    {"domain":"level_dependent_lf_weight","status":"blocked","evidence":[{"type":"listening_memory","source_id":"owner-listening-memory"}]},
+    {"domain":"hysteresis_memory_recovery","status":"blocked","evidence":[{"type":"component_topology_prior","source_id":"tape-magnetics-family-prior"}]},
+    {"domain":"crest_transient","status":"blocked","evidence":[{"type":"commercial_reference","source_id":"pending-reference-campaign"}]},
+    {"domain":"wow_flutter_spectrum","status":"partial","evidence":[{"type":"manufacturer_manual","source_id":"m56-manual-1968"},{"type":"manufacturer_paper","source_id":"m56-aes-1968","note":"aggregate limits available; full spectral shape missing"}]},
+    {"domain":"noise_spectrum","status":"blocked","evidence":[{"type":"authoritative_spec","source_id":"m56-open-items","note":"system S/N value unresolved"}]},
+    {"domain":"crosstalk","status":"blocked","evidence":[{"type":"component_topology_prior","source_id":"16track-2inch-family-prior"}]},
+    {"domain":"shared_transport_state","status":"partial","evidence":[{"type":"manufacturer_paper","source_id":"m56-aes-1968","note":"Isoloop transport and drift/flutter constraints; correlated multichannel modulation measurement missing"}]}
+  ],
+  "parameters":[
+    {"name":"bias_frequency_hz","value":120000,"tolerance":500,"status":"authoritative","promotion_eligible":true,"source_id":"m56-manual-1968"},
+    {"name":"15ips_flutter_limit_percent","value":0.04,"status":"authoritative","promotion_eligible":true,"source_id":"m56-manual-1968"},
+    {"name":"headBumpDb","status":"legacy_unverified","promotion_eligible":false,"source_id":"legacy-profile"},
+    {"name":"headBumpHz","status":"legacy_unverified","promotion_eligible":false,"source_id":"legacy-profile"},
+    {"name":"hysteresis","status":"legacy_unverified","promotion_eligible":false,"source_id":"legacy-profile"}
+  ],
+  "promotion":{"requested":false,"production_promotion_allowed":false}
+}

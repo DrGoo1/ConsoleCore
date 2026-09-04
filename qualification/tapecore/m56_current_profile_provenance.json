@@ -1,0 +1,11 @@
+{
+  "schema_version":"1.0.0",
+  "machine_id":"3m.m56",
+  "source":"modules/tape_core/TapeMachineProfile.h::MachineType::ThreeMM56 and tape_profiles/3M_M56_*",
+  "status":"legacy_behavior_preset_not_certified",
+  "notes":"Existing numeric sonic coefficients predate the flagship evidence gate. They are retained for backwards compatibility and research comparison, not treated as measured M56 values.",
+  "legacy_parameters":[
+    "recordDrive","hysteresis","saturation","memory","playbackDrive","crosstalk","lowpassHz","hiss","hum","modulationNoise","wowDepth","wowRate","flutterDepth","flutterRate","headBumpDb","headBumpHz","biasAmount","biasTrim","fluxAmount","recordEqAmount","hfCompressionAmount","gapLossAmount","thicknessLossAmount","reproSoftness"
+  ],
+  "promotion_eligible":false
+}

@@ -75,6 +75,16 @@ The goal is not maximum coloration. The goal is the characteristic *emergent beh
 
 If successful, those signatures should arise from topology and calibrated system behavior rather than from arbitrary genre labels or fixed "warmth" controls. StudioMind can then select a ConsoleCore family because its physical/sonic behavior suits the production intent while retaining a clear evidence trail for why that model behaves as it does.
 
+## TapeCore flagship: 3M M56
+
+TapeCore treats the **3M M56 2-inch 16-track** as a flagship machine target, not a generic vintage-tape preset. The current legacy `ThreeMM56` coefficients remain available for backwards-compatible research, but they are explicitly **not certified M56 hardware values**.
+
+The evidence-backed M56 program starts from manufacturer documentation: the Isoloop transport, documented 7.5/15/optional 30 ips operation, 120 kHz bias system, alignment and overbias procedures, flutter and speed-drift limits, transformer-coupled high-level output, and the machine linearizer's third-harmonic reduction behavior. Those facts constrain the machine identity and operating envelope.
+
+The remembered "big" M56 signature is treated as a hypothesis to explain, not as permission to add a fixed bass boost. Qualification must resolve LF magnitude **and phase**, level-dependent low-frequency weight, tape/electronics harmonic progression, IMD, transient compression and recovery, hysteresis/memory, bias interaction, transport-modulation spectrum, noise, crosstalk, and shared multitrack transport behavior.
+
+Manufacturer specifications can prove limits and topology, but a **hardware-faithful sonic claim requires direct hardware-quality evidence** for the critical sonic domains. Trusted UAD, Pulsar Modular, and other commercial tape implementations may be used as macroscopic behavioral references only.
+
 ## Current status
 
 The topology-grounded qualification framework is active and fail-closed. Existing console families remain research profiles until their evidence cards satisfy the required stages and system-behavior matrix. No model name should be interpreted as an exact-hardware claim unless its qualification level explicitly says so.
