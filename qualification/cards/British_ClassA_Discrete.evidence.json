@@ -93,6 +93,12 @@
           "source_id": "HW_CLASS_A_FAMILY_A",
           "promotion_eligible": true,
           "scope_note": "includes measured family summing observations"
+        },
+        {
+          "type": "hardware_measurement",
+          "source_id": "HW_CLASS_A_TWO_CHANNEL_SUMMING_A_20260610",
+          "promotion_eligible": true,
+          "scope_note": "validated two-channel channel+summing path only; does not establish desk-wide shared rail behavior"
         }
       ],
       "parameters": []
@@ -125,6 +131,12 @@
           "source_id": "BEHAVIOR_CLASS_A_CASCADE_REF_A",
           "promotion_eligible": false,
           "scope_note": "cascade nonlinearity shape only; not hardware truth"
+        },
+        {
+          "type": "hardware_measurement",
+          "source_id": "HW_CLASS_A_TWO_CHANNEL_SUMMING_A_20260610",
+          "promotion_eligible": true,
+          "scope_note": "validated two-channel channel+summing path only; does not establish desk-wide shared rail behavior"
         }
       ],
       "parameters": []
@@ -142,6 +154,12 @@
           "type": "schematic_inferred",
           "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A",
           "promotion_eligible": false
+        },
+        {
+          "type": "hardware_measurement",
+          "source_id": "HW_CLASS_A_TWO_CHANNEL_SUMMING_A_20260610",
+          "promotion_eligible": true,
+          "scope_note": "validated two-channel channel+summing path only; does not establish desk-wide shared rail behavior"
         }
       ],
       "parameters": [
@@ -238,6 +256,20 @@
         "BEHAVIOR_CLASS_A_CASCADE_REF_A"
       ],
       "notes": "Hardware anchors absolute harmonic family; behavioral reference constrains bus/main cascade relationship only."
+    },
+    {
+      "domain": "two_channel_hardware_summing",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "channel_counts": [
+        1,
+        2
+      ],
+      "source_ids": [
+        "HW_CLASS_A_TWO_CHANNEL_SUMMING_A_20260610"
+      ],
+      "notes": "Primary hardware anchor for two-channel class-A channel+summing behavior; higher-count shared-load terms remain blocked."
     }
   ],
   "promotion": {
