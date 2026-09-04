@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "evidence": [
+    {
+      "domain": "fixed_trim_channel_count",
+      "status": "insufficient",
+      "reason": "missing required channel counts: [16, 24]",
+      "source_id": "legacy_fixed_trim_shared_sender_summer_20260615",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "channel_counts": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "metrics": {
+        "benchmark": "legacy_shared_sender_summer",
+        "deltas": [
+          {
+            "stem_count": 1,
+            "peak_db": -19.400904,
+            "rms_db": -2.8996980000000008,
+            "crest_db": -16.501206
+          },
+          {
+            "stem_count": 2,
+            "peak_db": -13.536387000000001,
+            "rms_db": -1.5109180000000002,
+            "crest_db": -12.025469
+          },
+          {
+            "stem_count": 4,
+            "peak_db": -7.888226999999999,
+            "rms_db": -0.5971270000000004,
+            "crest_db": -7.291099999999998
+          },
+          {
+            "stem_count": 8,
+            "peak_db": -2.2083269999999997,
+            "rms_db": -0.007774999999998755,
+            "crest_db": -2.200552
+          }
+        ]
+      }
+    }
+  ]
+}
