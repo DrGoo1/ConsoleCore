@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0.0",
+  "parameters": [
+    {"parameter":"channelCountRailLoadFactor","current_value":0.18,"status":"legacy_unverified_default","promotion_eligible":false,"required_evidence":["valid_fixed_trim_1_2_4_8_16_24","topology_or_current_demand_constraint"],"notes":"Previously hard-coded. Preserved only for sonic backward compatibility."},
+    {"parameter":"railVoltageDroopFactor","current_value":0.35,"status":"legacy_unverified_default","promotion_eligible":false,"required_evidence":["supply_rail_topology","measured_or_simulated_sag_recovery"],"notes":"Previously hard-coded normalized supply droop."},
+    {"parameter":"channelCountHeadroomFactor","current_value":0.035,"status":"legacy_unverified_default","promotion_eligible":false,"required_evidence":["fixed_trim_headroom_vs_channel_count","stage_headroom_topology"],"notes":"Previously hard-coded active-channel headroom term."},
+    {"parameter":"channelDistributionSensitivity","current_value":0.0,"status":"blocked_no_direct_distribution_evidence","promotion_eligible":false,"required_evidence":["concentrated_vs_distributed_matched_energy_render_or_circuit_model"],"notes":"Zero by design until evidence supports direction and magnitude."}
+  ]
+}
