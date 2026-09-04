@@ -13,17 +13,17 @@ DURATION_S=2.0
 
 def base_signal(kind:str, idx:int, n:int)->np.ndarray:
     t=np.arange(n,dtype=np.float64)/FS
-    phase=(idx*0.61803398875)%1.0*2*math.pi
     if kind=="multitone":
         freqs=(82.41,164.81,329.63,659.25,1318.51,2637.02,5274.04)
-        x=sum(np.sin(2*math.pi*f*t+phase*(j+1)) for j,f in enumerate(freqs))/len(freqs)
+        x=sum(np.sin(2*math.pi*f*t+0.31*j) for j,f in enumerate(freqs))/len(freqs)
     elif kind=="transient_burst":
-        x=np.zeros(n); spacing=FS//4
-        for k in range(FS//8,n,spacing):
-            m=min(FS//50,n-k); env=np.exp(-np.arange(m)/(FS*0.006)); x[k:k+m]+=env*np.sin(2*math.pi*(120+idx*7)*np.arange(m)/FS+phase)
-    elif kind=="lf_heavy": x=0.75*np.sin(2*math.pi*(55+idx*0.7)*t+phase)+0.25*np.sin(2*math.pi*(110+idx)*t+phase*0.3)
-    elif kind=="hf_heavy": x=0.6*np.sin(2*math.pi*(6000+idx*53)*t+phase)+0.4*np.sin(2*math.pi*(11000+idx*71)*t+phase*0.7)
-    else: x=0.5*np.sin(2*math.pi*60*t+phase)+0.5*np.sin(2*math.pi*7000*t+phase*0.2)
+        x=0.16*np.sin(2*math.pi*220*t)
+        spacing=FS//20
+        for k in range(FS//40,n,spacing):
+            m=min(FS//120,n-k); env=np.exp(-np.arange(m)/(FS*0.0025)); x[k:k+m]+=0.72*env*np.sin(2*math.pi*1200*np.arange(m)/FS)
+    elif kind=="lf_heavy": x=0.75*np.sin(2*math.pi*55*t)+0.25*np.sin(2*math.pi*110*t+0.4)
+    elif kind=="hf_heavy": x=0.6*np.sin(2*math.pi*6000*t)+0.4*np.sin(2*math.pi*11000*t+0.7)
+    else: x=0.5*np.sin(2*math.pi*60*t)+0.5*np.sin(2*math.pi*7000*t+0.2)
     return x.astype(np.float64)
 
 def write_pcm24(path:Path,x:np.ndarray):
@@ -40,15 +40,14 @@ def main():
     manifest=[]; n=int(FS*DURATION_S)
     for count in COUNTS:
       for kind in STIMULI:
-       raw=[base_signal(kind,i,n) for i in range(count)]
+       target=base_signal(kind,0,n)
+       rms=float(np.sqrt(np.mean(target*target)))
+       target=target*(TARGET_SUM_RMS/max(rms,1e-12))
+       if float(np.max(np.abs(target))) >= 0.95:
+        raise RuntimeError(f"canonical stimulus peak too high for {kind}: {np.max(np.abs(target))}")
        for dist in DISTRIBUTIONS:
-        stems=[]
-        if dist=="distributed": stems=[r.copy() for r in raw]
-        else:
-            dominant=sum(raw)/max(1,count)
-            stems=[dominant]+[np.zeros(n) for _ in range(count-1)]
-        summed=np.sum(stems,axis=0); rms=float(np.sqrt(np.mean(summed*summed)))
-        scale=TARGET_SUM_RMS/max(rms,1e-12); stems=[s*scale for s in stems]
+        if dist=="distributed": stems=[target/count for _ in range(count)]
+        else: stems=[target.copy()]+[np.zeros(n) for _ in range(count-1)]
         case=f'{count:02d}ch_{kind}_{dist}'; case_dir=out/case; case_dir.mkdir(exist_ok=True)
         hashes=[]
         for i,s in enumerate(stems,1):

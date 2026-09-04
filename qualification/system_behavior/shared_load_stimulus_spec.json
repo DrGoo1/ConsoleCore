@@ -25,5 +25,8 @@
   "fixed_trim": true,
   "output_normalization_allowed": false,
   "purpose": "matched-energy shared-load qualification across native core, hardware and behavioral references",
-  "generator": "scripts/generate_shared_load_stimuli.py"
+  "generator": "scripts/generate_shared_load_stimuli.py",
+  "pair_waveform_equivalence_required": true,
+  "max_pair_quantization_error_samples_normalized": 2e-06,
+  "minimum_pair_correlation": 0.9999999999
 }
