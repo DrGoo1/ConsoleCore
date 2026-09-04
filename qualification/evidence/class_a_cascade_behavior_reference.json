@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "BEHAVIOR_CLASS_A_CASCADE_REF_A",
+  "evidence_type": "behavioral_reference",
+  "promotion_eligible": false,
+  "scope": "commercial_class_a_style_bus_main_cascade",
+  "metrics": {
+    "single_stage_thd_percent_median_approx": 0.07772,
+    "cascade_thd_percent_median_approx": 0.15501,
+    "cascade_to_single_thd_ratio_approx": 1.994,
+    "tested_nominal_input_levels_dbfs": [
+      -30,
+      -24,
+      -18,
+      -12,
+      -6
+    ]
+  },
+  "constraints": [
+    "bus and main single-stage nonlinear magnitude are closely matched in this reference",
+    "bus-plus-main cascade nonlinear magnitude is approximately additive in THD amplitude across tested levels"
+  ],
+  "limitations": [
+    "absolute distortion values are not hardware truth",
+    "reference operating point and internal gain structure differ from measured hardware",
+    "does not constrain shared rail or channel distribution behavior"
+  ]
+}

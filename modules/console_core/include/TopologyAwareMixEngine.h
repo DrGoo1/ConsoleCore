@@ -15,6 +15,7 @@ public:
     void setStress(float value01);
     void setCrosstalk(float value01);
     void setTransformerWeight(float value01);
+    void setQualificationPhysicalMode(bool enabled);
     void reset();
 
     void process(const float* const* inputs, int numInputs, float* leftOut, float* rightOut, int numSamples);
@@ -36,6 +37,7 @@ private:
     float transformerWeight = 0.1f;
     float lastActivity = 0.0f;
     std::vector<float> channelMemory;
+    bool qualificationPhysicalMode = false;
 };
 
 } // namespace consolecore

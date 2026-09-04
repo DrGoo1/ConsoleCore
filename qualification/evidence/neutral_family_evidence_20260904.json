@@ -1,0 +1,311 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-09-04",
+  "public_neutral": true,
+  "policy": "raw/private identities omitted; numerical summaries only",
+  "sources": {
+    "HW_CLASS_A_FAMILY_A": {
+      "kind": "hardware_measurement",
+      "promotion_eligible": true,
+      "confidence": 0.68,
+      "source_digest": "c7e6eeaff205aa14af26ee97a3e47492b55dd2455023b8aef6fde1294704efc3",
+      "usable_domains": [
+        "gain_response",
+        "harmonic",
+        "level_metrics"
+      ],
+      "domains": {
+        "harmonic": {
+          "thd_median_percent": 0.013737876528259163,
+          "excluded_metrics": [
+            "thd_max_percent_max"
+          ]
+        },
+        "gain_response": {
+          "gain_mean_db": 1.670363778898483,
+          "gain_min_db": -16.163353113920213,
+          "gain_max_db": 19.45571656294064
+        },
+        "level_metrics": {
+          "peak_min_dbfs": -33.79,
+          "peak_max_dbfs": -6.1,
+          "clipped_samples_total": 0
+        }
+      }
+    },
+    "HW_DISCRETE_FAMILY_A": {
+      "kind": "hardware_measurement",
+      "promotion_eligible": true,
+      "confidence": 0.64,
+      "source_digest": "252702c6624b279d8f1b79547d0dce0788932d3b74cf7d23de66fa7ff3fab296",
+      "usable_domains": [
+        "harmonic"
+      ],
+      "domains": {
+        "harmonic": {
+          "thd_median_percent": 0.002640272936172526,
+          "excluded_metrics": [
+            "thd_max_percent_max"
+          ]
+        }
+      }
+    },
+    "HW_TUBE_TRANSFORMER_FAMILY_A": {
+      "kind": "hardware_measurement",
+      "promotion_eligible": true,
+      "confidence": 0.66,
+      "source_digest": "9c42887f245157ddcce029ff38c98c4a67a6de04fdfc5ec63765f70c3dc41a9f",
+      "usable_domains": [
+        "harmonic",
+        "level_metrics"
+      ],
+      "domains": {
+        "harmonic": {
+          "thd_median_percent": 17.576733332151353,
+          "excluded_metrics": [
+            "thd_max_percent_max"
+          ]
+        },
+        "level_metrics": {
+          "peak_min_dbfs": -88.32,
+          "peak_max_dbfs": -7.26,
+          "clipped_samples_total": 0
+        }
+      }
+    },
+    "CIRCUIT_CLASS_A_LINE_STAGE_A": {
+      "kind": "schematic_inferred",
+      "promotion_eligible": false,
+      "confidence": 0.48,
+      "source_digest": "1c0ae37317a5db95d36506b1fc650eac11a893ed100d8105c6d0b51481013561",
+      "status": "draft_sandbox_only",
+      "domains": {
+        "frequency_response": {
+          "status": "spice_metric_extracted",
+          "reference_level_dbfs": -18.0,
+          "points": [
+            {
+              "frequency_hz": 20.0,
+              "magnitude_db": -0.21
+            },
+            {
+              "frequency_hz": 40.0,
+              "magnitude_db": -0.08
+            },
+            {
+              "frequency_hz": 100.0,
+              "magnitude_db": -0.025
+            },
+            {
+              "frequency_hz": 1000.0,
+              "magnitude_db": 0.0
+            },
+            {
+              "frequency_hz": 5000.0,
+              "magnitude_db": -0.035
+            },
+            {
+              "frequency_hz": 10000.0,
+              "magnitude_db": -0.15
+            },
+            {
+              "frequency_hz": 20000.0,
+              "magnitude_db": -0.48
+            }
+          ]
+        },
+        "phase_response": {
+          "status": "spice_metric_extracted",
+          "points": [
+            {
+              "frequency_hz": 20.0,
+              "phase_degrees": 6.2
+            },
+            {
+              "frequency_hz": 40.0,
+              "phase_degrees": 3.0
+            },
+            {
+              "frequency_hz": 100.0,
+              "phase_degrees": 0.9
+            },
+            {
+              "frequency_hz": 1000.0,
+              "phase_degrees": 0.0
+            },
+            {
+              "frequency_hz": 5000.0,
+              "phase_degrees": -1.6
+            },
+            {
+              "frequency_hz": 10000.0,
+              "phase_degrees": -3.6
+            },
+            {
+              "frequency_hz": 20000.0,
+              "phase_degrees": -8.4
+            }
+          ]
+        },
+        "harmonic": {
+          "status": "spice_metric_extracted",
+          "fundamental_hz": 1000.0,
+          "thd_vs_level": [
+            {
+              "input_level_dbfs": -30.0,
+              "thd_percent": 0.032
+            },
+            {
+              "input_level_dbfs": -24.0,
+              "thd_percent": 0.049
+            },
+            {
+              "input_level_dbfs": -18.0,
+              "thd_percent": 0.091
+            },
+            {
+              "input_level_dbfs": -12.0,
+              "thd_percent": 0.184
+            },
+            {
+              "input_level_dbfs": -6.0,
+              "thd_percent": 0.46
+            }
+          ],
+          "h2_h3_vs_level": [
+            {
+              "input_level_dbfs": -30.0,
+              "h2_db": -64.8,
+              "h3_db": -81.0
+            },
+            {
+              "input_level_dbfs": -24.0,
+              "h2_db": -59.7,
+              "h3_db": -75.2
+            },
+            {
+              "input_level_dbfs": -18.0,
+              "h2_db": -53.9,
+              "h3_db": -65.8
+            },
+            {
+              "input_level_dbfs": -12.0,
+              "h2_db": -48.4,
+              "h3_db": -57.2
+            },
+            {
+              "input_level_dbfs": -6.0,
+              "h2_db": -42.7,
+              "h3_db": -49.5
+            }
+          ],
+          "h2_db_at_ref": -53.9,
+          "h3_db_at_ref": -65.8,
+          "ref_level_dbfs": -18.0
+        },
+        "imd": {
+          "status": "unavailable",
+          "reason": "private_two_tone_output_hash_not_available_for_public_grounding_package",
+          "points": []
+        },
+        "headroom": {
+          "status": "spice_metric_extracted",
+          "knee_points": [
+            {
+              "input_level_dbfs": -18.0,
+              "gain_reduction_db": 0.0
+            },
+            {
+              "input_level_dbfs": -12.0,
+              "gain_reduction_db": -0.06
+            },
+            {
+              "input_level_dbfs": -9.0,
+              "gain_reduction_db": -0.18
+            },
+            {
+              "input_level_dbfs": -6.0,
+              "gain_reduction_db": -0.47
+            },
+            {
+              "input_level_dbfs": -3.0,
+              "gain_reduction_db": -1.05
+            }
+          ],
+          "estimated_headroom_dbfs": -3.0,
+          "soft_knee_start_dbfs": -9.0
+        },
+        "transient": {
+          "status": "spice_metric_extracted",
+          "points": [
+            {
+              "stimulus": "unit_impulse",
+              "overshoot_db": 0.21,
+              "settling_time_ms": 2.7
+            },
+            {
+              "stimulus": "10ms_burst_1khz",
+              "overshoot_db": 0.1,
+              "settling_time_ms": 1.4
+            }
+          ]
+        },
+        "source_load_sensitivity": {
+          "status": "spice_metric_extracted",
+          "points": [
+            {
+              "source_ohms": 150.0,
+              "load_ohms": 10000.0,
+              "midband_delta_db": 0.0,
+              "lf_delta_db": 0.0,
+              "hf_delta_db": 0.0
+            },
+            {
+              "source_ohms": 600.0,
+              "load_ohms": 10000.0,
+              "midband_delta_db": -0.025,
+              "lf_delta_db": -0.065,
+              "hf_delta_db": -0.045
+            },
+            {
+              "source_ohms": 150.0,
+              "load_ohms": 2400.0,
+              "midband_delta_db": -0.09,
+              "lf_delta_db": -0.21,
+              "hf_delta_db": -0.14
+            }
+          ]
+        }
+      }
+    },
+    "DISCRETE_US70S_DRAFT_FIT_A": {
+      "kind": "derived_from_measurement",
+      "promotion_eligible": false,
+      "confidence": 0.59,
+      "source_digest": "e7e0eb5c082efe813e316f179119d44ddd8c71251e360853f038e116fecdd48b",
+      "candidate_ready": false,
+      "missing_domains": [
+        "frequency_response",
+        "imd"
+      ],
+      "curated_domains": [
+        "harmonic",
+        "peak_rms_crest",
+        "rail_load_recovery",
+        "stem_summing_slope",
+        "transient"
+      ]
+    },
+    "SHARED_SENDER_SUMMER_BEHAVIOR_A": {
+      "kind": "behavioral_reference",
+      "promotion_eligible": false,
+      "confidence": 0.72,
+      "source_digest": "e060b8f61276f6e3ef93945637a103caff0f22e1ea2758834a327c932b0fcce6",
+      "sample_rate_hz": 96000,
+      "peak_dbfs": -3.197077232935772,
+      "rms_dbfs": -16.956439328953298,
+      "summing_interaction_target": 0.82,
+      "crosstalk_tendency_target": 0.36
+    }
+  }
+}

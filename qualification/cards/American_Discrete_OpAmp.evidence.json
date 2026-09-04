@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "American_Discrete_OpAmp",
+  "claim_level": "behavior_family",
+  "topology": {
+    "family": "american_discrete_opamp_transformer_optional",
+    "shared_state_model": "native_shared_analog_environment",
+    "notes": "Discrete op-amp gain blocks; topology must determine rail/current and summing-node behavior."
+  },
+  "stages": [
+    {
+      "stage_id": "console_sender_line_amp",
+      "topology_class": "discrete_opamp_transformer_family",
+      "evidence": [
+        {
+          "type": "hardware_measurement",
+          "source_id": "HW_DISCRETE_FAMILY_A",
+          "promotion_eligible": true
+        }
+      ],
+      "parameters": [
+        {
+          "name": "measured_median_thd_percent",
+          "value": 0.002640272936172526,
+          "unit": "percent",
+          "derivation": "measured",
+          "source_id": "HW_DISCRETE_FAMILY_A"
+        }
+      ]
+    },
+    {
+      "stage_id": "console_source_impedance",
+      "topology_class": "pending",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "DISCRETE_US70S_DRAFT_FIT_A",
+          "promotion_eligible": false
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_summing_node",
+      "topology_class": "discrete_bus_summing_pending",
+      "evidence": [
+        {
+          "type": "behavioral_reference",
+          "source_id": "SHARED_SENDER_SUMMER_BEHAVIOR_A",
+          "promotion_eligible": false
+        },
+        {
+          "type": "component_topology_prior",
+          "source_id": "DISCRETE_US70S_DRAFT_FIT_A",
+          "promotion_eligible": false
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_shared_rail",
+      "topology_class": "shared_supply_pending",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "DISCRETE_US70S_DRAFT_FIT_A",
+          "promotion_eligible": false
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_bus_amp",
+      "topology_class": "discrete_opamp_bus_pending",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "DISCRETE_US70S_DRAFT_FIT_A",
+          "promotion_eligible": false
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_output_stage",
+      "topology_class": "transformer_optional_pending",
+      "evidence": [
+        {
+          "type": "hardware_measurement",
+          "source_id": "HW_DISCRETE_FAMILY_A",
+          "promotion_eligible": true
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_dc_coupling_servo",
+      "topology_class": "pending",
+      "evidence": [
+        {
+          "type": "unverified",
+          "source_id": "baseline-profile-prior",
+          "promotion_eligible": false
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_crosstalk_field",
+      "topology_class": "pending",
+      "evidence": [
+        {
+          "type": "behavioral_reference",
+          "source_id": "SHARED_SENDER_SUMMER_BEHAVIOR_A",
+          "promotion_eligible": false
+        }
+      ],
+      "parameters": []
+    }
+  ],
+  "behavior_matrix": [
+    {
+      "domain": "harmonic_level_sweep",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "HW_DISCRETE_FAMILY_A"
+      ]
+    },
+    {
+      "domain": "crest_transient",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "DISCRETE_US70S_DRAFT_FIT_A"
+      ]
+    },
+    {
+      "domain": "lf_load_rail_stress",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "DISCRETE_US70S_DRAFT_FIT_A"
+      ]
+    }
+  ],
+  "promotion": {
+    "requested": false,
+    "production_promotion_allowed": false
+  }
+}

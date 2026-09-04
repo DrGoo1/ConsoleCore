@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConsoleCore Console Model Evidence Card",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "model_id",
+    "claim_level",
+    "topology",
+    "stages",
+    "behavior_matrix",
+    "promotion"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_level": {
+      "enum": [
+        "behavior_family",
+        "topology_faithful",
+        "exact_hardware"
+      ]
+    },
+    "topology": {
+      "type": "object",
+      "required": [
+        "family",
+        "shared_state_model"
+      ],
+      "properties": {
+        "family": {
+          "type": "string"
+        },
+        "shared_state_model": {
+          "const": "native_shared_analog_environment"
+        }
+      }
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 8
+    },
+    "behavior_matrix": {
+      "type": "array",
+      "minItems": 10
+    },
+    "promotion": {
+      "type": "object",
+      "required": [
+        "requested",
+        "production_promotion_allowed"
+      ],
+      "properties": {
+        "requested": {
+          "type": "boolean"
+        },
+        "production_promotion_allowed": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

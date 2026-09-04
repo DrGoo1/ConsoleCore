@@ -1,0 +1,2 @@
+add_executable(ConsoleCoreTopologyFamilyQualificationCLI main.cpp)
+target_link_libraries(ConsoleCoreTopologyFamilyQualificationCLI PRIVATE console_core)

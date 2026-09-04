@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "HW_CLASS_A_TWO_CHANNEL_SUMMING_A_20260610",
+  "evidence_type": "hardware_measurement",
+  "promotion_eligible": true,
+  "scope": "two_channel_transformer_coupled_class_a_channel_plus_summing_path",
+  "sample_rate_hz": 96000,
+  "capture_count": 18,
+  "clipped_samples_total": 0,
+  "constraints": {
+    "baseline_repeatability_gain_delta_db": [
+      -0.457815,
+      -0.62942
+    ],
+    "baseline_repeatability_spread_db": 0.171605,
+    "two_path_level_mismatch_db": 2.71,
+    "driven_two_path_level_mismatch_db": 2.94,
+    "opposite_polarity_residual_dbfs": -33.91,
+    "baseline_sum_gain_delta_db": -0.457815,
+    "low_gain_sum_gain_delta_db": 1.199701,
+    "plus12_sum_gain_delta_db": 12.006307,
+    "max_safe_sum_gain_delta_db": 12.573794,
+    "max_safe_gain_plateau_db": 0.567487,
+    "baseline_multitone_gain_delta_db": -1.049433,
+    "driven_multitone_gain_delta_db": 9.536334
+  },
+  "usable_domains": [
+    "level_transfer",
+    "two_channel_path_mismatch",
+    "phase_gain_mismatch",
+    "drive_headroom",
+    "multitone_behavior"
+  ],
+  "blocked_domains": [
+    "quiescent_channel_count_loading_above_2",
+    "distributed_vs_concentrated_above_2",
+    "full_console_crosstalk_matrix",
+    "multi_channel_rail_recovery"
+  ],
+  "interpretation": {
+    "hardware_rank": "primary",
+    "may_constrain": "absolute two-channel class-A channel+summing behavior",
+    "must_not_constrain": "8/16/24-channel supply loading or exact desk-wide shared-state coefficients"
+  },
+  "source_hashes": {
+    "neve_1073_summing_retake_micpre_batch_results.csv": "cd6ac05ac4c56db53a45c390f86ae62727d8ced03366b8a77b8f8597d8cc6a99",
+    "neve_1073_summing_retake_peak_check.csv": "65b875c4eafb05417f4bc00fa678251f4e8e7010edf30d55d27abe87a23b7ac5",
+    "neve_1073_summing_retake_diagnostics.csv": "c765c48be83260281981d951c240bf3a70f8f7ae8ba5bf3975a109a65a7d7383",
+    "neve_1073_summing_retake_validation_summary.md": "daf47aeb66fe265f5ac17ae2ab912bd422154a34571dde26fef5ccbaf5b9928a"
+  }
+}

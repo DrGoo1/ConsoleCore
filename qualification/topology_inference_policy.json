@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "name": "Evidence-Bounded Topology Inference",
+  "purpose": "Predict plausible console-system behavior when exact schematics or hardware are incomplete without fabricating exact component values.",
+  "principles": [
+    "Infer topology graph before sonic coefficients.",
+    "Represent unknown numeric values as bounded ranges with provenance and confidence.",
+    "Use ensemble simulation and sensitivity analysis rather than one guessed value.",
+    "Spend research effort on high-sensitivity unknowns first.",
+    "Behavioral references constrain outcomes but never establish circuit truth.",
+    "Topology-inferred results are never production promotion evidence by themselves."
+  ],
+  "evidence_order": ["hardware_measurement","authoritative_spec","schematic_exact","schematic_inferred","historical_documentation","component_topology_prior","behavioral_reference"],
+  "required_outputs": ["credible_range","confidence","sensitivity_rank","evidence_provenance","unresolved_variables","behavioral_validation_plan"]
+}

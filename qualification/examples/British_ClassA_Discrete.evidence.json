@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "British_ClassA_Discrete",
+  "claim_level": "topology_faithful",
+  "topology": {
+    "family": "discrete_class_a_transformer_coupled",
+    "shared_state_model": "native_shared_analog_environment"
+  },
+  "stages": [
+    {
+      "stage_id": "console_sender_line_amp",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "profile-existing",
+          "promotion_eligible": true
+        }
+      ]
+    },
+    {
+      "stage_id": "console_source_impedance",
+      "evidence": [
+        {
+          "type": "unverified",
+          "source_id": "gap",
+          "promotion_eligible": true
+        }
+      ]
+    },
+    {
+      "stage_id": "console_summing_node",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "profile-existing",
+          "promotion_eligible": true
+        }
+      ]
+    },
+    {
+      "stage_id": "console_shared_rail",
+      "evidence": [
+        {
+          "type": "computational_prior",
+          "source_id": "shared-rail-existing",
+          "promotion_eligible": true
+        }
+      ]
+    },
+    {
+      "stage_id": "console_bus_amp",
+      "evidence": [
+        {
+          "type": "behavioral_reference",
+          "source_id": "reference-envelope",
+          "promotion_eligible": true
+        }
+      ]
+    },
+    {
+      "stage_id": "console_output_stage",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "profile-existing",
+          "promotion_eligible": true
+        }
+      ]
+    },
+    {
+      "stage_id": "console_dc_coupling_servo",
+      "evidence": [
+        {
+          "type": "unverified",
+          "source_id": "gap",
+          "promotion_eligible": true
+        }
+      ]
+    },
+    {
+      "stage_id": "console_crosstalk_field",
+      "evidence": [
+        {
+          "type": "behavioral_reference",
+          "source_id": "reference-envelope",
+          "promotion_eligible": true
+        }
+      ]
+    }
+  ],
+  "behavior_matrix": [],
+  "promotion": {
+    "requested": false,
+    "production_promotion_allowed": false
+  }
+}

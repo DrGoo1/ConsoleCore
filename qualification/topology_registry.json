@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "models": {
+    "American_Discrete_OpAmp": {
+      "family": "american_discrete_opamp_transformer_optional",
+      "claim_level": "topology_faithful",
+      "notes": "Discrete op-amp gain blocks; topology must determine rail/current and summing-node behavior."
+    },
+    "British_ClassA_Discrete": {
+      "family": "british_discrete_class_a_transformer_coupled",
+      "claim_level": "topology_faithful",
+      "notes": "Transformer-coupled discrete Class-A path; passive summing and bus-amplifier loading require separate evidence."
+    },
+    "British_VCA_Large_Format": {
+      "family": "british_large_format_ic_vca",
+      "claim_level": "topology_faithful",
+      "notes": "IC/op-amp large-format topology; do not reuse discrete Class-A rail/current mapping."
+    },
+    "EMI_Inspired_Tube_Desk": {
+      "family": "british_tube_transformer_broadcast",
+      "claim_level": "behavior_family",
+      "notes": "Tube/transformer family until sufficient exact circuit evidence is available."
+    },
+    "Flickinger_Inspired_Discrete": {
+      "family": "american_discrete_transformer",
+      "claim_level": "behavior_family",
+      "notes": "Discrete/transformer family; named exact claims remain prohibited without stronger provenance."
+    },
+    "German_Tube_Broadcast": {
+      "family": "german_tube_broadcast_transformer",
+      "claim_level": "behavior_family",
+      "notes": "Tube broadcast family; stage values must be tied to hardware/spec/schematic evidence before topology-faithful promotion."
+    }
+  },
+  "stage_defaults": {
+    "console_sender_line_amp": "component_topology_prior",
+    "console_source_impedance": "unverified",
+    "console_summing_node": "component_topology_prior",
+    "console_shared_rail": "computational_prior",
+    "console_bus_amp": "behavioral_reference",
+    "console_output_stage": "component_topology_prior",
+    "console_dc_coupling_servo": "unverified",
+    "console_crosstalk_field": "behavioral_reference"
+  }
+}

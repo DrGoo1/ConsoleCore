@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "British_VCA_Large_Format",
+  "claim_level": "topology_faithful",
+  "topology": {
+    "family": "british_large_format_ic_vca",
+    "shared_state_model": "native_shared_analog_environment",
+    "notes": "IC/op-amp large-format topology; do not reuse discrete Class-A rail/current mapping."
+  },
+  "stages": [
+    {
+      "stage_id": "console_sender_line_amp",
+      "topology_class": "unresolved",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "baseline-profile-prior"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_source_impedance",
+      "topology_class": "unresolved",
+      "evidence": [
+        {
+          "type": "unverified",
+          "source_id": "baseline-profile-prior"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_summing_node",
+      "topology_class": "unresolved",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "baseline-profile-prior"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_shared_rail",
+      "topology_class": "unresolved",
+      "evidence": [
+        {
+          "type": "computational_prior",
+          "source_id": "baseline-profile-prior"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_bus_amp",
+      "topology_class": "unresolved",
+      "evidence": [
+        {
+          "type": "behavioral_reference",
+          "source_id": "baseline-profile-prior"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_output_stage",
+      "topology_class": "unresolved",
+      "evidence": [
+        {
+          "type": "component_topology_prior",
+          "source_id": "baseline-profile-prior"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_dc_coupling_servo",
+      "topology_class": "unresolved",
+      "evidence": [
+        {
+          "type": "unverified",
+          "source_id": "baseline-profile-prior"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "stage_id": "console_crosstalk_field",
+      "topology_class": "unresolved",
+      "evidence": [
+        {
+          "type": "behavioral_reference",
+          "source_id": "baseline-profile-prior"
+        }
+      ],
+      "parameters": []
+    }
+  ],
+  "behavior_matrix": [],
+  "promotion": {
+    "requested": false,
+    "production_promotion_allowed": false
+  }
+}
