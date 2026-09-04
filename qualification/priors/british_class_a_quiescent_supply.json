@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "prior_id": "BRITISH_CLASS_A_QUIESCENT_SUPPLY_PRIOR_V1",
+  "claim_scope": "quiescent_current_demand_only",
+  "rail_voltage_v": 24.0,
+  "current_anchors_ma_per_module": [
+    {
+      "value_ma": 106.0,
+      "tolerance_ma": 10.0,
+      "evidence_class": "authoritative_spec",
+      "source_id": "CLASS_A_CHANNEL_MODULE_USER_GUIDE",
+      "applicability": "full channel module; high-confidence current-demand anchor"
+    },
+    {
+      "value_ma": 80.0,
+      "tolerance_ma": null,
+      "evidence_class": "component_family_reference",
+      "source_id": "CLASS_A_1272_FAMILY_REFERENCE",
+      "applicability": "line-amplifier family reference; not an original-console PSU measurement"
+    }
+  ],
+  "qualification_envelope_ma_per_active_module": {
+    "low": 80.0,
+    "nominal_full_channel": 106.0,
+    "high_full_channel": 116.0
+  },
+  "voltage_droop": {
+    "status": "blocked",
+    "required_missing_evidence": [
+      "console PSU/regulator effective source impedance versus load",
+      "rail distribution/wiring resistance",
+      "bus amplifier and auxiliary quiescent loads",
+      "dynamic regulator recovery under program-dependent load"
+    ],
+    "rule": "Do not infer rail-voltage sag from module count alone."
+  },
+  "promotion_eligible": false
+}

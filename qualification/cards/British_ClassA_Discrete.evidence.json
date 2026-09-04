@@ -112,6 +112,12 @@
           "source_id": "SHARED_SENDER_SUMMER_BEHAVIOR_A",
           "promotion_eligible": false,
           "scope_note": "shared-state behavioral benchmark only"
+        },
+        {
+          "type": "authoritative_spec",
+          "source_id": "BRITISH_CLASS_A_QUIESCENT_SUPPLY_PRIOR_V1",
+          "promotion_eligible": false,
+          "scope_note": "24 V/current-demand envelope only; PSU source impedance and voltage droop remain unknown"
         }
       ],
       "parameters": []
