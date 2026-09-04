@@ -12,7 +12,8 @@
       "evidence": [
         {
           "type": "component_topology_prior",
-          "source_id": "profile-existing"
+          "source_id": "profile-existing",
+          "promotion_eligible": true
         }
       ]
     },
@@ -21,7 +22,8 @@
       "evidence": [
         {
           "type": "unverified",
-          "source_id": "gap"
+          "source_id": "gap",
+          "promotion_eligible": true
         }
       ]
     },
@@ -30,7 +32,8 @@
       "evidence": [
         {
           "type": "component_topology_prior",
-          "source_id": "profile-existing"
+          "source_id": "profile-existing",
+          "promotion_eligible": true
         }
       ]
     },
@@ -39,7 +42,8 @@
       "evidence": [
         {
           "type": "computational_prior",
-          "source_id": "shared-rail-existing"
+          "source_id": "shared-rail-existing",
+          "promotion_eligible": true
         }
       ]
     },
@@ -48,7 +52,8 @@
       "evidence": [
         {
           "type": "behavioral_reference",
-          "source_id": "reference-envelope"
+          "source_id": "reference-envelope",
+          "promotion_eligible": true
         }
       ]
     },
@@ -57,7 +62,8 @@
       "evidence": [
         {
           "type": "component_topology_prior",
-          "source_id": "profile-existing"
+          "source_id": "profile-existing",
+          "promotion_eligible": true
         }
       ]
     },
@@ -66,7 +72,8 @@
       "evidence": [
         {
           "type": "unverified",
-          "source_id": "gap"
+          "source_id": "gap",
+          "promotion_eligible": true
         }
       ]
     },
@@ -75,7 +82,8 @@
       "evidence": [
         {
           "type": "behavioral_reference",
-          "source_id": "reference-envelope"
+          "source_id": "reference-envelope",
+          "promotion_eligible": true
         }
       ]
     }

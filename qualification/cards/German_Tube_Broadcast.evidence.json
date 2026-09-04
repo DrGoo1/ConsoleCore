@@ -10,94 +10,130 @@
   "stages": [
     {
       "stage_id": "console_sender_line_amp",
-      "topology_class": "unresolved",
+      "topology_class": "tube_transformer_gain_stage_family",
       "evidence": [
         {
-          "type": "component_topology_prior",
-          "source_id": "baseline-profile-prior"
+          "type": "hardware_measurement",
+          "source_id": "HW_TUBE_TRANSFORMER_FAMILY_A",
+          "promotion_eligible": true
         }
       ],
-      "parameters": []
+      "parameters": [
+        {
+          "name": "measured_median_thd_percent",
+          "value": 17.576733332151353,
+          "unit": "percent",
+          "derivation": "measured",
+          "source_id": "HW_TUBE_TRANSFORMER_FAMILY_A"
+        }
+      ]
     },
     {
       "stage_id": "console_source_impedance",
-      "topology_class": "unresolved",
+      "topology_class": "transformer_input_pending",
       "evidence": [
         {
-          "type": "unverified",
-          "source_id": "baseline-profile-prior"
+          "type": "component_topology_prior",
+          "source_id": "baseline-profile-prior",
+          "promotion_eligible": false
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_summing_node",
-      "topology_class": "unresolved",
+      "topology_class": "tube_mixer_summing_pending",
       "evidence": [
         {
-          "type": "component_topology_prior",
-          "source_id": "baseline-profile-prior"
+          "type": "behavioral_reference",
+          "source_id": "SHARED_SENDER_SUMMER_BEHAVIOR_A",
+          "promotion_eligible": false
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_shared_rail",
-      "topology_class": "unresolved",
+      "topology_class": "tube_supply_recovery_pending",
       "evidence": [
         {
-          "type": "computational_prior",
-          "source_id": "baseline-profile-prior"
+          "type": "component_topology_prior",
+          "source_id": "baseline-profile-prior",
+          "promotion_eligible": false
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_bus_amp",
-      "topology_class": "unresolved",
+      "topology_class": "tube_bus_amp_pending",
       "evidence": [
         {
-          "type": "behavioral_reference",
-          "source_id": "baseline-profile-prior"
+          "type": "hardware_measurement",
+          "source_id": "HW_TUBE_TRANSFORMER_FAMILY_A",
+          "promotion_eligible": true,
+          "scope_note": "family-level electronics evidence"
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_output_stage",
-      "topology_class": "unresolved",
+      "topology_class": "transformer_coupled_output_pending",
       "evidence": [
         {
-          "type": "component_topology_prior",
-          "source_id": "baseline-profile-prior"
+          "type": "hardware_measurement",
+          "source_id": "HW_TUBE_TRANSFORMER_FAMILY_A",
+          "promotion_eligible": true
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_dc_coupling_servo",
-      "topology_class": "unresolved",
+      "topology_class": "capacitor_coupled_pending",
       "evidence": [
         {
-          "type": "unverified",
-          "source_id": "baseline-profile-prior"
+          "type": "component_topology_prior",
+          "source_id": "baseline-profile-prior",
+          "promotion_eligible": false
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_crosstalk_field",
-      "topology_class": "unresolved",
+      "topology_class": "pending",
       "evidence": [
         {
           "type": "behavioral_reference",
-          "source_id": "baseline-profile-prior"
+          "source_id": "SHARED_SENDER_SUMMER_BEHAVIOR_A",
+          "promotion_eligible": false
         }
       ],
       "parameters": []
     }
   ],
-  "behavior_matrix": [],
+  "behavior_matrix": [
+    {
+      "domain": "harmonic_level_sweep",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "HW_TUBE_TRANSFORMER_FAMILY_A"
+      ]
+    },
+    {
+      "domain": "level_transfer",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "HW_TUBE_TRANSFORMER_FAMILY_A"
+      ]
+    }
+  ],
   "promotion": {
     "requested": false,
     "production_promotion_allowed": false

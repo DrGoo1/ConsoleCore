@@ -8,7 +8,7 @@ def complete_card(claim="topology_faithful"):
         evidence_type="schematic_inferred"
         if idx < 4:
             evidence_type="hardware_measurement"
-        stages.append({"stage_id":stage,"topology_class":"test-stage","evidence":[{"type":evidence_type,"source_id":f"test-{idx}"}],"parameters":[{"name":"test_parameter","value":0.5,"unit":"normalized","derivation":"measured","source_id":f"test-{idx}"}]})
+        stages.append({"stage_id":stage,"topology_class":"test-stage","evidence":[{"type":evidence_type,"promotion_eligible":True,"source_id":f"test-{idx}"}],"parameters":[{"name":"test_parameter","value":0.5,"unit":"normalized","derivation":"measured","source_id":f"test-{idx}"}]})
     matrix=[]
     for domain in REQUIRED_BEHAVIORS:
         row={"domain":domain,"status":"pass","fixed_trim":True,"rms_normalized_per_count":False}
@@ -33,6 +33,13 @@ class QualificationTests(unittest.TestCase):
         self.assertEqual(r.status,"BLOCKED")
         self.assertTrue(any("cannot solely ground" in x for x in r.blockers))
 
+    def test_unreviewed_schematic_evidence_does_not_ground_topology(self):
+        card=complete_card()
+        card["stages"][0]["evidence"]=[{"type":"schematic_inferred","promotion_eligible":False,"source_id":"sandbox"}]
+        r=qualify(card)
+        self.assertEqual(r.status,"BLOCKED")
+        self.assertTrue(any("topology/circuit evidence required" in x for x in r.blockers))
+
     def test_per_count_rms_normalization_fails(self):
         card=complete_card()
         card["behavior_matrix"][0]["rms_normalized_per_count"]=True
@@ -47,7 +54,7 @@ class QualificationTests(unittest.TestCase):
     def test_exact_hardware_needs_strong_stage_coverage(self):
         card=complete_card("exact_hardware")
         for s in card["stages"]:
-            s["evidence"]=[{"type":"schematic_inferred","source_id":"weak"}]
+            s["evidence"]=[{"type":"schematic_inferred","promotion_eligible":True,"source_id":"weak"}]
         r=qualify(card)
         self.assertEqual(r.status,"BLOCKED")
         self.assertTrue(any("at least four stages" in x for x in r.blockers))

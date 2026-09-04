@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "model_id": "British_ClassA_Discrete",
-  "claim_level": "topology_faithful",
+  "claim_level": "behavior_family",
   "topology": {
     "family": "british_discrete_class_a_transformer_coupled",
     "shared_state_model": "native_shared_analog_environment",
@@ -10,94 +10,219 @@
   "stages": [
     {
       "stage_id": "console_sender_line_amp",
-      "topology_class": "unresolved",
+      "topology_class": "discrete_class_a_transformer_coupled",
       "evidence": [
         {
-          "type": "component_topology_prior",
-          "source_id": "baseline-profile-prior"
+          "type": "hardware_measurement",
+          "source_id": "HW_CLASS_A_FAMILY_A",
+          "promotion_eligible": true,
+          "scope_note": "measured channel/preamp family"
+        },
+        {
+          "type": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A",
+          "promotion_eligible": false,
+          "scope_note": "sandbox circuit-stage prior only"
         }
       ],
-      "parameters": []
+      "parameters": [
+        {
+          "name": "measured_median_thd_percent",
+          "value": 0.013737876528259163,
+          "unit": "percent",
+          "derivation": "measured",
+          "source_id": "HW_CLASS_A_FAMILY_A"
+        },
+        {
+          "name": "measured_gain_mean_db",
+          "value": 1.670363778898483,
+          "unit": "dB",
+          "derivation": "measured",
+          "source_id": "HW_CLASS_A_FAMILY_A"
+        },
+        {
+          "name": "circuit_h2_db_at_ref",
+          "value": -53.9,
+          "unit": "dB",
+          "derivation": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A"
+        },
+        {
+          "name": "circuit_h3_db_at_ref",
+          "value": -65.8,
+          "unit": "dB",
+          "derivation": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A"
+        }
+      ]
     },
     {
       "stage_id": "console_source_impedance",
-      "topology_class": "unresolved",
+      "topology_class": "transformer_source_load_sensitive",
       "evidence": [
         {
-          "type": "unverified",
-          "source_id": "baseline-profile-prior"
+          "type": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A",
+          "promotion_eligible": false,
+          "scope_note": "source/load simulation not yet promotion-reviewed"
         }
       ],
-      "parameters": []
+      "parameters": [
+        {
+          "name": "nominal_source_ohms",
+          "value": 150.0,
+          "unit": "ohm",
+          "derivation": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A"
+        },
+        {
+          "name": "nominal_load_ohms",
+          "value": 10000.0,
+          "unit": "ohm",
+          "derivation": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A"
+        }
+      ]
     },
     {
       "stage_id": "console_summing_node",
-      "topology_class": "unresolved",
+      "topology_class": "passive_or_resistive_summing_family_pending_stage_proof",
       "evidence": [
         {
-          "type": "component_topology_prior",
-          "source_id": "baseline-profile-prior"
+          "type": "hardware_measurement",
+          "source_id": "HW_CLASS_A_FAMILY_A",
+          "promotion_eligible": true,
+          "scope_note": "includes measured family summing observations"
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_shared_rail",
-      "topology_class": "unresolved",
+      "topology_class": "shared_supply_load_pending_direct_measurement",
       "evidence": [
         {
-          "type": "computational_prior",
-          "source_id": "baseline-profile-prior"
+          "type": "behavioral_reference",
+          "source_id": "SHARED_SENDER_SUMMER_BEHAVIOR_A",
+          "promotion_eligible": false,
+          "scope_note": "shared-state behavioral benchmark only"
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_bus_amp",
-      "topology_class": "unresolved",
+      "topology_class": "class_a_bus_amp_family_pending_direct_stage_measurement",
       "evidence": [
         {
-          "type": "behavioral_reference",
-          "source_id": "baseline-profile-prior"
+          "type": "hardware_measurement",
+          "source_id": "HW_CLASS_A_FAMILY_A",
+          "promotion_eligible": true,
+          "scope_note": "family-level summing evidence; not isolated bus amplifier"
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_output_stage",
-      "topology_class": "unresolved",
+      "topology_class": "transformer_coupled_output_family",
       "evidence": [
         {
-          "type": "component_topology_prior",
-          "source_id": "baseline-profile-prior"
+          "type": "hardware_measurement",
+          "source_id": "HW_CLASS_A_FAMILY_A",
+          "promotion_eligible": true
+        },
+        {
+          "type": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A",
+          "promotion_eligible": false
         }
       ],
-      "parameters": []
+      "parameters": [
+        {
+          "name": "circuit_soft_knee_start_dbfs",
+          "value": -9.0,
+          "unit": "dBFS",
+          "derivation": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A"
+        }
+      ]
     },
     {
       "stage_id": "console_dc_coupling_servo",
-      "topology_class": "unresolved",
+      "topology_class": "coupling_network_pending",
       "evidence": [
         {
-          "type": "unverified",
-          "source_id": "baseline-profile-prior"
+          "type": "schematic_inferred",
+          "source_id": "CIRCUIT_CLASS_A_LINE_STAGE_A",
+          "promotion_eligible": false,
+          "scope_note": "transient settling informs coupling behavior only"
         }
       ],
       "parameters": []
     },
     {
       "stage_id": "console_crosstalk_field",
-      "topology_class": "unresolved",
+      "topology_class": "shared_field_pending_direct_measurement",
       "evidence": [
         {
           "type": "behavioral_reference",
-          "source_id": "baseline-profile-prior"
+          "source_id": "SHARED_SENDER_SUMMER_BEHAVIOR_A",
+          "promotion_eligible": false
         }
       ],
       "parameters": []
     }
   ],
-  "behavior_matrix": [],
+  "behavior_matrix": [
+    {
+      "domain": "level_transfer",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "HW_CLASS_A_FAMILY_A"
+      ]
+    },
+    {
+      "domain": "harmonic_level_sweep",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "HW_CLASS_A_FAMILY_A",
+        "CIRCUIT_CLASS_A_LINE_STAGE_A"
+      ]
+    },
+    {
+      "domain": "crest_transient",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "CIRCUIT_CLASS_A_LINE_STAGE_A"
+      ]
+    },
+    {
+      "domain": "phase_group_delay",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "CIRCUIT_CLASS_A_LINE_STAGE_A"
+      ]
+    },
+    {
+      "domain": "shared_state_interaction",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "distribution_comparison": "pending",
+      "source_ids": [
+        "SHARED_SENDER_SUMMER_BEHAVIOR_A"
+      ]
+    }
+  ],
   "promotion": {
     "requested": false,
     "production_promotion_allowed": false

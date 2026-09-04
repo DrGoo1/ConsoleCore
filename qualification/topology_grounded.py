@@ -51,6 +51,13 @@ def _fingerprint(card: dict[str, Any]) -> str:
 def _evidence_types(stage: dict[str, Any]) -> set[str]:
     return {str(e.get("type")) for e in stage.get("evidence", [])}
 
+def _eligible_evidence_types(stage: dict[str, Any]) -> set[str]:
+    return {
+        str(e.get("type"))
+        for e in stage.get("evidence", [])
+        if e.get("promotion_eligible") is True
+    }
+
 def qualify(card: dict[str, Any]) -> QualificationResult:
     blockers: list[str] = []
     warnings: list[str] = []
@@ -75,6 +82,7 @@ def qualify(card: dict[str, Any]) -> QualificationResult:
                 blockers.append(f"{stage_id}: physically_absent requires absence_basis")
             continue
         types = _evidence_types(stage)
+        eligible_types = _eligible_evidence_types(stage)
         if not types:
             blockers.append(f"{stage_id}: no evidence")
             continue
@@ -82,7 +90,7 @@ def qualify(card: dict[str, Any]) -> QualificationResult:
         if best < 0:
             blockers.append(f"{stage_id}: unknown evidence type")
         if claim in {"topology_faithful", "exact_hardware"}:
-            grounded = types & {"component_topology_prior","schematic_inferred","authoritative_spec","schematic_exact","hardware_measurement"}
+            grounded = eligible_types & {"component_topology_prior","schematic_inferred","authoritative_spec","schematic_exact","hardware_measurement"}
             if not grounded:
                 blockers.append(f"{stage_id}: topology/circuit evidence required; weak or behavioral evidence cannot solely ground {claim}")
         params = stage.get("parameters", [])
@@ -107,7 +115,7 @@ def qualify(card: dict[str, Any]) -> QualificationResult:
     if claim == "exact_hardware":
         strong = 0
         for stage in stages.values():
-            if _evidence_types(stage) & {"hardware_measurement","schematic_exact","authoritative_spec"}:
+            if _eligible_evidence_types(stage) & {"hardware_measurement","schematic_exact","authoritative_spec"}:
                 strong += 1
         if strong < 4:
             blockers.append("exact_hardware requires strong evidence on at least four stages")
