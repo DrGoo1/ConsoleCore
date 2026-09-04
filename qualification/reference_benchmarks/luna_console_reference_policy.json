@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "purpose": "commercial_reference_constraint_policy",
+  "references": [
+    {
+      "reference_id": "LUNA_CLASS_A_SUMMING_REF_A",
+      "scope": "integrated_class_a_source_and_bus_summing",
+      "allowed_roles": [
+        "behavioral_reference",
+        "cascade_constraint",
+        "headroom_reference",
+        "pan_fader_behavior_reference"
+      ],
+      "forbidden_roles": [
+        "topology_truth",
+        "hardware_measurement",
+        "exact_hardware_claim"
+      ]
+    },
+    {
+      "reference_id": "LUNA_DISCRETE_OPAMP_SUMMING_REF_A",
+      "scope": "integrated_discrete_opamp_summing",
+      "allowed_roles": [
+        "behavioral_reference",
+        "cascade_constraint",
+        "headroom_reference",
+        "transient_reference"
+      ],
+      "forbidden_roles": [
+        "topology_truth",
+        "hardware_measurement",
+        "exact_hardware_claim"
+      ]
+    },
+    {
+      "reference_id": "LUNA_DISCRETE_OPAMP_FULL_CONSOLE_REF_A",
+      "scope": "end_to_end_console_channel_plus_summing",
+      "allowed_roles": [
+        "behavioral_reference",
+        "channel_to_bus_cascade_reference",
+        "workflow_reference",
+        "transient_reference"
+      ],
+      "forbidden_roles": [
+        "topology_truth",
+        "hardware_measurement",
+        "exact_hardware_claim"
+      ]
+    }
+  ],
+  "rule": "Commercial references may constrain audible/system behavior but cannot establish circuit topology or exact-hardware fidelity."
+}
