@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "Flickinger_Inspired_Discrete",
+  "claim": "topology_inferred_research_only",
+  "notes": "Family-level inference only. No exact Flickinger circuit claim is made.",
+  "stages": [
+    {
+      "stage_id": "console_sender_line_amp",
+      "topology_class": "discrete_transistor_amplifier_family",
+      "evidence": [{"type":"component_topology_prior","source_id":"FLICKINGER_FAMILY_PRIOR_A"}],
+      "parameters": [
+        {"name":"small_signal_gain_db","min":0.0,"max":24.0,"unit":"dB","source_id":"FLICKINGER_FAMILY_PRIOR_A","confidence":0.35,"sensitivity":0.8},
+        {"name":"clipping_asymmetry","min":0.0,"max":0.35,"unit":"normalized","source_id":"FLICKINGER_FAMILY_PRIOR_A","confidence":0.3,"sensitivity":0.65}
+      ]
+    },
+    {
+      "stage_id": "console_summing_node",
+      "topology_class": "passive_resistive_or_discrete_active_sum_unresolved",
+      "evidence": [{"type":"component_topology_prior","source_id":"FLICKINGER_FAMILY_PRIOR_A"}],
+      "parameters": [
+        {"name":"effective_bus_impedance_ohm","min":300.0,"max":5000.0,"unit":"ohm","source_id":"FLICKINGER_FAMILY_PRIOR_A","confidence":0.25,"sensitivity":0.9}
+      ]
+    },
+    {
+      "stage_id": "console_output_stage",
+      "topology_class": "transformer_coupled_output_family_candidate",
+      "evidence": [{"type":"component_topology_prior","source_id":"FLICKINGER_FAMILY_PRIOR_A"}],
+      "parameters": [
+        {"name":"transformer_saturation_scale","min":0.25,"max":1.5,"unit":"relative","source_id":"FLICKINGER_FAMILY_PRIOR_A","confidence":0.3,"sensitivity":0.75}
+      ]
+    },
+    {
+      "stage_id": "console_shared_rail",
+      "topology_class": "shared_supply_unknown",
+      "evidence": [{"type":"component_topology_prior","source_id":"FLICKINGER_FAMILY_PRIOR_A"}],
+      "parameters": [
+        {"name":"effective_supply_source_impedance_ohm","min":0.01,"max":2.0,"unit":"ohm","source_id":"FLICKINGER_FAMILY_PRIOR_A","confidence":0.15,"sensitivity":1.0}
+      ]
+    }
+  ]
+}
