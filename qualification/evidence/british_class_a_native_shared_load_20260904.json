@@ -1,0 +1,228 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "British_ClassA_Discrete",
+  "evidence_class": "native_qualification_physical_mode",
+  "production_eligible": false,
+  "csv_sha256": "37f61b58f2e8e9d1fecd666ed9bfa6c5558f89d9ff3b2e8f2966591f345f97d0",
+  "findings": {
+    "matched_waveform_signal_dependent_rail_sag": "count_and_distribution_invariant_without_explicit_quiescent_channel_load",
+    "distribution_nonlinearity": "concentrated path shows greater nonlinear loss than distributed path at equal summed waveform",
+    "unresolved": [
+      "quiescent channel-count supply loading",
+      "evidence-derived distribution-sensitive supply demand",
+      "hardware/reference validation of magnitude"
+    ]
+  },
+  "comparisons": [
+    {
+      "channel_count": 1,
+      "stimulus": "multitone",
+      "concentrated_minus_distributed_rms_db": 0.0,
+      "distributed_rail_sag": 0.0282807,
+      "concentrated_rail_sag": 0.0282807
+    },
+    {
+      "channel_count": 1,
+      "stimulus": "transient_burst",
+      "concentrated_minus_distributed_rms_db": 0.0,
+      "distributed_rail_sag": 0.00232629,
+      "concentrated_rail_sag": 0.00232629
+    },
+    {
+      "channel_count": 1,
+      "stimulus": "lf_heavy",
+      "concentrated_minus_distributed_rms_db": 0.0,
+      "distributed_rail_sag": 0.0303639,
+      "concentrated_rail_sag": 0.0303639
+    },
+    {
+      "channel_count": 1,
+      "stimulus": "hf_heavy",
+      "concentrated_minus_distributed_rms_db": 0.0,
+      "distributed_rail_sag": 0.0288515,
+      "concentrated_rail_sag": 0.0288515
+    },
+    {
+      "channel_count": 1,
+      "stimulus": "two_tone_imd",
+      "concentrated_minus_distributed_rms_db": 0.0,
+      "distributed_rail_sag": 0.0280039,
+      "concentrated_rail_sag": 0.0280039
+    },
+    {
+      "channel_count": 2,
+      "stimulus": "multitone",
+      "concentrated_minus_distributed_rms_db": -0.7355009149170978,
+      "distributed_rail_sag": 0.0282807,
+      "concentrated_rail_sag": 0.0282807
+    },
+    {
+      "channel_count": 2,
+      "stimulus": "transient_burst",
+      "concentrated_minus_distributed_rms_db": -5.34480102382002,
+      "distributed_rail_sag": 0.00232629,
+      "concentrated_rail_sag": 0.00232629
+    },
+    {
+      "channel_count": 2,
+      "stimulus": "lf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.5285865225701578,
+      "distributed_rail_sag": 0.0303639,
+      "concentrated_rail_sag": 0.0303639
+    },
+    {
+      "channel_count": 2,
+      "stimulus": "hf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.660640846336916,
+      "distributed_rail_sag": 0.0288515,
+      "concentrated_rail_sag": 0.0288515
+    },
+    {
+      "channel_count": 2,
+      "stimulus": "two_tone_imd",
+      "concentrated_minus_distributed_rms_db": -0.6924048953202673,
+      "distributed_rail_sag": 0.0280039,
+      "concentrated_rail_sag": 0.0280039
+    },
+    {
+      "channel_count": 4,
+      "stimulus": "multitone",
+      "concentrated_minus_distributed_rms_db": -0.9423707084906386,
+      "distributed_rail_sag": 0.0282807,
+      "concentrated_rail_sag": 0.0282807
+    },
+    {
+      "channel_count": 4,
+      "stimulus": "transient_burst",
+      "concentrated_minus_distributed_rms_db": -9.472967177916427,
+      "distributed_rail_sag": 0.00232629,
+      "concentrated_rail_sag": 0.00232629
+    },
+    {
+      "channel_count": 4,
+      "stimulus": "lf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.6657095406662894,
+      "distributed_rail_sag": 0.0303639,
+      "concentrated_rail_sag": 0.0303639
+    },
+    {
+      "channel_count": 4,
+      "stimulus": "hf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.8393728697205495,
+      "distributed_rail_sag": 0.0288515,
+      "concentrated_rail_sag": 0.0288515
+    },
+    {
+      "channel_count": 4,
+      "stimulus": "two_tone_imd",
+      "concentrated_minus_distributed_rms_db": -0.8805064971288269,
+      "distributed_rail_sag": 0.0280039,
+      "concentrated_rail_sag": 0.0280039
+    },
+    {
+      "channel_count": 8,
+      "stimulus": "multitone",
+      "concentrated_minus_distributed_rms_db": -0.9935161643160951,
+      "distributed_rail_sag": 0.0282807,
+      "concentrated_rail_sag": 0.0282807
+    },
+    {
+      "channel_count": 8,
+      "stimulus": "transient_burst",
+      "concentrated_minus_distributed_rms_db": -11.659015279553728,
+      "distributed_rail_sag": 0.00232629,
+      "concentrated_rail_sag": 0.00232629
+    },
+    {
+      "channel_count": 8,
+      "stimulus": "lf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.698377501457118,
+      "distributed_rail_sag": 0.0303639,
+      "concentrated_rail_sag": 0.0303639
+    },
+    {
+      "channel_count": 8,
+      "stimulus": "hf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.8828325629163841,
+      "distributed_rail_sag": 0.0288515,
+      "concentrated_rail_sag": 0.0288515
+    },
+    {
+      "channel_count": 8,
+      "stimulus": "two_tone_imd",
+      "concentrated_minus_distributed_rms_db": -0.9263532223346876,
+      "distributed_rail_sag": 0.0280039,
+      "concentrated_rail_sag": 0.0280039
+    },
+    {
+      "channel_count": 16,
+      "stimulus": "multitone",
+      "concentrated_minus_distributed_rms_db": -1.0051098246329928,
+      "distributed_rail_sag": 0.0282807,
+      "concentrated_rail_sag": 0.0282807
+    },
+    {
+      "channel_count": 16,
+      "stimulus": "transient_burst",
+      "concentrated_minus_distributed_rms_db": -12.433275223627152,
+      "distributed_rail_sag": 0.00232629,
+      "concentrated_rail_sag": 0.00232629
+    },
+    {
+      "channel_count": 16,
+      "stimulus": "lf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.705474505652875,
+      "distributed_rail_sag": 0.0303639,
+      "concentrated_rail_sag": 0.0303639
+    },
+    {
+      "channel_count": 16,
+      "stimulus": "hf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.892534818646755,
+      "distributed_rail_sag": 0.0288515,
+      "concentrated_rail_sag": 0.0288515
+    },
+    {
+      "channel_count": 16,
+      "stimulus": "two_tone_imd",
+      "concentrated_minus_distributed_rms_db": -0.9366119689195753,
+      "distributed_rail_sag": 0.0280039,
+      "concentrated_rail_sag": 0.0280039
+    },
+    {
+      "channel_count": 24,
+      "stimulus": "multitone",
+      "concentrated_minus_distributed_rms_db": -1.0068627169029574,
+      "distributed_rail_sag": 0.0282807,
+      "concentrated_rail_sag": 0.0282807
+    },
+    {
+      "channel_count": 24,
+      "stimulus": "transient_burst",
+      "concentrated_minus_distributed_rms_db": -12.590968775870424,
+      "distributed_rail_sag": 0.00232629,
+      "concentrated_rail_sag": 0.00232629
+    },
+    {
+      "channel_count": 24,
+      "stimulus": "lf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.7064542992288948,
+      "distributed_rail_sag": 0.0303639,
+      "concentrated_rail_sag": 0.0303639
+    },
+    {
+      "channel_count": 24,
+      "stimulus": "hf_heavy",
+      "concentrated_minus_distributed_rms_db": -0.8939647398181036,
+      "distributed_rail_sag": 0.0288515,
+      "concentrated_rail_sag": 0.0288515
+    },
+    {
+      "channel_count": 24,
+      "stimulus": "two_tone_imd",
+      "concentrated_minus_distributed_rms_db": -0.9381394561467616,
+      "distributed_rail_sag": 0.0280039,
+      "concentrated_rail_sag": 0.0280039
+    }
+  ]
+}

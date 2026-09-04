@@ -50,6 +50,7 @@ add_subdirectory(modules/osc)
 add_subdirectory(modules/reaper_bridge)
 add_subdirectory(apps/ConsoleCoreStandalone)
 add_subdirectory(tools/realtime_validation_cli)
+add_subdirectory(tools/topology_family_qualification_cli)
 
 if(CONSOLECORE_BUILD_TESTS)
     enable_testing()

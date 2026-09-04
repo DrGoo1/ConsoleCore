@@ -15,6 +15,7 @@ void TopologyAwareMixEngine::setDrive(float v) { drive = std::clamp(v, 0.0f, 1.0
 void TopologyAwareMixEngine::setStress(float v) { stress = std::clamp(v, 0.0f, 1.0f); }
 void TopologyAwareMixEngine::setCrosstalk(float v) { crosstalk = std::clamp(v, 0.0f, 1.0f); }
 void TopologyAwareMixEngine::setTransformerWeight(float v) { transformerWeight = std::clamp(v, 0.0f, 1.0f); }
+void TopologyAwareMixEngine::setQualificationPhysicalMode(bool enabled) { qualificationPhysicalMode = enabled; }
 void TopologyAwareMixEngine::reset() { rail.reset(); std::fill(channelMemory.begin(), channelMemory.end(), 0.0f); lastActivity = 0.0f; }
 
 float TopologyAwareMixEngine::dbToGain(float db) const noexcept { return std::pow(10.0f, db / 20.0f); }
@@ -27,7 +28,12 @@ float TopologyAwareMixEngine::processNonlinear(float x, float railMod, float cha
     float y = x * pregain * railMod;
     y += asym * (y * y) * (y >= 0.0f ? 1.0f : -1.0f);
     y += odd * y * y * y;
-    y += channelBias * 0.0008f;
+    if (!qualificationPhysicalMode) y += channelBias * 0.0008f;
+    if (qualificationPhysicalMode) {
+        const float saturationScale = std::max(0.001f, 1.0f + iron);
+        y = std::tanh(y * saturationScale) / std::max(0.001f, pregain * saturationScale);
+        return y;
+    }
     y = std::tanh(y * (1.0f + iron)) / std::max(0.001f, pregain * 0.72f);
     return y;
 }
@@ -43,6 +49,49 @@ void TopologyAwareMixEngine::process(const float* const* inputs, int numInputs, 
     int activeStems = 0;
     float sag = rail.getRailSag();
     const float recoveryCoeff = std::exp(-1.0f / static_cast<float>(std::max(1.0, sr * (profile.railRecoveryMs / 1000.0))));
+
+    if (qualificationPhysicalMode) {
+        std::vector<const StemConfig*> active;
+        active.reserve(topology.stems.size());
+        for (const auto& stem : topology.stems) {
+            if (stem.muted || (anySolo && !stem.soloed)) continue;
+            if (stem.inputLeft >= numInputs || stem.inputRight >= numInputs) continue;
+            if (!inputs[stem.inputLeft] || !inputs[stem.inputRight]) continue;
+            active.push_back(&stem);
+        }
+        activeStems = static_cast<int>(active.size());
+        for (int i = 0; i < numSamples; ++i) {
+            float instantaneousDemand = 0.0f;
+            for (const auto* stem : active) {
+                instantaneousDemand += 0.5f * (std::abs(inputs[stem->inputLeft][i]) + std::abs(inputs[stem->inputRight][i]));
+            }
+            // Signal-dependent shared demand is the aggregate instantaneous demand.
+            // Any quiescent/channel-count supply load must be a separate evidence-derived term;
+            // never hide it inside a division by active channel count.
+            const float targetSag = instantaneousDemand * stress * static_cast<float>(profile.busSagDepth) * 4.0f;
+            sag = sag * recoveryCoeff + targetSag * (1.0f - recoveryCoeff);
+            const float railMod = 1.0f - std::clamp(sag * 0.45f, 0.0f, 0.6f);
+            for (const auto* stem : active) {
+                const float gain = dbToGain(stem->trimDb);
+                const float panL = std::sqrt(std::clamp(0.5f * (1.0f - stem->pan), 0.0f, 1.0f));
+                const float panR = std::sqrt(std::clamp(0.5f * (1.0f + stem->pan), 0.0f, 1.0f));
+                const float bias = (static_cast<float>((stem->stemId % 7) - 3) / 3.0f);
+                float l = processNonlinear(inputs[stem->inputLeft][i] * gain, railMod, bias);
+                float r = processNonlinear(inputs[stem->inputRight][i] * gain, railMod, -bias);
+                const float xt = crosstalk * dbToGain(static_cast<float>(profile.crosstalkDb) + 48.0f) * (1.0f + sag * 2.0f);
+                const float cl = l + r * xt;
+                const float cr = r + l * xt;
+                leftOut[i] += cl * panL;
+                rightOut[i] += cr * panR;
+            }
+            blockEnergy += instantaneousDemand;
+        }
+        rail.setRailSag(sag);
+        rail.setActiveChannels(activeStems);
+        rail.advanceFrame();
+        lastActivity = blockEnergy / static_cast<float>(std::max(1, numSamples * std::max(1, activeStems)));
+        return;
+    }
 
     for (const auto& stem : topology.stems) {
         if (stem.muted || (anySolo && !stem.soloed)) continue;
