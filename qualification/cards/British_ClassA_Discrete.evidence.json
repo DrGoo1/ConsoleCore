@@ -119,6 +119,12 @@
           "source_id": "HW_CLASS_A_FAMILY_A",
           "promotion_eligible": true,
           "scope_note": "family-level summing evidence; not isolated bus amplifier"
+        },
+        {
+          "type": "behavioral_reference",
+          "source_id": "BEHAVIOR_CLASS_A_CASCADE_REF_A",
+          "promotion_eligible": false,
+          "scope_note": "cascade nonlinearity shape only; not hardware truth"
         }
       ],
       "parameters": []
@@ -221,6 +227,17 @@
       "source_ids": [
         "SHARED_SENDER_SUMMER_BEHAVIOR_A"
       ]
+    },
+    {
+      "domain": "stage_cascade_nonlinearity",
+      "status": "partial",
+      "fixed_trim": true,
+      "rms_normalized_per_count": false,
+      "source_ids": [
+        "HW_CLASS_A_FAMILY_A",
+        "BEHAVIOR_CLASS_A_CASCADE_REF_A"
+      ],
+      "notes": "Hardware anchors absolute harmonic family; behavioral reference constrains bus/main cascade relationship only."
     }
   ],
   "promotion": {

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "REJECTED_SHARED_SENDER_SUMMER_16CH_A",
+  "status": "rejected",
+  "reason": "invalid/clipped capture; reported peaks near +20 dBFS and trim/routing pathology",
+  "usable_for_fit": false,
+  "channel_counts": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "notes": "Retained only as audit evidence; never use for coefficient fitting or qualification."
+}

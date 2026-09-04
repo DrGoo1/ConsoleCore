@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "sample_rate_hz": 96000,
+  "duration_seconds": 2.0,
+  "channel_counts": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    24
+  ],
+  "stimuli": [
+    "multitone",
+    "transient_burst",
+    "lf_heavy",
+    "hf_heavy",
+    "two_tone_imd"
+  ],
+  "distributions": [
+    "distributed",
+    "concentrated"
+  ],
+  "target_sum_rms_dbfs": -18.0,
+  "fixed_trim": true,
+  "output_normalization_allowed": false,
+  "purpose": "matched-energy shared-load qualification across native core, hardware and behavioral references",
+  "generator": "scripts/generate_shared_load_stimuli.py"
+}
