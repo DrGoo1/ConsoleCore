@@ -1,6 +1,7 @@
 #include "TemporalMemoryEngine.h"
 #include "DspUtils.h"
 #include <algorithm>
+#include <cmath>
 
 void TemporalMemoryEngine::prepare(double sampleRate)
 {
@@ -13,10 +14,11 @@ void TemporalMemoryEngine::reset()
     memory = 0.0f;
 }
 
-float TemporalMemoryEngine::processEnergy(float instantaneousEnergy, float attackMs, float releaseMs)
+float TemporalMemoryEngine::processEnergy(float instantaneousEnergy, float attackMs, float releaseMs, int samplesElapsed)
 {
     const bool rising = instantaneousEnergy > memory;
-    const float coeff = cc::onePoleCoeff(rising ? attackMs : releaseMs, fs);
+    const float sampleCoeff = cc::onePoleCoeff(rising ? attackMs : releaseMs, fs);
+    const float coeff = std::pow(sampleCoeff, static_cast<float>(std::max(1, samplesElapsed)));
     memory = coeff * memory + (1.0f - coeff) * instantaneousEnergy;
     return memory;
 }

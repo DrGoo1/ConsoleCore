@@ -11,5 +11,6 @@ struct AnalogPhysicsParameters
     float impedanceInteraction = 0.20f;  // 0..1
     float lowFrequencyLoadBias = 0.30f;  // 0..1
     float highFrequencySlewSoftening = 0.12f; // 0..1
+    float channelDistributionSensitivity = 0.0f; // 0..1; topology/evidence-derived, zero preserves legacy behavior
     float outputTrimDb = 0.0f;
 };

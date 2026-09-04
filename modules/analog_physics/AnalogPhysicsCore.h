@@ -7,6 +7,13 @@
 #include "SpectralLoadAnalyzer.h"
 #include "AdaptiveHeadroomModel.h"
 
+struct ChannelLoadSummary
+{
+    float meanRms = 0.0f;
+    float maxRms = 0.0f;
+    float concentration = 0.0f; // max / sum, 1 = one dominant channel
+};
+
 struct AnalogPhysicsTelemetry
 {
     float railVoltage = 1.0f;
@@ -15,6 +22,8 @@ struct AnalogPhysicsTelemetry
     float headroomGain = 1.0f;
     float peakOutput = 0.0f;
     SpectralLoad spectralLoad;
+    float channelConcentration = 0.0f;
+    float channelDistributionStress = 0.0f;
 };
 
 class AnalogPhysicsCore
@@ -27,6 +36,7 @@ public:
     const AnalogPhysicsParameters& getParameters() const { return params; }
 
     void processBlock(float* left, float* right, int numSamples, int activeChannels);
+    void processBlock(float* left, float* right, int numSamples, int activeChannels, const ChannelLoadSummary& channelLoad);
 
     const AnalogPhysicsTelemetry& getTelemetry() const { return telemetry; }
 

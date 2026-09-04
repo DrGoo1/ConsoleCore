@@ -1,3 +1,7 @@
 add_executable(ConsoleCoreSmokeTest smoke_test.cpp)
 target_link_libraries(ConsoleCoreSmokeTest PRIVATE console_core topology model_capture runtime latency juce::juce_audio_basics)
 add_test(NAME ConsoleCoreSmokeTest COMMAND ConsoleCoreSmokeTest)
+
+add_executable(ConsoleCoreAnalogPhysicsBlockInvariantTest analog_physics_block_invariant_test.cpp)
+target_link_libraries(ConsoleCoreAnalogPhysicsBlockInvariantTest PRIVATE analog_physics)
+add_test(NAME ConsoleCoreAnalogPhysicsBlockInvariantTest COMMAND ConsoleCoreAnalogPhysicsBlockInvariantTest)

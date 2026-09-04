@@ -6,7 +6,7 @@ public:
     void prepare(double sampleRate);
     void reset();
 
-    float processEnergy(float instantaneousEnergy, float attackMs, float releaseMs);
+    float processEnergy(float instantaneousEnergy, float attackMs, float releaseMs, int samplesElapsed = 1);
     float getMemory() const { return memory; }
 
 private:

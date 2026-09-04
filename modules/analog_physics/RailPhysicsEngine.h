@@ -7,7 +7,7 @@ public:
     void prepare(double sampleRate);
     void reset();
 
-    void update(float blockEnergy, int activeChannels, const AnalogPhysicsParameters& params);
+    void update(float blockEnergy, int activeChannels, const AnalogPhysicsParameters& params, float distributionStress = 0.0f, int samplesElapsed = 1);
 
     float getRailVoltage() const { return railVoltage; }
     float getRailStress() const { return railStress; }
