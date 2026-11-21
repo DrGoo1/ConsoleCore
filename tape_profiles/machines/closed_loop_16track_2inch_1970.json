@@ -1,0 +1,79 @@
+{
+  "schema": "tapecore.machine.v2",
+  "id": "closed_loop_16track_2inch_1970",
+  "displayName": "American Closed-Loop 16-Track 2-inch (c. 1970)",
+  "referenceMachine": "3M M56 (Series 500). Its public maintenance manual (M56 PAR 1-70) and the 1968 AES convention paper on the two-inch 16-track recorder are used as engineering benchmarks. No hardware was measured. This is not a claim of equivalence to that product.",
+  "status": "documentation-derived; not validated against hardware; not listened to",
+  "referenceDbfs": -18.0,
+  "format": { "tracks": 16, "tapeWidthInches": 2.0, "trackWidthInches": 0.070 },
+  "tape": {
+    "coatingThicknessMicrons": 12.7,
+    "hd3PercentAtCal": 3.0,
+    "hd3CalLevelDb": 6.0,
+    "hasLinearizer": true,
+    "linearizerHd3Percent": 0.7,
+    "biasFrequencyHz": 120000,
+    "overbiasDb": 4.0
+  },
+  "head": { "headBumpWavelengthInches": 0.30, "headBumpGainDb": 1.0 },
+  "electronics": {
+    "inputTransformer": true,
+    "outputTransformer": true,
+    "transformerHd3Percent": 0.8,
+    "transformerCalHz": 30.0,
+    "maxOutputDb": 24.0,
+    "highpassHz": 5.0
+  },
+  "transport": {
+    "flutterComponents": [
+      { "hzAt15Ips": 0.8, "weight": 1.0 },
+      { "hzAt15Ips": 9.0, "weight": 1.0 },
+      { "hzAt15Ips": 27.0, "weight": 0.6 }
+    ]
+  },
+  "speeds": [
+    {
+      "ips": 7.5, "equalization": "NAB", "hfTimeConstantUs": 50.0, "lfTimeConstantUs": 3180.0,
+      "playbackHfCornerHz": 16000, "flutterLowBandRmsPercent": 0.042, "scrapeFlutterRmsPercent": 0.05,
+      "snrDb": 58.0, "referenceHz": 700.0, "publishedFlutterMaxPercent": 0.07,
+      "publishedResponse": [
+        { "loHz": 100, "hiHz": 10000, "plusDb": 2.0, "minusDb": 2.0 },
+        { "loHz": 30, "hiHz": 50, "plusDb": 2.0, "minusDb": 4.0 }
+      ]
+    },
+    {
+      "ips": 15.0, "equalization": "NAB", "hfTimeConstantUs": 50.0, "lfTimeConstantUs": 3180.0,
+      "playbackHfCornerHz": 26000, "flutterLowBandRmsPercent": 0.024, "scrapeFlutterRmsPercent": 0.038,
+      "snrDb": 62.0, "referenceHz": 700.0, "publishedFlutterMaxPercent": 0.04,
+      "publishedResponse": [
+        { "loHz": 100, "hiHz": 15000, "plusDb": 2.0, "minusDb": 2.0 },
+        { "loHz": 30, "hiHz": 50, "plusDb": 2.0, "minusDb": 4.0 }
+      ]
+    },
+    {
+      "ips": 30.0, "equalization": "AES", "hfTimeConstantUs": 17.5, "lfTimeConstantUs": 0.0,
+      "playbackHfCornerHz": 30000, "flutterLowBandRmsPercent": 0.024, "scrapeFlutterRmsPercent": 0.038,
+      "snrDb": 63.0, "referenceHz": 700.0
+    }
+  ],
+  "evidence": {
+    "referenceDbfs": "assumed: host convention that operating level (0 VU, +4 dBm) sits at -18 dBFS",
+    "format.trackWidthInches": "standard: 70 mil tracks of the two-inch 16-track format; not stated in the manual text read",
+    "tape.coatingThicknessMicrons": "assumed: about 0.5 mil oxide for the low-noise tape the manual says the machine was aligned for (3M 202/203); thickness not verified",
+    "tape.hd3PercentAtCal": "published: maintenance manual distortion test, 3 percent third harmonic at 1 kHz with the linearizer off",
+    "tape.hd3CalLevelDb": "published: that test uses +10 dBm input, 6 dB above the +4 dBm operating level",
+    "tape.linearizer": "published: under 0.8 percent third harmonic with the linearizer on at the same level; 0.7 chosen below the limit",
+    "tape.bias": "published: 120 kHz bias, set 4 dB over peak at 15 kHz; recorded for reference, bias is not simulated as a signal",
+    "head.headBumpWavelengthInches": "assumed: head contour dimensions are not in the manual; 0.30 inch puts the bump near 50 Hz at 15 ips",
+    "head.headBumpGainDb": "assumed: 1 dB, chosen inside the published low-frequency tolerance",
+    "electronics.transformers": "published: AES paper describes input and output transformers and a transformer-coupled 600 ohm line amplifier; applying the same core model to the input transformer is an assumption",
+    "electronics.maxOutputDb": "published: line amplifier maximum +28 dBm, 24 dB above operating level; distortion under 1 percent from 30 Hz to 15 kHz at that level, 0.8 percent at 30 Hz chosen",
+    "electronics.highpassHz": "assumed: amplifier coupling corner is not given",
+    "transport.flutterComponents": "assumed: component rates are placeholders; capstan and idler dimensions are not in the manual text read. Only the band totals are tied to published limits",
+    "speeds.equalization": "published: NAB-format calibration tapes at 7.5 and 15 ips, with time constants from the NAB standard. The 30 ips curve is an assumption: the manual text read gives none, and 17.5 microseconds is the usual 30 ips standard",
+    "speeds.playbackHfCornerHz": "assumed: nominal roll-off placed inside the published response tolerance",
+    "speeds.flutter": "derived: low band set to 60 percent of the published limits (0.04 percent at 15 ips, 0.07 at 7.5 ips, 0.5-300 Hz); scrape band from the AES paper's 0.075 percent wideband maximum less the low band, also at 60 percent. 30 ips has no published figure and reuses 15 ips",
+    "speeds.snrDb": "assumed: the manual describes the noise test but prints no figure",
+    "speeds.publishedResponse": "published: overall record tolerance, plus or minus 2 VU from 100 Hz to 15 kHz at 15 ips (to 10 kHz at 7.5 ips) and +2/-4 VU at 30 and 50 Hz, referred to 700 Hz"
+  }
+}
