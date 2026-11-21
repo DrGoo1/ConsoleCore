@@ -214,15 +214,19 @@ namespace tape::bench
         {
             double hi = -1e9, lo = 1e9;
             const int points = 13;
+            // A band that runs past what the sample rate can carry is checked up to 0.45 fs.
+            const double top = std::min(band.hiHz, 0.45 * rig.sampleRate);
+            if (top <= band.loHz)
+                continue;
             for (int i = 0; i < points; ++i)
             {
-                const double hz = band.loHz * std::pow(band.hiHz / band.loHz, static_cast<double>(i) / (points - 1));
+                const double hz = band.loHz * std::pow(top / band.loHz, static_cast<double>(i) / (points - 1));
                 const double d = responseDb(rig, hz) - ref;
                 hi = std::max(hi, d);
                 lo = std::min(lo, d);
             }
             Row r;
-            r.name = fmt("response %.0f Hz to %.0f Hz", band.loHz, band.hiHz);
+            r.name = fmt("response %.0f Hz to %.0f Hz", band.loHz, top) + (top < band.hiHz ? fmt(" (published to %.0f)", band.hiHz) : std::string());
             r.measured = fmt("%+.2f / %+.2f dB", hi, lo);
             r.limit = fmt("+%.1f / -%.1f dB", band.plusDb, band.minusDb);
             r.basis = "published";
@@ -273,7 +277,7 @@ namespace tape::bench
         }
 
         rows.push_back({ "noise, 20 Hz to 20 kHz (when enabled)", fmt("%.1f dB re operating level", noiseDb(rig)), fmt("target -%.0f dB", speed->snrDb),
-                         "assumed", false, true });
+                         spec.evidence.count("speeds.snrDb") ? spec.evidence.at("speeds.snrDb").substr(0, spec.evidence.at("speeds.snrDb").find(':')) : std::string("assumed"), false, true });
         return rows;
     }
 }

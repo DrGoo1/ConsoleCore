@@ -15,7 +15,7 @@ machine is named only as the source of benchmark figures.
 | Profile | Benchmark source | State |
 | --- | --- | --- |
 | `closed_loop_16track_2inch_1970` | 3M M56 maintenance manual and the 1968 AES paper on the two-inch 16-track recorder | Published response, distortion, flutter, bias and line-amp figures are used. Coating thickness, head bump, flutter spectrum, noise and the 30 ips curve are assumptions. |
-| `transformerless_servo_24track_2inch_1979` | Ampex ATR-124 (manufacturer advertising only) | **Provisional.** The service manual has not been read, so every performance value is an assumption and there are no published limits to test against. |
+| `transformerless_servo_24track_2inch_1979` | Ampex ATR-124: Studio Sound multitrack survey (January 1980) and manufacturer advertising | **Provisional.** Published response (25 Hz to 20 kHz at 15 ips, 40 Hz to 30 kHz at 30 ips, both +/-2 dB), noise and flutter are used. The service manual could not be retrieved, so distortion, levels, bias, head data and everything at 7.5 ips are assumptions. |
 
 ## Signal path
 
@@ -45,6 +45,11 @@ Closed-loop 16-track profile:
 | Third harmonic at +6 dB, linearizer on | 0.70 % | 0.70 % | 0.70 % | under 0.8 % |
 | Flutter, 0.5 to 300 Hz | 0.036 % | 0.023 % | 0.024 % | 0.07 % / 0.04 % / none |
 
+Transformerless servo 24-track profile: response +0.7 / -0.9 dB at 15 ips and inside +/-2 dB
+at 30 ips (checked to 30 kHz at a 96 kHz sample rate); flutter 0.017 % and 0.019 % against a
+published 0.03 % weighted figure, which is a different measurement from the bench's
+unweighted rms.
+
 Latency is 99 samples at every sample rate and is reported by `latencySamples()`.
 
 ## Limits
@@ -73,6 +78,6 @@ ctest --test-dir build-tape --output-on-failure
 ## Next
 
 1. Listen to renders and compare against any tape recordings available.
-2. Read the ATR-124 service manual and replace the assumed values.
+2. Obtain the ATR-124 service manual (the public copy would not download) and replace the remaining assumed values.
 3. Connect the engine to `IntegratedAnalogPathEngine` behind a machine selector.
 4. Add hysteresis with bias if listening shows the simple curve is not enough.

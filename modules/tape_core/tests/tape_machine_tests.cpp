@@ -101,6 +101,21 @@ int main()
             }
         check(allPass && limits >= 3, label("closed-loop model is inside every published figure", ips));
     }
+    for (double fs : { 48000.0, 96000.0 })
+        for (double ips : { 15.0, 30.0 })
+        {
+            bool allPass = true;
+            int limits = 0;
+            for (const auto& row : tape::bench::report(servo, ips, fs))
+                if (row.hasLimit)
+                {
+                    ++limits;
+                    allPass = allPass && row.pass;
+                    if (!row.pass)
+                        std::printf("      %s: %s (limit %s)\n", row.name.c_str(), row.measured.c_str(), row.limit.c_str());
+                }
+            check(allPass && limits >= 3, label("servo model is inside the published survey figures", ips) + ", " + std::to_string(static_cast<int>(fs)) + " Hz");
+        }
     for (double fs : { 44100.0, 96000.0 })
     {
         auto r = rig(closedLoop, 15.0, fs);
