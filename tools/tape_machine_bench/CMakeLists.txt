@@ -16,6 +16,8 @@ set(TAPE_SOURCES
     ${TAPE_CORE}/TapeSpecJson.cpp
     ${TAPE_CORE}/TapeBench.cpp
     ${TAPE_CORE}/TapeTrackProcessor.cpp
+    ${TAPE_CORE}/TapePrintProcessor.cpp
+    ../../modules/integration/IntegratedAnalogPathEngine.cpp
 )
 
 add_executable(tape_machine_bench main.cpp ${TAPE_SOURCES})

@@ -7,6 +7,7 @@
 #include "TapeBench.h"
 #include "TapeSpecJson.h"
 #include "TapeTrackProcessor.h"
+#include "../../integration/IntegratedAnalogPathEngine.h"
 
 #include <cmath>
 #include <cstdio>
@@ -278,6 +279,68 @@ int main()
         std::vector<float> l(256, 0.1f), rr(256, 0.1f);
         legacy.processStereo(l.data(), rr.data(), 256, profile, state);
         check(std::isfinite(l[100]) && std::isfinite(rr[100]), "the original generic tape processor is unchanged and runs");
+    }
+
+    // --- Integrated analog path ----------------------------------------------------------------
+    {
+        auto run = [](IntegratedAnalogPathEngine& e, std::vector<float>& l, std::vector<float>& r)
+        {
+            for (std::size_t pos = 0; pos < l.size(); pos += 256)
+                e.processStereo(l.data() + pos, r.data() + pos, static_cast<int>(std::min<std::size_t>(256, l.size() - pos)));
+        };
+        auto tone = [](std::vector<float>& l, std::vector<float>& r)
+        {
+            for (std::size_t i = 0; i < l.size(); ++i)
+                l[i] = r[i] = 0.125f * static_cast<float>(std::sin(2.0 * 3.141592653589793 * 1000.0 * i / 48000.0));
+        };
+        AnalogPathSettings settings;
+        settings.tapeTrackEnabled = true;
+        settings.consoleEnabled = false;
+
+        IntegratedAnalogPathEngine generic, physical;
+        generic.prepare(48000.0, 256);
+        generic.setSettings(settings);
+        check(!generic.hasTrackMachine() && generic.latencySamples() == 0, "integrated path keeps the generic tape stage by default, with no latency");
+
+        tape::RunSettings rs;
+        rs.ips = 3.75;
+        check(!physical.setTrackMachine(closedLoop, rs) && !physical.hasTrackMachine(), "integrated path refuses a machine speed the profile lacks");
+        rs.ips = 15.0;
+        rs.flutterEnabled = false;
+        check(physical.setTrackMachine(closedLoop, rs), "a machine can be selected before the path is prepared");
+        physical.prepare(48000.0, 256);
+        physical.setSettings(settings);
+        check(physical.hasTrackMachine() && physical.latencySamples() == 99 && physical.getTelemetry().physicalTrackMachineActive,
+              "integrated path runs the physical machine and reports its latency");
+
+        std::vector<float> gl(9600), gr(9600), pl(9600), pr(9600), dl(9600), dr(9600);
+        tone(gl, gr);
+        tone(pl, pr);
+        tone(dl, dr);
+        run(generic, gl, gr);
+        run(physical, pl, pr);
+
+        tape::PhysicalTapeMachine direct;
+        direct.prepare(48000.0, 256, 2, closedLoop, rs);
+        for (std::size_t pos = 0; pos < dl.size(); pos += 256)
+        {
+            float* ch[2] = { dl.data() + pos, dr.data() + pos };
+            direct.process(ch, 2, 256 > static_cast<int>(dl.size() - pos) ? static_cast<int>(dl.size() - pos) : 256);
+        }
+        double same = 0.0, differs = 0.0;
+        for (std::size_t i = 0; i < pl.size(); ++i)
+        {
+            same = std::max(same, static_cast<double>(std::abs(pl[i] - dl[i])));
+            differs = std::max(differs, static_cast<double>(std::abs(pl[i] - gl[i])));
+        }
+        check(same < 1e-7, "integrated path output equals the machine run on its own");
+        check(differs > 0.01, "selecting a machine changes the sound relative to the generic stage");
+
+        settings.tapeTrackEnabled = false;
+        physical.setSettings(settings);
+        check(physical.latencySamples() == 0, "latency drops to zero when the tape stage is switched off");
+        physical.clearTrackMachine();
+        check(!physical.hasTrackMachine(), "the machine can be cleared, returning to the generic stage");
     }
 
     std::printf("\n%s: %d failure(s)\n", failures == 0 ? "PASS" : "FAIL", failures);

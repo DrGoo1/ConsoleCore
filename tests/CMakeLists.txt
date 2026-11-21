@@ -4,6 +4,6 @@ add_test(NAME ConsoleCoreSmokeTest COMMAND ConsoleCoreSmokeTest)
 
 # Physical tape machine model: standard library only.
 add_executable(TapeMachineTests ../modules/tape_core/tests/tape_machine_tests.cpp)
-target_link_libraries(TapeMachineTests PRIVATE tape_core)
+target_link_libraries(TapeMachineTests PRIVATE tape_core integration)
 target_compile_definitions(TapeMachineTests PRIVATE TAPE_PROFILE_DIR="${CMAKE_SOURCE_DIR}/tape_profiles/machines")
 add_test(NAME TapeMachineTests COMMAND TapeMachineTests)

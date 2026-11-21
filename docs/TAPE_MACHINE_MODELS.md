@@ -61,7 +61,10 @@ Latency is 99 samples at every sample rate and is reported by `latencySamples()`
 - Low-frequency distortion at high level (30 Hz) is large in this model because the record
   bass boost drives the tape harder there. It is plausible but unverified: listen for it.
 - No crosstalk between tracks, no sync-head playback, no dropouts, no azimuth error.
-- Not yet connected to `IntegratedAnalogPathEngine` or to any plug-in parameter.
+- Connected to `IntegratedAnalogPathEngine` as the track tape stage: call
+  `setTrackMachine(spec, run)` to select a machine and report `latencySamples()` to the host.
+  Without that call the generic processor runs as before. The print tape stage, the console
+  stage and the plug-ins are not connected yet, and there are no user parameters.
 - The flutter spectrum (which frequencies) is assumed; only the total is published.
 
 ## Build and run without JUCE
@@ -79,5 +82,5 @@ ctest --test-dir build-tape --output-on-failure
 
 1. Listen to renders and compare against any tape recordings available.
 2. Obtain the ATR-124 service manual (the public copy would not download) and replace the remaining assumed values.
-3. Connect the engine to `IntegratedAnalogPathEngine` behind a machine selector.
+3. Expose machine, speed, drive and linearizer as plug-in parameters, and report latency from the plug-in.
 4. Add hysteresis with bias if listening shows the simple curve is not enough.
