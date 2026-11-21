@@ -1,0 +1,108 @@
+{
+  "schema": "tapecore.machine.v2",
+  "id": "transformerless_servo_24track_2inch_1979",
+  "displayName": "American Transformerless Servo 24-Track 2-inch (c. 1979)",
+  "referenceMachine": "Ampex ATR-124. Architecture is from public descriptions: three speeds, 24 channels, a servo capstan with no pinch roller, and transformerless electronics. Frequency response, noise and flutter figures are from the multitrack survey in Studio Sound, January 1980. The service manual has not been read (its public copy could not be retrieved), so distortion, levels, bias and head data are assumptions. No hardware was measured. This is not a claim of equivalence to that product.",
+  "status": "provisional: response, noise and flutter from a 1980 trade survey, everything else assumed pending the service manual; not validated against hardware; not listened to",
+  "referenceDbfs": -18.0,
+  "format": {
+    "tracks": 24,
+    "tapeWidthInches": 2.0,
+    "trackWidthInches": 0.043
+  },
+  "tape": {
+    "coatingThicknessMicrons": 14.0,
+    "hd3PercentAtCal": 3.0,
+    "hd3CalLevelDb": 9.0,
+    "hasLinearizer": false
+  },
+  "head": {
+    "headBumpWavelengthInches": 0.33,
+    "headBumpGainDb": 0.8
+  },
+  "electronics": {
+    "inputTransformer": false,
+    "outputTransformer": false,
+    "maxOutputDb": 22.0,
+    "highpassHz": 2.0
+  },
+  "transport": {
+    "flutterComponents": [
+      {
+        "hzAt15Ips": 0.6,
+        "weight": 1.0
+      },
+      {
+        "hzAt15Ips": 6.0,
+        "weight": 0.8
+      }
+    ]
+  },
+  "speeds": [
+    {
+      "ips": 7.5,
+      "equalization": "NAB",
+      "hfTimeConstantUs": 50.0,
+      "lfTimeConstantUs": 3180.0,
+      "playbackHfCornerHz": 18000,
+      "flutterLowBandRmsPercent": 0.03,
+      "scrapeFlutterRmsPercent": 0.025,
+      "snrDb": 56.0
+    },
+    {
+      "ips": 15.0,
+      "equalization": "NAB",
+      "hfTimeConstantUs": 50.0,
+      "lfTimeConstantUs": 3180.0,
+      "playbackHfCornerHz": 28000,
+      "flutterLowBandRmsPercent": 0.02,
+      "scrapeFlutterRmsPercent": 0.02,
+      "snrDb": 58.0,
+      "publishedFlutterMaxPercent": 0.03,
+      "publishedResponse": [
+        {
+          "loHz": 25,
+          "hiHz": 20000,
+          "plusDb": 2.0,
+          "minusDb": 2.0
+        }
+      ]
+    },
+    {
+      "ips": 30.0,
+      "equalization": "AES",
+      "hfTimeConstantUs": 17.5,
+      "lfTimeConstantUs": 0.0,
+      "playbackHfCornerHz": 42000,
+      "flutterLowBandRmsPercent": 0.02,
+      "scrapeFlutterRmsPercent": 0.02,
+      "snrDb": 60.0,
+      "publishedFlutterMaxPercent": 0.03,
+      "publishedResponse": [
+        {
+          "loHz": 40,
+          "hiHz": 30000,
+          "plusDb": 2.0,
+          "minusDb": 2.0
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "referenceDbfs": "assumed: host convention that operating level sits at -18 dBFS",
+    "format.trackWidthInches": "standard: 43 mil tracks of the two-inch 24-track format",
+    "tape.coatingThicknessMicrons": "assumed: about 0.55 mil oxide for a high-output tape of the period; not verified",
+    "tape.hd3PercentAtCal": "assumed: 3 percent third harmonic taken as the usual maximum-output criterion",
+    "tape.hd3CalLevelDb": "assumed: 9 dB above operating level for a high-output tape; not from the manual",
+    "head.headBumpWavelengthInches": "assumed: head dimensions unknown; chosen so the model stays inside the published low-frequency limits",
+    "head.headBumpGainDb": "assumed: only an overall +/-2 dB tolerance is published",
+    "electronics.transformers": "published: manufacturer advertisements of 1980 state balanced, transformerless inputs and outputs",
+    "electronics.maxOutputDb": "assumed: no figure read for this machine",
+    "electronics.highpassHz": "assumed: direct-coupled design, low corner chosen",
+    "transport.flutterComponents": "assumed: rates are placeholders. published architecture only: the operations manual excerpt states there is no capstan pinch roller, with a capstan servo for speed and a reel servo for tension",
+    "speeds.equalization": "published: three speeds, 7.5, 15 and 30 in/s, with NAB equalization provided and four assignable equalizations (Studio Sound survey, January 1980). The curve used at each speed is an assumption",
+    "speeds.playbackHfCornerHz": "derived: set so the model stays inside the published response, 25 Hz to 20 kHz +/-2 dB at 15 in/s and 40 Hz to 30 kHz +/-2 dB at 30 in/s (Studio Sound survey, January 1980). The 7.5 in/s value is an assumption",
+    "speeds.flutter": "derived: set under the published 0.03 percent weighted figure (Studio Sound survey, January 1980; weighting standard and speed not named). The bench measures unweighted rms, which is not the same measurement",
+    "speeds.snrDb": "derived: published 67 dB at 15 in/s and 69 dB at 30 in/s, unweighted (Studio Sound survey, January 1980). The survey names no reference level; it is assumed to be 9 dB above operating level, giving 58 and 60 dB here. The 7.5 in/s value is an assumption"
+  }
+}
