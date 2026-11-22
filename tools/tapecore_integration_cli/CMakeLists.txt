@@ -10,6 +10,7 @@ add_executable(ConsoleCoreTapeCoreIntegrationCLI
     ../../modules/tape_core/TapeTrackProcessor.cpp
     ../../modules/tape_core/TapePrintProcessor.cpp
     ../../modules/tape_core/PhysicalTapeMachine.cpp
+    ../../modules/console_physical/PhysicalConsoleStage.cpp
 )
 
 target_include_directories(ConsoleCoreTapeCoreIntegrationCLI PRIVATE

@@ -4,6 +4,8 @@
 //   tape_machine_bench render  <profile.json> <in.wav> <out.wav> [--ips N] [--drive DB]
 //                              [--formula tape.json] [--bias DB]
 //                              [--noise] [--no-flutter] [--linearizer-off]
+//                              [--console stage.json] [--console-drive DB] [--console-stages N] [--no-tape]
+//   tape_machine_bench measure-console <stage.json> [--rate HZ]
 //
 // "measure" prints the model's behaviour beside whatever the profile records as published,
 // and exits non-zero if a published limit is missed. "render" processes a WAV file so the
@@ -12,6 +14,9 @@
 #include "../../modules/tape_core/PhysicalTapeMachine.h"
 #include "../../modules/tape_core/TapeBench.h"
 #include "../../modules/tape_core/TapeSpecJson.h"
+#include "../../modules/console_physical/ConsoleBench.h"
+#include "../../modules/console_physical/ConsoleSpecJson.h"
+#include "../../modules/console_physical/PhysicalConsoleStage.h"
 
 #include <cstdint>
 #include <cstdio>
@@ -134,7 +139,9 @@ namespace
     {
         std::cerr << "usage:\n  tape_machine_bench measure <profile.json> [--ips N] [--rate HZ] [--formula tape.json]\n"
                      "  tape_machine_bench render <profile.json> <in.wav> <out.wav> [--ips N] [--drive DB] [--formula tape.json] [--bias DB]\n"
-                     "                            [--noise] [--no-flutter] [--linearizer-off]\n";
+                     "                            [--noise] [--no-flutter] [--linearizer-off]\n"
+                     "                            [--console stage.json] [--console-drive DB] [--console-stages N] [--no-tape]\n"
+                     "  tape_machine_bench measure-console <stage.json> [--rate HZ]\n";
         return 2;
     }
 }
@@ -144,6 +151,35 @@ int main(int argc, char** argv)
     if (argc < 3)
         return usage();
     const std::string command = argv[1];
+
+    if (command == "measure-console")
+    {
+        console::StageSpec stage;
+        std::string stageError;
+        if (!console::loadStageSpecFile(argv[2], stage, stageError))
+        {
+            std::cerr << "profile error: " << stageError << "\n";
+            return 2;
+        }
+        const auto stageProblems = console::validateStageSpec(stage);
+        for (const auto& p : stageProblems)
+            std::cerr << "profile problem: " << p << "\n";
+        if (!stageProblems.empty())
+            return 2;
+        const double rate = option(argc, argv, "--rate") ? std::atof(option(argc, argv, "--rate")) : 48000.0;
+        std::cout << stage.displayName << "\n  status: " << stage.status << "\n  reference: " << stage.referenceModule << "\n";
+        std::printf("\none stage, %.0f Hz sample rate, latency %d samples\n", rate, console::PhysicalConsoleStage::latencySamples());
+        bool allPass = true;
+        for (const auto& row : console::bench::report(stage, rate))
+        {
+            std::printf("  %-44s %-36s %-28s %-6s %s\n", row.name.c_str(), row.measured.c_str(), row.limit.c_str(),
+                        row.hasLimit ? (row.pass ? "PASS" : "FAIL") : "-", row.basis.c_str());
+            allPass = allPass && (!row.hasLimit || row.pass);
+        }
+        std::cout << "\nA PASS means the model sits inside a figure taken from documentation. It does not mean the\n"
+                     "model matches a real console: no hardware was measured.\n";
+        return allPass ? 0 : 1;
+    }
     tape::MachineSpec spec;
     std::string error;
     if (!tape::loadMachineSpecFile(argv[2], spec, error))
@@ -218,13 +254,37 @@ int main(int argc, char** argv)
         run.linearizerEnabled = !hasFlag(argc, argv, "--linearizer-off");
         tape::PhysicalTapeMachine machine;
         const int block = 1024;
-        if (!machine.prepare(wav.sampleRate, block, wav.channels, spec, run))
+        const bool useTape = !hasFlag(argc, argv, "--no-tape");
+        if (useTape && !machine.prepare(wav.sampleRate, block, wav.channels, spec, run))
         {
             std::cerr << "this profile has no entry for " << run.ips << " ips\n";
             return 2;
         }
+
+        console::PhysicalConsoleStage consoleStage;
+        console::StageSpec stage;
+        const char* consolePath = option(argc, argv, "--console");
+        if (consolePath != nullptr)
+        {
+            if (!console::loadStageSpecFile(consolePath, stage, error))
+            {
+                std::cerr << "console profile error: " << error << "\n";
+                return 2;
+            }
+            const auto stageProblems = console::validateStageSpec(stage);
+            for (const auto& p : stageProblems)
+                std::cerr << "console profile problem: " << p << "\n";
+            console::StageRunSettings stageRun;
+            stageRun.driveDb = option(argc, argv, "--console-drive") ? std::atof(option(argc, argv, "--console-drive")) : 0.0;
+            stageRun.stages = option(argc, argv, "--console-stages") ? std::atoi(option(argc, argv, "--console-stages")) : 1;
+            stageRun.noiseEnabled = run.noiseEnabled;
+            if (!stageProblems.empty() || !consoleStage.prepare(wav.sampleRate, wav.channels, stage, stageRun))
+                return 2;
+        }
+
         const std::size_t frames = wav.data[0].size();
-        const std::size_t latency = static_cast<std::size_t>(machine.latencySamples());
+        const std::size_t latency = static_cast<std::size_t>((useTape ? machine.latencySamples() : 0)
+                                                             + (consolePath != nullptr ? console::PhysicalConsoleStage::latencySamples() : 0));
         for (auto& ch : wav.data)
             ch.resize(frames + latency, 0.0f);
         std::vector<float*> pointers(static_cast<std::size_t>(wav.channels));
@@ -232,7 +292,11 @@ int main(int argc, char** argv)
         {
             for (int c = 0; c < wav.channels; ++c)
                 pointers[static_cast<std::size_t>(c)] = wav.data[static_cast<std::size_t>(c)].data() + pos;
-            machine.process(pointers.data(), wav.channels, static_cast<int>(std::min<std::size_t>(block, frames + latency - pos)));
+            const int count = static_cast<int>(std::min<std::size_t>(block, frames + latency - pos));
+            if (useTape)
+                machine.process(pointers.data(), wav.channels, count);
+            if (consolePath != nullptr)
+                consoleStage.process(pointers.data(), wav.channels, count);
         }
         for (auto& ch : wav.data)
             ch.erase(ch.begin(), ch.begin() + static_cast<std::ptrdiff_t>(latency));
@@ -241,8 +305,12 @@ int main(int argc, char** argv)
             std::cerr << "output error: " << error << "\n";
             return 2;
         }
-        std::cout << "rendered " << frames << " frames, " << wav.channels << " channel(s), through " << spec.displayName << " at " << run.ips
-                  << " ips\nstatus: " << spec.status << "\n";
+        std::cout << "rendered " << frames << " frames, " << wav.channels << " channel(s)";
+        if (useTape)
+            std::cout << "\ntape: " << spec.displayName << " at " << run.ips << " ips\n  status: " << spec.status;
+        if (consolePath != nullptr)
+            std::cout << "\nconsole: " << stage.displayName << "\n  status: " << stage.status;
+        std::cout << "\n";
         return 0;
     }
     return usage();

@@ -4,6 +4,7 @@
 #include "../tape_core/TapePrintProcessor.h"
 #include "../tape_core/TapeSharedState.h"
 #include "../tape_core/PhysicalTapeMachine.h"
+#include "../console_physical/PhysicalConsoleStage.h"
 #include <atomic>
 
 struct IntegratedAnalogPathTelemetry
@@ -14,6 +15,7 @@ struct IntegratedAnalogPathTelemetry
     float lowFrequencySaturation = 0.0f;
     float printTapeStress = 0.0f;
     bool physicalTrackMachineActive = false;
+    bool physicalConsoleStageActive = false;
     int latencySamples = 0;
 };
 
@@ -35,6 +37,13 @@ public:
     void clearTrackMachine();
     bool hasTrackMachine() const { return trackMachineSelected && trackMachine.isReady(); }
 
+    // Selects a documentation-derived console stage profile. While one is selected, the
+    // console stage runs console::PhysicalConsoleStage instead of the placeholder gain and
+    // soft clip. Same threading rule as setTrackMachine.
+    bool setConsoleStage(const console::StageSpec& spec, const console::StageRunSettings& run);
+    void clearConsoleStage();
+    bool hasConsoleStage() const { return consoleStageSelected && consoleStage.isReady(); }
+
     // Delay the path adds, in samples, with the current settings. Report it to the host.
     int latencySamples() const;
 
@@ -51,6 +60,11 @@ private:
     tape::MachineSpec trackMachineSpec;
     tape::RunSettings trackMachineRun;
     tape::PhysicalTapeMachine trackMachine;
+
+    bool consoleStageSelected = false;
+    console::StageSpec consoleStageSpec;
+    console::StageRunSettings consoleStageRun;
+    console::PhysicalConsoleStage consoleStage;
 
     TapeTrackProcessor tapeTrack;
     TapePrintProcessor printTape;

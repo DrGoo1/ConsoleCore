@@ -11,6 +11,8 @@ void IntegratedAnalogPathEngine::prepare(double sampleRate, int maxBlockSize)
     tapeTrack.prepare(fs, maxBlockSize);
     if (trackMachineSelected)
         trackMachineSelected = trackMachine.prepare(fs, maxBlock, 2, trackMachineSpec, trackMachineRun);
+    if (consoleStageSelected)
+        consoleStageSelected = consoleStage.prepare(fs, 2, consoleStageSpec, consoleStageRun);
     printTape.prepare(fs, maxBlockSize);
     reset();
 }
@@ -19,6 +21,7 @@ void IntegratedAnalogPathEngine::reset()
 {
     tapeTrack.reset();
     trackMachine.reset();
+    consoleStage.reset();
     printTape.reset();
     tapeState.reset();
     peakAtomic.store(0.0f);
@@ -46,9 +49,29 @@ void IntegratedAnalogPathEngine::clearTrackMachine()
     trackMachineSelected = false;
 }
 
+bool IntegratedAnalogPathEngine::setConsoleStage(const console::StageSpec& spec, const console::StageRunSettings& run)
+{
+    consoleStageSpec = spec;
+    consoleStageRun = run;
+    consoleStageSelected = true;
+    if (prepared)
+        consoleStageSelected = consoleStage.prepare(fs, 2, consoleStageSpec, consoleStageRun);
+    return consoleStageSelected;
+}
+
+void IntegratedAnalogPathEngine::clearConsoleStage()
+{
+    consoleStageSelected = false;
+}
+
 int IntegratedAnalogPathEngine::latencySamples() const
 {
-    return (currentSettings.tapeTrackEnabled && hasTrackMachine()) ? trackMachine.latencySamples() : 0;
+    int total = 0;
+    if (currentSettings.tapeTrackEnabled && hasTrackMachine())
+        total += trackMachine.latencySamples();
+    if (currentSettings.consoleEnabled && hasConsoleStage())
+        total += console::PhysicalConsoleStage::latencySamples();
+    return total;
 }
 
 IntegratedAnalogPathTelemetry IntegratedAnalogPathEngine::getTelemetry() const
@@ -60,6 +83,7 @@ IntegratedAnalogPathTelemetry IntegratedAnalogPathEngine::getTelemetry() const
     t.lowFrequencySaturation = tapeState.lowFrequencySaturation;
     t.printTapeStress = tapeState.printTapeStress;
     t.physicalTrackMachineActive = currentSettings.tapeTrackEnabled && hasTrackMachine();
+    t.physicalConsoleStageActive = currentSettings.consoleEnabled && hasConsoleStage();
     t.latencySamples = latencySamples();
     return t;
 }
@@ -97,8 +121,13 @@ void IntegratedAnalogPathEngine::processStereo(float* left, float* right, int nu
     else if (currentSettings.tapeTrackEnabled)
         tapeTrack.processStereo(left, right, numSamples, currentSettings.trackTapeProfile, tapeState);
 
+    if (currentSettings.consoleEnabled && hasConsoleStage())
+    {
+        float* channels[2] = { left, right };
+        consoleStage.process(channels, 2, numSamples);
+    }
     // Placeholder for existing ConsoleCore AnalogPhysicsCore / ProductionDspEngine.
-    if (currentSettings.consoleEnabled)
+    else if (currentSettings.consoleEnabled)
     {
         const float consoleStress =
             std::clamp(0.18f * tapeState.tapeCompression +

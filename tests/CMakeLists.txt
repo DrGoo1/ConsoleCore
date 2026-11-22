@@ -7,3 +7,11 @@ add_executable(TapeMachineTests ../modules/tape_core/tests/tape_machine_tests.cp
 target_link_libraries(TapeMachineTests PRIVATE tape_core integration)
 target_compile_definitions(TapeMachineTests PRIVATE TAPE_PROFILE_DIR="${CMAKE_SOURCE_DIR}/tape_profiles/machines")
 add_test(NAME TapeMachineTests COMMAND TapeMachineTests)
+
+# Physical console stage model: standard library only.
+add_executable(ConsoleStageTests ../modules/console_physical/tests/console_stage_tests.cpp)
+target_link_libraries(ConsoleStageTests PRIVATE console_physical tape_core integration)
+target_compile_definitions(ConsoleStageTests PRIVATE
+    CONSOLE_PROFILE_DIR="${CMAKE_SOURCE_DIR}/console_profiles/stages"
+    TAPE_PROFILE_DIR="${CMAKE_SOURCE_DIR}/tape_profiles/machines")
+add_test(NAME ConsoleStageTests COMMAND ConsoleStageTests)

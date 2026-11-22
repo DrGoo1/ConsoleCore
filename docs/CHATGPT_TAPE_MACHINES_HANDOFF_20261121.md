@@ -55,6 +55,23 @@ Ask David whether the bias control's range feels right: its curve shape is an as
 If you can find full data sheets for the 1960s tape (3M 202/203) or a bias-versus-output
 graph for any of these tapes, report the numbers; they would replace assumptions.
 
+### 1c. Added 2026-11-22: console stage (branch `agent/claude-physical-console-stage`)
+
+Read `docs/CONSOLE_STAGE_MODELS.md`. Check out the branch, rebuild, and add these renders:
+
+```
+C=console_profiles/stages/british_class_a_discrete_line_1970.json; M=tape_profiles/machines/closed_loop_16track_2inch_1970.json
+./build-tape/tape_machine_bench measure-console $C
+./build-tape/tape_machine_bench render $M in.wav out_console_clean.wav  --no-tape --console $C
+./build-tape/tape_machine_bench render $M in.wav out_console_driven.wav --no-tape --console $C --console-drive 10 --console-stages 2
+./build-tape/tape_machine_bench render $M in.wav out_tape_console.wav   --ips 15 --drive 6 --console $C --console-drive 6
+```
+
+The clean render should sound almost identical to the input; that is what the published
+specifications imply. Ask David whether the driven version is the kind of colour he wants.
+If you can find a published harmonic breakdown (second versus third) or low-frequency
+distortion figures for this module's transformers, report them: both are assumptions now.
+
 ### 2. Get the ATR-116/124 service manual
 
 - Claude could not download it. The link is on
@@ -87,7 +104,8 @@ graph for any of these tapes, report the numbers; they would replace assumptions
 | --- | --- |
 | Listening renders, ATR manual, PR review | ChatGPT |
 | Tape formulas and a working bias control in the engine | Claude: done, in review |
-| Rebuild the console stage (oversampled, level-calibrated, frequency-dependent) | Claude |
+| Console stage: one calibrated amplifier stage with transformers | Claude: done, in review |
+| Console summing bus across stems, more console profiles | Claude |
 | Plug-in parameters (machine, speed, drive, linearizer) and host latency reporting | Open: say in the PR if you want it |
 
 ## Known weaknesses found in the existing engine (for context)
