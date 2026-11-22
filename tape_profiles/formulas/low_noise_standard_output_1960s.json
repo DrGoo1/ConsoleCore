@@ -1,0 +1,16 @@
+{
+  "schema": "tapecore.formula.v1",
+  "id": "low_noise_standard_output_1960s",
+  "displayName": "Low-Noise Standard-Output Mastering Tape (1960s)",
+  "referenceTape": "3M Scotch 202/203, the tape the 3M M56 manual recommends. Used as a benchmark only; this is not a claim of equivalence to that product.",
+  "status": "documentation-derived; not validated against tape; not listened to",
+  "coatingThicknessMicrons": 12.7,
+  "molDb": 6.0,
+  "overbiasDb": 4.0,
+  "overbiasReferenceHz": 15000,
+  "evidence": {
+    "coatingThicknessMicrons": "assumed: half a mil of oxide; no data sheet for this tape was read",
+    "molDb": "derived: the 3M M56 manual gives 3 percent third harmonic at 1 kHz with the linearizer off at +10 dBm on its recommended tape, taken here as 6 dB over operating level. A 1974 trade article puts the next two 3M tapes 3 dB and 6 dB higher, which fits",
+    "overbias": "published: 3M M56 manual, 4 dB overbias at 15 kHz at 15 in/s"
+  }
+}
