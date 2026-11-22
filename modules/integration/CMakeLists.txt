@@ -8,3 +8,5 @@ target_include_directories(integration PUBLIC
 )
 
 target_compile_features(integration PUBLIC cxx_std_20)
+
+target_link_libraries(integration PUBLIC tape_core console_physical)

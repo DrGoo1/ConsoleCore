@@ -1,0 +1,43 @@
+{
+  "schema": "consolecore.stage.v1",
+  "id": "british_class_a_discrete_line_1970",
+  "displayName": "British Class-A Discrete Line Stage (c. 1970)",
+  "referenceModule": "Neve 1073/1084 channel amplifier, line path with equalizer out. The specifications in its manufacturer's user manual are used as engineering benchmarks. No hardware was measured and no circuit was simulated. This is not a claim of equivalence to that product.",
+  "status": "documentation-derived; not validated against hardware; not listened to",
+  "referenceDbfs": -18.0,
+  "nominalLevelDbu": 4.0,
+  "amplifier": {
+    "thdPercentAtCal": 0.05,
+    "thdCalLevelDbu": 20.0,
+    "maxOutputDbu": 26.0,
+    "thdPercentAtMaxOutput": 1.0,
+    "clipCeilingDbu": 28.0,
+    "hfCornerHz": 40000,
+    "noiseDbu": -83.0
+  },
+  "transformers": {
+    "input": true,
+    "output": true,
+    "hd3PercentAtCal": 0.04,
+    "calHz": 50,
+    "lfCornerHz": 3.0
+  },
+  "published": {
+    "thdMaxPercent": 0.07,
+    "thdLoHz": 50,
+    "thdHiHz": 10000,
+    "response": [ { "loHz": 20, "hiHz": 20000, "plusDb": 0.5, "minusDb": 0.5 } ]
+  },
+  "evidence": {
+    "referenceLevel": "assumed: host convention that -18 dBFS equals +4 dBu",
+    "amplifier.thd": "derived: 0.05 percent at 1 kHz chosen to sit under the published limit of 0.07 percent from 50 Hz to 10 kHz at +20 dBu into 600 ohms (manufacturer user manual)",
+    "amplifier.maxOutput": "published: maximum output greater than +26 dBu into 600 ohms (manufacturer user manual). Taking 1 percent distortion as the criterion for that rating is an assumption",
+    "amplifier.clipCeiling": "assumed: hard limit placed 2 dB above the rated maximum output",
+    "amplifier.hfCorner": "published: -3 dB at 40 kHz, equalizer out (manufacturer user manual). A second-order roll-off is an assumption",
+    "amplifier.noise": "published: not more than -83 dBu, 22 Hz to 22 kHz, at line gain (manufacturer user manual)",
+    "amplifier.harmonicBalance": "assumed: mostly second harmonic below the knee, as expected of a single-ended class-A output stage; no harmonic breakdown is published",
+    "transformers.fitted": "published: inputs and output are transformer balanced (manufacturer user manual)",
+    "transformers.hd3": "derived: 0.04 percent third harmonic at 50 Hz and +20 dBu, chosen so the total stays under the published 0.07 percent at the bottom of its band. Below 50 Hz nothing is published; the model's rise there follows from the flux law alone",
+    "transformers.lfCorner": "derived: 3 Hz per coupling, so two couplings stay inside the published +/-0.5 dB at 20 Hz"
+  }
+}
