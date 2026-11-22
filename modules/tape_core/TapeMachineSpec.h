@@ -63,7 +63,16 @@ namespace tape
         bool hasLinearizer = false;
         double linearizerHd3Percent = 0.8;
         double biasFrequencyHz = 0.0;   // informational: bias is not simulated as a signal
-        double overbiasDb = 0.0;        // informational
+        // Bias alignment point: from the bias giving peak output at overbiasReferenceHz
+        // (at 15 in/s), bias is raised until that output falls by overbiasDb. Zero means
+        // unknown, in which case the bias control changes distortion only.
+        double overbiasDb = 0.0;
+        double overbiasReferenceHz = 10000.0;
+        double biasRangeToNominalDb = 3.0;  // bias increase from peak to nominal: an assumption
+
+        // Set when a tape formula has replaced the machine's own tape values.
+        std::string formulaId;
+        double publishedHd3PercentAtOperatingLevel = 0.0;  // 0 = none; a check, not an input
 
         // Reproduce head.
         double headBumpWavelengthInches = 0.30;
@@ -99,5 +108,43 @@ namespace tape
         bool flutterEnabled = true;
         bool noiseEnabled = false;   // off by default: every profile's noise level is an assumption so far
         bool linearizerEnabled = true;  // only meaningful when the machine has one
+        // Bias relative to the aligned setting, -3..+3 dB. The machine's equalization stays
+        // as aligned, so under-bias brightens and distorts and over-bias dulls. The shape of
+        // both effects is an assumption; only the alignment point comes from documents.
+        double biasOffsetDb = 0.0;
     };
+
+    // A tape stock. Levels are relative to an operating level of 185 nWb/m.
+    struct TapeFormula
+    {
+        std::string id;
+        std::string displayName;
+        std::string referenceTape;
+        std::string status;
+        double coatingThicknessMicrons = 12.7;
+        double molDb = 12.0;                     // level of 3 % third harmonic at 1 kHz
+        double hd3PercentAtOperatingLevel = 0.0; // published check value, 0 = none
+        double overbiasDb = 3.0;
+        double overbiasReferenceHz = 10000.0;
+        std::map<std::string, std::string> evidence;  // coatingThicknessMicrons, molDb, overbias
+    };
+
+    // The machine with this tape threaded: tape values and their evidence come from the
+    // formula; heads, electronics and transport stay the machine's.
+    inline MachineSpec withFormula(MachineSpec machine, const TapeFormula& formula)
+    {
+        machine.formulaId = formula.id;
+        machine.coatingThicknessMicrons = formula.coatingThicknessMicrons;
+        machine.hd3PercentAtCal = 3.0;
+        machine.hd3CalLevelDb = formula.molDb;
+        machine.overbiasDb = formula.overbiasDb;
+        machine.overbiasReferenceHz = formula.overbiasReferenceHz;
+        machine.publishedHd3PercentAtOperatingLevel = formula.hd3PercentAtOperatingLevel;
+        auto note = [&](const char* key) { const auto it = formula.evidence.find(key); return it != formula.evidence.end() ? it->second : std::string("assumed: no note in the formula"); };
+        machine.evidence["tape.coatingThicknessMicrons"] = note("coatingThicknessMicrons");
+        machine.evidence["tape.hd3PercentAtCal"] = note("molDb");
+        machine.evidence["tape.hd3CalLevelDb"] = note("molDb");
+        machine.evidence["tape.overbias"] = note("overbias");
+        return machine;
+    }
 }

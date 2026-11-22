@@ -281,6 +281,91 @@ int main()
         check(std::isfinite(l[100]) && std::isfinite(rr[100]), "the original generic tape processor is unchanged and runs");
     }
 
+    // --- Tape formulas ---------------------------------------------------------------------------
+    {
+        const std::string dir = std::string(TAPE_PROFILE_DIR) + "/../formulas/";
+        std::vector<tape::TapeFormula> formulas;
+        for (const char* name : { "low_noise_standard_output_1960s.json", "high_output_1975.json", "ultra_high_output_1998.json" })
+        {
+            tape::TapeFormula f;
+            std::string error;
+            const bool loaded = tape::loadTapeFormulaFile(dir + name, f, error);
+            const auto problems = loaded ? tape::validateTapeFormula(f) : std::vector<std::string> { error };
+            for (const auto& p : problems)
+                std::printf("      %s\n", p.c_str());
+            check(loaded && problems.empty() && f.status.find("not validated") != std::string::npos
+                      && f.referenceTape.find("not a claim of equivalence") != std::string::npos,
+                  std::string(name) + ": formula is valid, has evidence and disclaims equivalence");
+            formulas.push_back(f);
+        }
+        tape::TapeFormula bad;
+        std::string error;
+        check(!tape::parseTapeFormula("{\"schema\":\"tapecore.machine.v2\"}", bad, error), "a machine profile is not accepted as a formula");
+
+        double previous = 100.0;
+        bool ordered = true, molOk = true, checksOk = true;
+        for (const auto& f : formulas)
+        {
+            const tape::MachineSpec threaded = tape::withFormula(servo, f);
+            check(tape::validateMachineSpec(threaded).empty(), f.id + ": machine with this tape still validates");
+            auto r = rig(threaded, 15.0);
+            const double atMol = tape::bench::hd3Percent(r, 1000.0, f.molDb);
+            const double at6 = tape::bench::hd3Percent(r, 1000.0, 6.0);
+            const double at0 = tape::bench::hd3Percent(r, 1000.0, 0.0);
+            std::printf("      %s: %.2f %% at +%.1f dB, %.2f %% at +6 dB, %.3f %% at operating level\n", f.id.c_str(), atMol, f.molDb, at6, at0);
+            molOk = molOk && std::abs(atMol - 3.0) < 0.3;
+            ordered = ordered && at6 < previous;
+            previous = at6;
+            if (f.hd3PercentAtOperatingLevel > 0.0)
+                checksOk = checksOk && at0 < 2.0 * f.hd3PercentAtOperatingLevel && at0 > 0.5 * f.hd3PercentAtOperatingLevel;
+            const double ref = tape::bench::responseDb(r, 1000.0);
+            check(std::abs(tape::bench::responseDb(r, 15000.0) - ref) < 2.0 && std::abs(tape::bench::responseDb(r, 40.0) - ref) < 2.0,
+                  f.id + ": response stays flat at low level, as an aligned machine's would");
+        }
+        check(molOk, "each formula reaches 3 percent third harmonic at its documented level");
+        check(ordered, "higher-output tape is cleaner at the same recorded level");
+        check(checksOk, "distortion at operating level is within a factor of two of the data sheets (values not used to build the model)");
+    }
+
+    // --- Bias ---------------------------------------------------------------------------------------
+    {
+        tape::TapeFormula f;
+        std::string error;
+        tape::loadTapeFormulaFile(std::string(TAPE_PROFILE_DIR) + "/../formulas/high_output_1975.json", f, error);
+        const tape::MachineSpec threaded = tape::withFormula(servo, f);
+        auto at = [&](double ips, double bias)
+        {
+            auto r = rig(threaded, ips);
+            r.run.biasOffsetDb = bias;
+            return r;
+        };
+        auto tilt = [&](double ips, double bias, double hz)
+        {
+            return (tape::bench::responseDb(at(ips, bias), hz) - tape::bench::responseDb(at(ips, bias), 1000.0))
+                 - (tape::bench::responseDb(at(ips, 0.0), hz) - tape::bench::responseDb(at(ips, 0.0), 1000.0));
+        };
+        const double peak15 = tilt(15.0, -threaded.biasRangeToNominalDb, 10000.0);
+        const double peak30 = tilt(30.0, -threaded.biasRangeToNominalDb, 20000.0);
+        std::printf("      back at peak bias: %+.2f dB at 10 kHz, 15 ips; %+.2f dB at 20 kHz, 30 ips\n", peak15, peak30);
+        check(std::abs(peak15 - f.overbiasDb) < 0.4, "undoing the overbias restores the documented 3 dB at 10 kHz, 15 ips");
+        check(std::abs(peak30 - f.overbiasDb) < 0.6, "the same wavelength sits at 20 kHz at 30 ips");
+        check(tilt(15.0, 2.0, 10000.0) < -2.0, "over-bias dulls the top end");
+        check(std::abs(tilt(15.0, 1.0, 100.0)) < 0.1, "bias leaves low frequencies alone");
+        const double under = tape::bench::hd3Percent(at(15.0, -3.0), 1000.0, 6.0), aligned = tape::bench::hd3Percent(at(15.0, 0.0), 1000.0, 6.0);
+        check(under > aligned * 1.3, "under-bias raises distortion");
+        tape::PhysicalTapeMachine a, b;
+        tape::RunSettings ra, rb;
+        rb.biasOffsetDb = 2.0;
+        a.prepare(48000.0, 256, 1, threaded, ra);
+        b.prepare(48000.0, 256, 1, threaded, rb);
+        check(a.biasTiltDb() == 0.0 && b.biasTiltDb() < 0.0 && a.latencySamples() == b.latencySamples(), "aligned bias adds nothing, and bias never changes latency");
+        tape::MachineSpec unknown = threaded;
+        unknown.overbiasDb = 0.0;
+        tape::PhysicalTapeMachine c;
+        c.prepare(48000.0, 256, 1, unknown, rb);
+        check(c.biasTiltDb() == 0.0, "with no documented alignment point the bias control leaves the response alone");
+    }
+
     // --- Integrated analog path ----------------------------------------------------------------
     {
         auto run = [](IntegratedAnalogPathEngine& e, std::vector<float>& l, std::vector<float>& r)

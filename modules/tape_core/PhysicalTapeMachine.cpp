@@ -16,7 +16,7 @@ namespace tape
 
     void PhysicalTapeMachine::Channel::reset()
     {
-        for (auto* f : { &inHp, &outHp, &inXfmrFlux, &outXfmrFlux, &recLf, &recHf, &preEmph, &waveLoss, &repHf, &repLf })
+        for (auto* f : { &inHp, &outHp, &inXfmrFlux, &outXfmrFlux, &recLf, &recHf, &preEmph, &waveLoss, &repHf, &repLf, &biasTilt })
             f->reset();
         for (auto* b : { &hfLimit, &bump, &bumpDip, &bumpHp })
             b->reset();
@@ -100,7 +100,7 @@ namespace tape
         {
             core.drive = 0.5 * (lo + hi);
             core.lin = 0.0;
-            (measureHd3(core, machine.hd3CalLevelDb, rate) < target ? lo : hi) = core.drive;
+            (measureHd3(core, machine.hd3CalLevelDb + molShiftDb, rate) < target ? lo : hi) = core.drive;
         }
         satDrive = 0.5 * (lo + hi);
 
@@ -143,7 +143,27 @@ namespace tape
         if (speed == nullptr || numChannels <= 0 || maxBlockSize <= 0)
             return false;
 
+        // Bias offset from the aligned setting. `b` is bias in dB above the setting that
+        // gives peak output at the reference wavelength; alignment sits at biasRangeToNominalDb.
+        // Output there falls as the square of b (a smooth maximum), reaching overbiasDb at
+        // alignment. Under-bias also lowers the level the tape can take; over-bias less so.
+        // The alignment point is from documents; both curve shapes are assumptions.
+        const double offset = std::clamp(run.biasOffsetDb, -3.0, 3.0);
+        const double nominal = machine.biasRangeToNominalDb;
+        const double b = std::max(0.0, nominal + offset);
+        biasTilt = machine.overbiasDb > 0.0 ? std::clamp(machine.overbiasDb * (1.0 - (b / nominal) * (b / nominal)), -9.0, 9.0) : 0.0;
+
+        molShiftDb = 0.0;
         calibrateSaturation(*speed, fsOs, run.linearizerEnabled);
+        if (offset != 0.0)
+        {
+            // The linearizer is a fixed circuit set up at alignment, so its correction is
+            // held in tape terms while the tape's own curve moves with bias.
+            const double alignedDrive = satDrive, alignedLin = linAmount;
+            molShiftDb = offset < 0.0 ? -0.25 * offset * offset : -0.10 * offset * offset;
+            calibrateSaturation(*speed, fsOs, false);
+            linAmount = alignedLin * (alignedDrive / satDrive) * (alignedDrive / satDrive);
+        }
 
         Core core;
         configureCore(core, *speed, fsOs);
@@ -170,6 +190,15 @@ namespace tape
             ch.recHf = core.recHf;
             ch.preEmph = core.preEmph;
             ch.waveLoss = core.waveLoss;
+            if (std::abs(biasTilt) > 1.0e-6)
+            {
+                // First-order shelf whose gain at the bias reference wavelength is biasTilt dB
+                // and whose ceiling is twice that: the midpoint of such a shelf sits at the
+                // geometric mean of its two corners.
+                const double refHz = std::min(machine.overbiasReferenceHz * speed->ips / 15.0, 0.2 * fsOs);
+                const double ratio = dsp::dbToGain(2.0 * biasTilt);
+                ch.biasTilt.setShelf(refHz / std::sqrt(ratio), refHz * std::sqrt(ratio), 1.0, fsOs);
+            }
             ch.repHf = core.repHf;
             ch.repLf = core.repLf;
             ch.hfLimit.setLowpass(speed->playbackHfCornerHz, 0.7071, fsOs);
@@ -321,7 +350,7 @@ namespace tape
                         u = ch.preEmph.process(u);
                         const double v = std::clamp(satDrive * u, -1.0, 1.0);
                         u = std::tanh(satDrive * (u + linAmount * v * v * v / (3.0 * satDrive))) / satDrive;
-                        u = ch.waveLoss.process(u);
+                        u = ch.biasTilt.process(ch.waveLoss.process(u));
                         if (noiseGain > 0.0)
                             u += noiseGain * ch.noise.next();
                         ch.delay.push(u);

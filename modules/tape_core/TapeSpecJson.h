@@ -14,4 +14,9 @@ namespace tape
     // Checks a loaded spec: plausible ranges, at least one speed, and an evidence
     // entry for every field that shapes the sound. Returns problems found.
     std::vector<std::string> validateMachineSpec(const MachineSpec& spec);
+
+    // Tape formulas: "tapecore.formula.v1" JSON.
+    bool parseTapeFormula(const std::string& jsonText, TapeFormula& out, std::string& error);
+    bool loadTapeFormulaFile(const std::string& path, TapeFormula& out, std::string& error);
+    std::vector<std::string> validateTapeFormula(const TapeFormula& formula);
 }

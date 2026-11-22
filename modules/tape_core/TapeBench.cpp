@@ -244,15 +244,25 @@ namespace tape::bench
             const double hd = hd3Percent(off, 1000.0, spec.hd3CalLevelDb);
             const bool published = spec.evidence.count("tape.hd3PercentAtCal") && spec.evidence.at("tape.hd3PercentAtCal").rfind("published", 0) == 0;
             rows.push_back({ fmt("third harmonic, 1 kHz at +%.0f dB", spec.hd3CalLevelDb) + (spec.hasLinearizer ? ", linearizer off" : ""),
-                             fmt("%.2f %%", hd), fmt("%.1f %% +/- 0.3", spec.hd3PercentAtCal), published ? "published" : "assumed",
+                             fmt("%.2f %%", hd), fmt("%.1f %% +/- 0.3", spec.hd3PercentAtCal), spec.evidence.count("tape.hd3PercentAtCal") ? spec.evidence.at("tape.hd3PercentAtCal").substr(0, spec.evidence.at("tape.hd3PercentAtCal").find(':')) : std::string("assumed"),
                              published, std::abs(hd - spec.hd3PercentAtCal) <= 0.3 });
             if (spec.hasLinearizer)
             {
                 const double on = hd3Percent(rig, 1000.0, spec.hd3CalLevelDb);
                 rows.push_back({ fmt("third harmonic, 1 kHz at +%.0f dB, linearizer on", spec.hd3CalLevelDb), fmt("%.2f %%", on),
-                                 "under 0.8 %", "published", true, on < 0.8 });
+                                 spec.formulaId.empty() ? "under 0.8 %" : "", spec.formulaId.empty() ? "published" : "published only for the machine's own tape",
+                                 spec.formulaId.empty(), on < 0.8 });
             }
-            rows.push_back({ "third harmonic, 1 kHz at operating level", fmt("%.2f %%", hd3Percent(rig, 1000.0, 0.0)), "", "follows from the calibration", false, true });
+            if (spec.publishedHd3PercentAtOperatingLevel > 0.0)
+            {
+                // Not used to build the model, so this is an independent check of the curve's shape.
+                const double at0 = hd3Percent(off, 1000.0, 0.0);
+                const double want = spec.publishedHd3PercentAtOperatingLevel;
+                rows.push_back({ "third harmonic, 1 kHz at operating level", fmt("%.3f %%", at0), fmt("%.2f %% within a factor of 2", want),
+                                 "published, independent check", true, at0 <= 2.0 * want && at0 >= 0.5 * want });
+            }
+            else
+                rows.push_back({ "third harmonic, 1 kHz at operating level", fmt("%.2f %%", hd3Percent(rig, 1000.0, 0.0)), "", "follows from the calibration", false, true });
         }
 
         if (spec.outputTransformer || spec.inputTransformer)

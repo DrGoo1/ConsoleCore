@@ -38,6 +38,8 @@ namespace tape
         void process(float* const* channels, int numChannels, int numSamples);
 
         int latencySamples() const { return latency; }
+        // Change at the bias reference wavelength caused by the bias offset, in dB (0 when aligned).
+        double biasTiltDb() const { return biasTilt; }
         bool isReady() const { return ready; }
 
         // Calibration results, for reporting.
@@ -51,7 +53,7 @@ namespace tape
         {
             dsp::FirstOrder inHp, outHp, inXfmrFlux, outXfmrFlux;
             dsp::Oversampler4x os;
-            dsp::FirstOrder recLf, recHf, preEmph, waveLoss, repHf, repLf;
+            dsp::FirstOrder recLf, recHf, preEmph, waveLoss, repHf, repLf, biasTilt;
             dsp::Biquad hfLimit, bump, bumpDip, bumpHp;
             dsp::DelayLine delay;
             dsp::Noise noise;
@@ -96,6 +98,8 @@ namespace tape
         double recordLossHz = 0.0, bumpHz = 0.0;
         double xfmrK = 0.0, outputLimit = 15.8;
         double noiseGain = 0.0;
+        double biasTilt = 0.0;
+        double molShiftDb = 0.0;
         int latency = 0;
         bool ready = false;
 

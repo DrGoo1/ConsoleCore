@@ -14,7 +14,9 @@
     "coatingThicknessMicrons": 14.0,
     "hd3PercentAtCal": 3.0,
     "hd3CalLevelDb": 9.0,
-    "hasLinearizer": false
+    "hasLinearizer": false,
+    "overbiasDb": 3.0,
+    "overbiasReferenceHz": 10000
   },
   "head": {
     "headBumpWavelengthInches": 0.33,
@@ -103,6 +105,7 @@
     "speeds.equalization": "published: three speeds, 7.5, 15 and 30 in/s, with NAB equalization provided and four assignable equalizations (Studio Sound survey, January 1980). The curve used at each speed is an assumption",
     "speeds.playbackHfCornerHz": "derived: set so the model stays inside the published response, 25 Hz to 20 kHz +/-2 dB at 15 in/s and 40 Hz to 30 kHz +/-2 dB at 30 in/s (Studio Sound survey, January 1980). The 7.5 in/s value is an assumption",
     "speeds.flutter": "derived: set under the published 0.03 percent weighted figure (Studio Sound survey, January 1980; weighting standard and speed not named). The bench measures unweighted rms, which is not the same measurement",
-    "speeds.snrDb": "derived: published 67 dB at 15 in/s and 69 dB at 30 in/s, unweighted (Studio Sound survey, January 1980). The survey names no reference level; it is assumed to be 9 dB above operating level, giving 58 and 60 dB here. The 7.5 in/s value is an assumption"
+    "speeds.snrDb": "derived: published 67 dB at 15 in/s and 69 dB at 30 in/s, unweighted (Studio Sound survey, January 1980). The survey names no reference level; it is assumed to be 9 dB above operating level, giving 58 and 60 dB here. The 7.5 in/s value is an assumption",
+    "tape.bias": "assumed: 3 dB overbias at 10 kHz, the setting a 1975 high-output tape's data sheet recommends; this machine's manual has not been read"
   }
 }

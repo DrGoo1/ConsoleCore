@@ -1,7 +1,8 @@
 // Bench and offline renderer for physical tape machine profiles.
 //
-//   tape_machine_bench measure <profile.json> [--ips N] [--rate HZ]
+//   tape_machine_bench measure <profile.json> [--ips N] [--rate HZ] [--formula tape.json]
 //   tape_machine_bench render  <profile.json> <in.wav> <out.wav> [--ips N] [--drive DB]
+//                              [--formula tape.json] [--bias DB]
 //                              [--noise] [--no-flutter] [--linearizer-off]
 //
 // "measure" prints the model's behaviour beside whatever the profile records as published,
@@ -131,8 +132,9 @@ namespace
 
     int usage()
     {
-        std::cerr << "usage:\n  tape_machine_bench measure <profile.json> [--ips N] [--rate HZ]\n"
-                     "  tape_machine_bench render <profile.json> <in.wav> <out.wav> [--ips N] [--drive DB] [--noise] [--no-flutter] [--linearizer-off]\n";
+        std::cerr << "usage:\n  tape_machine_bench measure <profile.json> [--ips N] [--rate HZ] [--formula tape.json]\n"
+                     "  tape_machine_bench render <profile.json> <in.wav> <out.wav> [--ips N] [--drive DB] [--formula tape.json] [--bias DB]\n"
+                     "                            [--noise] [--no-flutter] [--linearizer-off]\n";
         return 2;
     }
 }
@@ -154,6 +156,23 @@ int main(int argc, char** argv)
         std::cerr << "profile problem: " << p << "\n";
     if (!problems.empty())
         return 2;
+
+    if (const char* formulaPath = option(argc, argv, "--formula"))
+    {
+        tape::TapeFormula formula;
+        if (!tape::loadTapeFormulaFile(formulaPath, formula, error))
+        {
+            std::cerr << "formula error: " << error << "\n";
+            return 2;
+        }
+        const auto formulaProblems = tape::validateTapeFormula(formula);
+        for (const auto& p : formulaProblems)
+            std::cerr << "formula problem: " << p << "\n";
+        if (!formulaProblems.empty())
+            return 2;
+        spec = tape::withFormula(spec, formula);
+        spec.displayName += " with " + formula.displayName;
+    }
 
     if (command == "measure")
     {
@@ -193,6 +212,7 @@ int main(int argc, char** argv)
         tape::RunSettings run;
         run.ips = option(argc, argv, "--ips") ? std::atof(option(argc, argv, "--ips")) : 15.0;
         run.inputDriveDb = option(argc, argv, "--drive") ? std::atof(option(argc, argv, "--drive")) : 0.0;
+        run.biasOffsetDb = option(argc, argv, "--bias") ? std::atof(option(argc, argv, "--bias")) : 0.0;
         run.noiseEnabled = hasFlag(argc, argv, "--noise");
         run.flutterEnabled = !hasFlag(argc, argv, "--no-flutter");
         run.linearizerEnabled = !hasFlag(argc, argv, "--linearizer-off");

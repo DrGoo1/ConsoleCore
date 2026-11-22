@@ -223,6 +223,8 @@ namespace tape
             spec.linearizerHd3Percent = number(tapeObj, "linearizerHd3Percent", spec.linearizerHd3Percent);
             spec.biasFrequencyHz = number(tapeObj, "biasFrequencyHz", 0.0);
             spec.overbiasDb = number(tapeObj, "overbiasDb", 0.0);
+            spec.overbiasReferenceHz = number(tapeObj, "overbiasReferenceHz", spec.overbiasReferenceHz);
+            spec.biasRangeToNominalDb = number(tapeObj, "biasRangeToNominalDb", spec.biasRangeToNominalDb);
 
             const Value& head = *object(root, "head");
             spec.headBumpWavelengthInches = number(head, "headBumpWavelengthInches", 0, true);
@@ -317,7 +319,10 @@ namespace tape
         range("referenceDbfs", spec.referenceDbfs, -30.0, -6.0);
         range("tape.coatingThicknessMicrons", spec.coatingThicknessMicrons, 3.0, 30.0);
         range("tape.hd3PercentAtCal", spec.hd3PercentAtCal, 0.1, 10.0);
-        range("tape.hd3CalLevelDb", spec.hd3CalLevelDb, 0.0, 15.0);
+        range("tape.hd3CalLevelDb", spec.hd3CalLevelDb, 0.0, 20.0);
+        range("tape.overbiasDb", spec.overbiasDb, 0.0, 8.0);
+        range("tape.overbiasReferenceHz", spec.overbiasReferenceHz, 1000.0, 20000.0);
+        range("tape.biasRangeToNominalDb", spec.biasRangeToNominalDb, 1.0, 6.0);
         range("head.headBumpWavelengthInches", spec.headBumpWavelengthInches, 0.05, 1.5);
         range("head.headBumpGainDb", spec.headBumpGainDb, 0.0, 4.0);
         range("electronics.maxOutputDb", spec.maxOutputDb, 10.0, 36.0);
@@ -352,6 +357,81 @@ namespace tape
             const std::string& e = it->second;
             const bool ok = e.rfind("published:", 0) == 0 || e.rfind("standard:", 0) == 0 || e.rfind("derived:", 0) == 0 || e.rfind("assumed:", 0) == 0;
             if (!ok)
+                problems.push_back(std::string("evidence for ") + key + " must start with published:, standard:, derived: or assumed:");
+        }
+        return problems;
+    }
+
+    bool parseTapeFormula(const std::string& jsonText, TapeFormula& out, std::string& error)
+    {
+        try
+        {
+            Parser parser(jsonText);
+            const Value root = parser.parseDocument();
+            if (root.kind != Value::Kind::Object)
+                throw std::runtime_error("formula must be a JSON object");
+            if (text(root, "schema", true) != "tapecore.formula.v1")
+                throw std::runtime_error("schema must be 'tapecore.formula.v1'");
+            TapeFormula f;
+            f.id = text(root, "id", true);
+            f.displayName = text(root, "displayName", true);
+            f.referenceTape = text(root, "referenceTape");
+            f.status = text(root, "status", true);
+            f.coatingThicknessMicrons = number(root, "coatingThicknessMicrons", 0, true);
+            f.molDb = number(root, "molDb", 0, true);
+            f.hd3PercentAtOperatingLevel = number(root, "hd3PercentAtOperatingLevel", 0.0);
+            f.overbiasDb = number(root, "overbiasDb", 0, true);
+            f.overbiasReferenceHz = number(root, "overbiasReferenceHz", f.overbiasReferenceHz);
+            if (const Value* evidence = root.find("evidence"); evidence != nullptr && evidence->kind == Value::Kind::Object)
+                for (const auto& m : evidence->members)
+                    if (m.second.kind == Value::Kind::String)
+                        f.evidence[m.first] = m.second.text;
+            out = std::move(f);
+            error.clear();
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            error = e.what();
+            return false;
+        }
+    }
+
+    bool loadTapeFormulaFile(const std::string& path, TapeFormula& out, std::string& error)
+    {
+        std::ifstream file(path);
+        if (!file)
+        {
+            error = "cannot open formula '" + path + "'";
+            return false;
+        }
+        std::ostringstream buffer;
+        buffer << file.rdbuf();
+        return parseTapeFormula(buffer.str(), out, error);
+    }
+
+    std::vector<std::string> validateTapeFormula(const TapeFormula& f)
+    {
+        std::vector<std::string> problems;
+        auto range = [&](const std::string& name, double v, double lo, double hi)
+        {
+            if (!(v >= lo && v <= hi))
+                problems.push_back(name + " = " + std::to_string(v) + " is outside " + std::to_string(lo) + ".." + std::to_string(hi));
+        };
+        range("coatingThicknessMicrons", f.coatingThicknessMicrons, 3.0, 30.0);
+        range("molDb", f.molDb, 0.0, 20.0);
+        range("overbiasDb", f.overbiasDb, 0.0, 8.0);
+        range("overbiasReferenceHz", f.overbiasReferenceHz, 1000.0, 20000.0);
+        for (const char* key : { "coatingThicknessMicrons", "molDb", "overbias" })
+        {
+            const auto it = f.evidence.find(key);
+            if (it == f.evidence.end())
+            {
+                problems.push_back(std::string("no evidence entry for ") + key);
+                continue;
+            }
+            const std::string& e = it->second;
+            if (!(e.rfind("published:", 0) == 0 || e.rfind("standard:", 0) == 0 || e.rfind("derived:", 0) == 0 || e.rfind("assumed:", 0) == 0))
                 problems.push_back(std::string("evidence for ") + key + " must start with published:, standard:, derived: or assumed:");
         }
         return problems;

@@ -1,0 +1,17 @@
+{
+  "schema": "tapecore.formula.v1",
+  "id": "ultra_high_output_1998",
+  "displayName": "Ultra-High-Output Mastering Tape (1998)",
+  "referenceTape": "Quantegy GP9. Its manufacturer data sheet is used as a benchmark only; this is not a claim of equivalence to that product.",
+  "status": "documentation-derived; not validated against tape; not listened to",
+  "coatingThicknessMicrons": 17.7,
+  "molDb": 17.5,
+  "hd3PercentAtOperatingLevel": 0.06,
+  "overbiasDb": 3.0,
+  "overbiasReferenceHz": 10000,
+  "evidence": {
+    "coatingThicknessMicrons": "published: manufacturer data sheet (2003), oxide coating 700 microinches, 17.7 micrometres",
+    "molDb": "published: manufacturer data sheet, output level at 3 percent third harmonic distortion at 1 kHz, 17.5 dB. The sheet's reference level is taken to be 185 nWb/m, which is an assumption",
+    "overbias": "assumed: the summary sheet read gives no bias setting; 3 dB at 10 kHz is carried over from the 1975 tape"
+  }
+}

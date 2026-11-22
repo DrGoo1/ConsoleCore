@@ -52,6 +52,40 @@ unweighted rms.
 
 Latency is 99 samples at every sample rate and is reported by `latencySamples()`.
 
+## Tape formulas
+
+A formula (`tape_profiles/formulas/*.json`, schema `tapecore.formula.v1`) replaces the
+machine's tape values: coating thickness, the level of 3 % third harmonic, and the bias
+alignment point. Heads, electronics and transport stay the machine's. In code:
+`tape::withFormula(machineSpec, formula)`. Levels are relative to 185 nWb/m.
+
+| Formula | Benchmark source | 3 % level | Coating | Model at operating level | Data sheet |
+| --- | --- | --- | --- | --- | --- |
+| `low_noise_standard_output_1960s` | 3M M56 manual's figure on its recommended tape (3M 202/203) | +6 dB (derived) | 12.7 um (assumed) | 0.80 % | none |
+| `high_output_1975` | Ampex/Quantegy 456 data sheet | +12.3 dB | 12.7 um | 0.19 % | 0.1 % |
+| `ultra_high_output_1998` | Quantegy GP9 data sheet | +17.5 dB | 17.7 um | 0.059 % | 0.06 % |
+
+The last two columns are an independent check: the data-sheet distortion at operating level
+was not used to build the model. The 1998 tape matches; the 1975 tape reads about twice the
+sheet, so the simple saturation curve is slightly too soft low down for that tape.
+
+To run hotter on a high-output tape, as studios did by aligning at +3, +6 or +9, use the
+drive setting: it raises level onto tape and lowers it after, so noise falls by the same amount.
+
+## Bias
+
+`RunSettings::biasOffsetDb` moves bias from -3 to +3 dB around the aligned setting. The
+machine's equalization stays as aligned, so:
+
+- Under-bias lifts the top end and raises distortion.
+- Over-bias dulls the top end.
+- The effect follows wavelength, so it sits an octave higher at 30 ips than at 15 ips.
+
+One point is from documents: taking bias back to the peak restores the overbias figure
+(3 dB at 10 kHz at 15 ips for the 1975 tape; the model gives +2.99 dB). **The shape of the
+curve either side, the 3 dB bias range from peak to alignment, and the size of the
+distortion change are assumptions.** Bias is still not simulated as a signal.
+
 ## Limits
 
 - Bias is not simulated as a signal. Saturation is a memoryless anhysteretic curve, so there
@@ -76,7 +110,8 @@ ctest --test-dir build-tape --output-on-failure
 ./build-tape/tape_machine_bench render  tape_profiles/machines/closed_loop_16track_2inch_1970.json in.wav out.wav --ips 15 --drive 6
 ```
 
-`render` options: `--ips`, `--drive` (dB), `--noise`, `--no-flutter`, `--linearizer-off`.
+`render` options: `--ips`, `--drive` (dB), `--formula <tape.json>`, `--bias` (dB), `--noise`,
+`--no-flutter`, `--linearizer-off`. `measure` also accepts `--formula`.
 
 ## Next
 
@@ -84,3 +119,4 @@ ctest --test-dir build-tape --output-on-failure
 2. Obtain the ATR-124 service manual (the public copy would not download) and replace the remaining assumed values.
 3. Expose machine, speed, drive and linearizer as plug-in parameters, and report latency from the plug-in.
 4. Add hysteresis with bias if listening shows the simple curve is not enough.
+5. Rebuild the console stage to the same standard (oversampled, level-calibrated, frequency-dependent).

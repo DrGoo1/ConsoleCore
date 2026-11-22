@@ -39,6 +39,22 @@ ctest --test-dir build-tape --output-on-failure
 - Report back in the PR: what sounds wrong, especially low-frequency distortion when driven,
   treble behaviour at 7.5 ips, and whether flutter is audible.
 
+### 1b. Added 2026-11-22: tape formulas and bias (branch `agent/claude-tape-formulas-bias`)
+
+After the renders above, check out `agent/claude-tape-formulas-bias`, rebuild, and add:
+
+```
+F=tape_profiles/formulas; M=tape_profiles/machines/transformerless_servo_24track_2inch_1979.json
+./build-tape/tape_machine_bench render $M in.wav out_1975tape.wav  --ips 15 --drive 6 --formula $F/high_output_1975.json
+./build-tape/tape_machine_bench render $M in.wav out_1998tape.wav  --ips 15 --drive 9 --formula $F/ultra_high_output_1998.json
+./build-tape/tape_machine_bench render $M in.wav out_underbias.wav --ips 15 --drive 6 --formula $F/high_output_1975.json --bias -2
+./build-tape/tape_machine_bench render $M in.wav out_overbias.wav  --ips 15 --drive 6 --formula $F/high_output_1975.json --bias 2
+```
+
+Ask David whether the bias control's range feels right: its curve shape is an assumption.
+If you can find full data sheets for the 1960s tape (3M 202/203) or a bias-versus-output
+graph for any of these tapes, report the numbers; they would replace assumptions.
+
 ### 2. Get the ATR-116/124 service manual
 
 - Claude could not download it. The link is on
@@ -70,7 +86,7 @@ ctest --test-dir build-tape --output-on-failure
 | Work | Owner |
 | --- | --- |
 | Listening renders, ATR manual, PR review | ChatGPT |
-| Tape formulas and a working bias control in the engine | Claude |
+| Tape formulas and a working bias control in the engine | Claude: done, in review |
 | Rebuild the console stage (oversampled, level-calibrated, frequency-dependent) | Claude |
 | Plug-in parameters (machine, speed, drive, linearizer) and host latency reporting | Open: say in the PR if you want it |
 

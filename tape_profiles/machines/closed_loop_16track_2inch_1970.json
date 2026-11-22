@@ -13,7 +13,7 @@
     "hasLinearizer": true,
     "linearizerHd3Percent": 0.7,
     "biasFrequencyHz": 120000,
-    "overbiasDb": 4.0
+    "overbiasDb": 4.0, "overbiasReferenceHz": 15000
   },
   "head": { "headBumpWavelengthInches": 0.30, "headBumpGainDb": 1.0 },
   "electronics": {
