@@ -72,6 +72,21 @@ specifications imply. Ask David whether the driven version is the kind of colour
 If you can find a published harmonic breakdown (second versus third) or low-frequency
 distortion figures for this module's transformers, report them: both are assumptions now.
 
+### 1d. Added 2026-11-22: mix bus and a second console profile (branch `agent/claude-console-summing-bus`)
+
+This branch contains everything so far. To hear the bus, give it David's own stems:
+
+```
+C=console_profiles/stages
+./build-tape/tape_machine_bench mix $C/british_class_a_discrete_line_1970.json $C/british_class_a_discrete_line_1970.json out_bus_clean.wav  stem1.wav stem2.wav stem3.wav
+./build-tape/tape_machine_bench mix $C/british_class_a_discrete_line_1970.json $C/british_class_a_discrete_line_1970.json out_bus_driven.wav stem1.wav stem2.wav stem3.wav --bus-drive 8
+./build-tape/tape_machine_bench mix $C/american_discrete_opamp_line_1970.json $C/american_discrete_opamp_line_1970.json out_bus_american.wav stem1.wav stem2.wav stem3.wav --bus-drive 8
+```
+
+Compare each against a plain digital sum of the same stems, level-matched. The American
+profile is provisional: if you can find the specification page of a console or line module
+built on that op-amp (response, distortion at a stated level, noise, maximum output), report it.
+
 ### 2. Get the ATR-116/124 service manual
 
 - Claude could not download it. The link is on
@@ -105,7 +120,8 @@ distortion figures for this module's transformers, report them: both are assumpt
 | Listening renders, ATR manual, PR review | ChatGPT |
 | Tape formulas and a working bias control in the engine | Claude: done, in review |
 | Console stage: one calibrated amplifier stage with transformers | Claude: done, in review |
-| Console summing bus across stems, more console profiles | Claude |
+| Console mix bus across stems, second (provisional) console profile | Claude: done, in review |
+| Connect the mix bus to the stem runtime; firm up console profiles | Claude |
 | Plug-in parameters (machine, speed, drive, linearizer) and host latency reporting | Open: say in the PR if you want it |
 
 ## Known weaknesses found in the existing engine (for context)
