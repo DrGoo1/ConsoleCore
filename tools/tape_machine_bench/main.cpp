@@ -8,8 +8,10 @@
 //   tape_machine_bench measure-console <stage.json> [--rate HZ]
 //   tape_machine_bench mix <channel.json> <bus.json> <out.wav> <stem1.wav> [stem2.wav ...]
 //                          [--channel-drive DB] [--bus-drive DB] [--noise]
+//                          [--tape machine.json] [--ips N] [--tape-drive DB] [--formula tape.json] [--bias DB] [--no-flutter]
 //
-// "mix" sums stem files through a console bus: one channel stage per stem, then a shared bus stage.
+// "mix" sums stem files through a console bus: one channel stage per stem, then a shared bus
+// stage. With --tape, every stem is first recorded to one multitrack machine (two tracks each).
 //
 // "measure" prints the model's behaviour beside whatever the profile records as published,
 // and exits non-zero if a published limit is missed. "render" processes a WAV file so the
@@ -22,6 +24,7 @@
 #include "../../modules/console_physical/ConsoleSpecJson.h"
 #include "../../modules/console_physical/PhysicalConsoleStage.h"
 #include "../../modules/console_physical/PhysicalConsoleBus.h"
+#include "../../modules/runtime/PhysicalStemMixRuntime.h"
 
 #include <cstdint>
 #include <cstdio>
@@ -147,7 +150,8 @@ namespace
                      "                            [--noise] [--no-flutter] [--linearizer-off]\n"
                      "                            [--console stage.json] [--console-drive DB] [--console-stages N] [--no-tape]\n"
                      "  tape_machine_bench measure-console <stage.json> [--rate HZ]\n"
-                     "  tape_machine_bench mix <channel.json> <bus.json> <out.wav> <stem1.wav> [stem2.wav ...] [--channel-drive DB] [--bus-drive DB] [--noise]\n";
+                     "  tape_machine_bench mix <channel.json> <bus.json> <out.wav> <stem1.wav> [stem2.wav ...] [--channel-drive DB] [--bus-drive DB] [--noise]\n"
+                     "                         [--tape machine.json] [--ips N] [--tape-drive DB] [--formula tape.json] [--bias DB] [--no-flutter]\n";
         return 2;
     }
 }
@@ -194,14 +198,42 @@ int main(int argc, char** argv)
         if (stems.empty())
             return usage();
 
-        console::BusRunSettings busRun;
-        busRun.channelDriveDb = option(argc, argv, "--channel-drive") ? std::atof(option(argc, argv, "--channel-drive")) : 0.0;
-        busRun.busDriveDb = option(argc, argv, "--bus-drive") ? std::atof(option(argc, argv, "--bus-drive")) : 0.0;
-        busRun.noiseEnabled = hasFlag(argc, argv, "--noise");
-        console::PhysicalConsoleBus bus;
-        if (!bus.prepare(stems[0].sampleRate, static_cast<int>(stems.size()), channelSpec, busSpec, busRun))
+        StemMixConfig mixConfig;
+        mixConfig.numStems = static_cast<int>(stems.size());
+        mixConfig.channelStage = channelSpec;
+        mixConfig.busStage = busSpec;
+        mixConfig.busRun.channelDriveDb = option(argc, argv, "--channel-drive") ? std::atof(option(argc, argv, "--channel-drive")) : 0.0;
+        mixConfig.busRun.busDriveDb = option(argc, argv, "--bus-drive") ? std::atof(option(argc, argv, "--bus-drive")) : 0.0;
+        mixConfig.busRun.noiseEnabled = hasFlag(argc, argv, "--noise");
+        if (const char* tapePath = option(argc, argv, "--tape"))
         {
-            std::cerr << "the bus could not be prepared (too many stems, or the two profiles use different reference levels)\n";
+            if (!tape::loadMachineSpecFile(tapePath, mixConfig.tapeMachine, mixError) || !tape::validateMachineSpec(mixConfig.tapeMachine).empty())
+            {
+                std::cerr << "tape profile error: " << (mixError.empty() ? "profile failed validation; run 'measure' on it" : mixError) << "\n";
+                return 2;
+            }
+            if (const char* formulaPath = option(argc, argv, "--formula"))
+            {
+                tape::TapeFormula formula;
+                if (!tape::loadTapeFormulaFile(formulaPath, formula, mixError) || !tape::validateTapeFormula(formula).empty())
+                {
+                    std::cerr << "formula error: " << (mixError.empty() ? "formula failed validation" : mixError) << "\n";
+                    return 2;
+                }
+                mixConfig.tapeMachine = tape::withFormula(mixConfig.tapeMachine, formula);
+                mixConfig.tapeMachine.displayName += " with " + formula.displayName;
+            }
+            mixConfig.tapeEnabled = true;
+            mixConfig.tapeRun.ips = option(argc, argv, "--ips") ? std::atof(option(argc, argv, "--ips")) : 15.0;
+            mixConfig.tapeRun.inputDriveDb = option(argc, argv, "--tape-drive") ? std::atof(option(argc, argv, "--tape-drive")) : 0.0;
+            mixConfig.tapeRun.biasOffsetDb = option(argc, argv, "--bias") ? std::atof(option(argc, argv, "--bias")) : 0.0;
+            mixConfig.tapeRun.flutterEnabled = !hasFlag(argc, argv, "--no-flutter");
+            mixConfig.tapeRun.noiseEnabled = mixConfig.busRun.noiseEnabled;
+        }
+        PhysicalStemMixRuntime bus;
+        if (!bus.prepare(stems[0].sampleRate, 1024, mixConfig))
+        {
+            std::cerr << "cannot run this mix: " << bus.lastError() << "\n";
             return 2;
         }
         std::size_t frames = 0;
@@ -228,7 +260,10 @@ int main(int argc, char** argv)
             std::cerr << "output error: " << mixError << "\n";
             return 2;
         }
-        std::cout << "mixed " << stems.size() << " stem(s), " << frames << " frames\nchannel stage: " << channelSpec.displayName << "\n  status: "
+        std::cout << "mixed " << stems.size() << " stem(s), " << frames << " frames, latency removed: " << latency << " samples\n";
+        if (mixConfig.tapeEnabled)
+            std::cout << "tape: " << mixConfig.tapeMachine.displayName << " at " << mixConfig.tapeRun.ips << " ips\n  status: " << mixConfig.tapeMachine.status << "\n";
+        std::cout << "channel stage: " << channelSpec.displayName << "\n  status: "
                   << channelSpec.status << "\nbus stage: " << busSpec.displayName << "\n  status: " << busSpec.status << "\n";
         return 0;
     }

@@ -15,3 +15,11 @@ target_compile_definitions(ConsoleStageTests PRIVATE
     CONSOLE_PROFILE_DIR="${CMAKE_SOURCE_DIR}/console_profiles/stages"
     TAPE_PROFILE_DIR="${CMAKE_SOURCE_DIR}/tape_profiles/machines")
 add_test(NAME ConsoleStageTests COMMAND ConsoleStageTests)
+
+# Stem mix runtime (tape machine into console bus): standard library only.
+add_executable(StemMixTests ../modules/runtime/tests/stem_mix_tests.cpp)
+target_link_libraries(StemMixTests PRIVATE runtime console_physical tape_core)
+target_compile_definitions(StemMixTests PRIVATE
+    CONSOLE_PROFILE_DIR="${CMAKE_SOURCE_DIR}/console_profiles/stages"
+    TAPE_PROFILE_DIR="${CMAKE_SOURCE_DIR}/tape_profiles/machines")
+add_test(NAME StemMixTests COMMAND StemMixTests)

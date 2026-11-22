@@ -29,7 +29,7 @@ set(CONSOLE_SOURCES
 )
 list(APPEND TAPE_SOURCES ${CONSOLE_SOURCES})
 
-add_executable(tape_machine_bench main.cpp ${TAPE_SOURCES})
+add_executable(tape_machine_bench main.cpp ${TAPE_SOURCES} ../../modules/runtime/PhysicalStemMixRuntime.cpp ../../modules/runtime/StemBusManager.cpp)
 target_include_directories(tape_machine_bench PRIVATE ${TAPE_CORE})
 
 add_executable(tape_machine_tests ${TAPE_CORE}/tests/tape_machine_tests.cpp ${TAPE_SOURCES})
@@ -42,6 +42,14 @@ target_compile_definitions(console_stage_tests PRIVATE
     CONSOLE_PROFILE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../console_profiles/stages"
     TAPE_PROFILE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../tape_profiles/machines")
 
+set(RUNTIME ../../modules/runtime)
+add_executable(stem_mix_tests ${RUNTIME}/tests/stem_mix_tests.cpp ${RUNTIME}/PhysicalStemMixRuntime.cpp ${RUNTIME}/StemBusManager.cpp ${TAPE_SOURCES})
+target_include_directories(stem_mix_tests PRIVATE ${TAPE_CORE} ${CONSOLE_PHYSICAL} ${RUNTIME})
+target_compile_definitions(stem_mix_tests PRIVATE
+    CONSOLE_PROFILE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../console_profiles/stages"
+    TAPE_PROFILE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../tape_profiles/machines")
+
 enable_testing()
+add_test(NAME stem_mix_tests COMMAND stem_mix_tests)
 add_test(NAME tape_machine_tests COMMAND tape_machine_tests)
 add_test(NAME console_stage_tests COMMAND console_stage_tests)

@@ -87,6 +87,26 @@ Compare each against a plain digital sum of the same stems, level-matched. The A
 profile is provisional: if you can find the specification page of a console or line module
 built on that op-amp (response, distortion at a stated level, noise, maximum output), report it.
 
+### 1e. Added 2026-11-22: full stem path (branch `agent/claude-stem-mix-runtime`)
+
+This branch contains everything so far. Read `docs/STEM_MIX_RUNTIME.md`. The `mix` command
+can now record every stem to one multitrack machine before the console bus:
+
+```
+C=console_profiles/stages/british_class_a_discrete_line_1970.json
+./build-tape/tape_machine_bench mix $C $C out_full_path.wav stem1.wav stem2.wav stem3.wav \
+    --tape tape_profiles/machines/closed_loop_16track_2inch_1970.json --ips 15 --tape-drive 6 \
+    --formula tape_profiles/formulas/high_output_1975.json --bus-drive 4
+```
+
+Two things only you can do on the Mac:
+
+1. **Profile it.** Time this command on a multi-minute, 8-stem session and report how much
+   faster than real time it runs. Nothing has been profiled yet.
+2. **Wire it into the standalone app** (`apps/ConsoleCoreStandalone`), if David wants to hear
+   it live: the app's engine is still a pass-through. `PhysicalStemMixRuntime::prepare` must
+   run off the audio thread; report `latencySamples()`. Use your own branch.
+
 ### 2. Get the ATR-116/124 service manual
 
 - Claude could not download it. The link is on
@@ -121,7 +141,9 @@ built on that op-amp (response, distortion at a stated level, noise, maximum out
 | Tape formulas and a working bias control in the engine | Claude: done, in review |
 | Console stage: one calibrated amplifier stage with transformers | Claude: done, in review |
 | Console mix bus across stems, second (provisional) console profile | Claude: done, in review |
-| Connect the mix bus to the stem runtime; firm up console profiles | Claude |
+| Stem runtime: multitrack tape into console bus | Claude: done, in review |
+| Profiling on the Mac; wiring the runtime into the standalone app | ChatGPT, if David agrees |
+| Firm up console profiles; print tape stage after the bus | Claude |
 | Plug-in parameters (machine, speed, drive, linearizer) and host latency reporting | Open: say in the PR if you want it |
 
 ## Known weaknesses found in the existing engine (for context)
