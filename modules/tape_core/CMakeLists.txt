@@ -1,6 +1,9 @@
 add_library(tape_core STATIC
     TapeTrackProcessor.cpp
     TapePrintProcessor.cpp
+    PhysicalTapeMachine.cpp
+    TapeSpecJson.cpp
+    TapeBench.cpp
 )
 
 target_include_directories(tape_core PUBLIC
