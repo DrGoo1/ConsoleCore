@@ -23,6 +23,7 @@ set(TAPE_SOURCES
 set(CONSOLE_PHYSICAL ../../modules/console_physical)
 set(CONSOLE_SOURCES
     ${CONSOLE_PHYSICAL}/PhysicalConsoleStage.cpp
+    ${CONSOLE_PHYSICAL}/PhysicalConsoleBus.cpp
     ${CONSOLE_PHYSICAL}/ConsoleSpecJson.cpp
     ${CONSOLE_PHYSICAL}/ConsoleBench.cpp
 )

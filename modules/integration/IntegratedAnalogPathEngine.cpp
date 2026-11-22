@@ -70,7 +70,7 @@ int IntegratedAnalogPathEngine::latencySamples() const
     if (currentSettings.tapeTrackEnabled && hasTrackMachine())
         total += trackMachine.latencySamples();
     if (currentSettings.consoleEnabled && hasConsoleStage())
-        total += console::PhysicalConsoleStage::latencySamples();
+        total += consoleStage.latencySamples();
     return total;
 }
 

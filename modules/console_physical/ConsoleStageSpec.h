@@ -31,6 +31,9 @@ namespace console
         double maxOutputDbu = 26.0;          // level the module is rated to deliver
         double thdPercentAtMaxOutput = 1.0;  // distortion taken to define that rating
         double clipCeilingDbu = 28.0;        // level the output can never exceed
+        // Share of the calibration-level distortion that is even-order (second harmonic).
+        // 1 suits a single-ended stage, a small value a push-pull one.
+        double evenHarmonicShare = 1.0;
 
         // Transformers.
         bool inputTransformer = true;
@@ -47,6 +50,7 @@ namespace console
         std::vector<ResponseBand> publishedResponse;
         double publishedThdMaxPercent = 0.0;   // 0 = none
         double publishedThdLoHz = 50.0, publishedThdHiHz = 10000.0;
+        double publishedThdLevelDbu = 0.0;     // 0 = at thdCalLevelDbu
 
         // "field" -> "published: ..." | "standard: ..." | "derived: ..." | "assumed: ..."
         std::map<std::string, std::string> evidence;

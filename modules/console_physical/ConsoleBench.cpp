@@ -185,10 +185,15 @@ namespace console::bench
             rows.push_back({ fmt("response at %.0f Hz", spec.hfCornerHz), "not measurable at this sample rate", "", basisOf(spec, "amplifier.hfCorner"), false, true });
 
         const bool hasThdLimit = spec.publishedThdMaxPercent > 0.0;
+        const double thdLevel = spec.publishedThdLevelDbu > 0.0 ? spec.publishedThdLevelDbu : spec.thdCalLevelDbu;
+        double last = -1.0;
         for (double hz : { spec.publishedThdLoHz, 1000.0, spec.publishedThdHiHz })
         {
-            const double thd = thdPercent(rig, hz, spec.thdCalLevelDbu);
-            rows.push_back({ fmt("distortion, %.0f Hz at +%.0f dBu", hz, spec.thdCalLevelDbu), fmt("%.3f %%", thd),
+            if (hz == last)
+                continue;
+            last = hz;
+            const double thd = thdPercent(rig, hz, thdLevel);
+            rows.push_back({ fmt("distortion, %.0f Hz at +%.0f dBu", hz, thdLevel), fmt("%.3f %%", thd),
                              hasThdLimit ? fmt("at most %.2f %%", spec.publishedThdMaxPercent) : "", hasThdLimit ? "published" : "assumed",
                              hasThdLimit, thd <= spec.publishedThdMaxPercent });
         }

@@ -6,6 +6,10 @@
 //                              [--noise] [--no-flutter] [--linearizer-off]
 //                              [--console stage.json] [--console-drive DB] [--console-stages N] [--no-tape]
 //   tape_machine_bench measure-console <stage.json> [--rate HZ]
+//   tape_machine_bench mix <channel.json> <bus.json> <out.wav> <stem1.wav> [stem2.wav ...]
+//                          [--channel-drive DB] [--bus-drive DB] [--noise]
+//
+// "mix" sums stem files through a console bus: one channel stage per stem, then a shared bus stage.
 //
 // "measure" prints the model's behaviour beside whatever the profile records as published,
 // and exits non-zero if a published limit is missed. "render" processes a WAV file so the
@@ -17,6 +21,7 @@
 #include "../../modules/console_physical/ConsoleBench.h"
 #include "../../modules/console_physical/ConsoleSpecJson.h"
 #include "../../modules/console_physical/PhysicalConsoleStage.h"
+#include "../../modules/console_physical/PhysicalConsoleBus.h"
 
 #include <cstdint>
 #include <cstdio>
@@ -141,7 +146,8 @@ namespace
                      "  tape_machine_bench render <profile.json> <in.wav> <out.wav> [--ips N] [--drive DB] [--formula tape.json] [--bias DB]\n"
                      "                            [--noise] [--no-flutter] [--linearizer-off]\n"
                      "                            [--console stage.json] [--console-drive DB] [--console-stages N] [--no-tape]\n"
-                     "  tape_machine_bench measure-console <stage.json> [--rate HZ]\n";
+                     "  tape_machine_bench measure-console <stage.json> [--rate HZ]\n"
+                     "  tape_machine_bench mix <channel.json> <bus.json> <out.wav> <stem1.wav> [stem2.wav ...] [--channel-drive DB] [--bus-drive DB] [--noise]\n";
         return 2;
     }
 }
@@ -151,6 +157,81 @@ int main(int argc, char** argv)
     if (argc < 3)
         return usage();
     const std::string command = argv[1];
+
+    if (command == "mix" && argc >= 6)
+    {
+        console::StageSpec channelSpec, busSpec;
+        std::string mixError;
+        if (!console::loadStageSpecFile(argv[2], channelSpec, mixError) || !console::loadStageSpecFile(argv[3], busSpec, mixError))
+        {
+            std::cerr << "profile error: " << mixError << "\n";
+            return 2;
+        }
+        for (const auto* s : { &channelSpec, &busSpec })
+            for (const auto& p : console::validateStageSpec(*s))
+            {
+                std::cerr << "profile problem (" << s->id << "): " << p << "\n";
+                return 2;
+            }
+        std::vector<Wav> stems;
+        for (int i = 5; i < argc && std::strncmp(argv[i], "--", 2) != 0; ++i)
+        {
+            Wav w;
+            if (!readWav(argv[i], w, mixError))
+            {
+                std::cerr << "input error (" << argv[i] << "): " << mixError << "\n";
+                return 2;
+            }
+            if (!stems.empty() && w.sampleRate != stems[0].sampleRate)
+            {
+                std::cerr << "all stems must share one sample rate\n";
+                return 2;
+            }
+            if (w.channels == 1)
+                w.data.push_back(w.data[0]);   // a mono stem feeds both sides
+            stems.push_back(std::move(w));
+        }
+        if (stems.empty())
+            return usage();
+
+        console::BusRunSettings busRun;
+        busRun.channelDriveDb = option(argc, argv, "--channel-drive") ? std::atof(option(argc, argv, "--channel-drive")) : 0.0;
+        busRun.busDriveDb = option(argc, argv, "--bus-drive") ? std::atof(option(argc, argv, "--bus-drive")) : 0.0;
+        busRun.noiseEnabled = hasFlag(argc, argv, "--noise");
+        console::PhysicalConsoleBus bus;
+        if (!bus.prepare(stems[0].sampleRate, static_cast<int>(stems.size()), channelSpec, busSpec, busRun))
+        {
+            std::cerr << "the bus could not be prepared (too many stems, or the two profiles use different reference levels)\n";
+            return 2;
+        }
+        std::size_t frames = 0;
+        for (const auto& w : stems)
+            frames = std::max(frames, w.data[0].size());
+        const std::size_t latency = static_cast<std::size_t>(bus.latencySamples());
+        std::vector<const float*> pointers;
+        for (auto& w : stems)
+        {
+            w.data[0].resize(frames + latency, 0.0f);
+            w.data[1].resize(frames + latency, 0.0f);
+            pointers.push_back(w.data[0].data());
+            pointers.push_back(w.data[1].data());
+        }
+        Wav outWav;
+        outWav.channels = 2;
+        outWav.sampleRate = stems[0].sampleRate;
+        outWav.data.assign(2, std::vector<float>(frames + latency, 0.0f));
+        bus.process(pointers.data(), static_cast<int>(stems.size()), outWav.data[0].data(), outWav.data[1].data(), static_cast<int>(frames + latency));
+        for (auto& ch : outWav.data)
+            ch.erase(ch.begin(), ch.begin() + static_cast<std::ptrdiff_t>(latency));
+        if (!writeWav24(argv[4], outWav, mixError))
+        {
+            std::cerr << "output error: " << mixError << "\n";
+            return 2;
+        }
+        std::cout << "mixed " << stems.size() << " stem(s), " << frames << " frames\nchannel stage: " << channelSpec.displayName << "\n  status: "
+                  << channelSpec.status << "\nbus stage: " << busSpec.displayName << "\n  status: " << busSpec.status << "\n";
+        return 0;
+    }
 
     if (command == "measure-console")
     {
@@ -168,7 +249,9 @@ int main(int argc, char** argv)
             return 2;
         const double rate = option(argc, argv, "--rate") ? std::atof(option(argc, argv, "--rate")) : 48000.0;
         std::cout << stage.displayName << "\n  status: " << stage.status << "\n  reference: " << stage.referenceModule << "\n";
-        std::printf("\none stage, %.0f Hz sample rate, latency %d samples\n", rate, console::PhysicalConsoleStage::latencySamples());
+        console::PhysicalConsoleStage probe;
+        probe.prepare(rate, 1, stage, {});
+        std::printf("\none stage, %.0f Hz sample rate, latency %d samples\n", rate, probe.latencySamples());
         bool allPass = true;
         for (const auto& row : console::bench::report(stage, rate))
         {
@@ -284,7 +367,7 @@ int main(int argc, char** argv)
 
         const std::size_t frames = wav.data[0].size();
         const std::size_t latency = static_cast<std::size_t>((useTape ? machine.latencySamples() : 0)
-                                                             + (consolePath != nullptr ? console::PhysicalConsoleStage::latencySamples() : 0));
+                                                             + (consolePath != nullptr ? consoleStage.latencySamples() : 0));
         for (auto& ch : wav.data)
             ch.resize(frames + latency, 0.0f);
         std::vector<float*> pointers(static_cast<std::size_t>(wav.channels));

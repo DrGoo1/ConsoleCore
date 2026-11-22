@@ -1,5 +1,6 @@
 add_library(console_physical STATIC
     PhysicalConsoleStage.cpp
+    PhysicalConsoleBus.cpp
     ConsoleSpecJson.cpp
     ConsoleBench.cpp
 )

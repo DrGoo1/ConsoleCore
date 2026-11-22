@@ -33,6 +33,7 @@ namespace console
             s.maxOutputDbu = number(amp, "maxOutputDbu", 0, true);
             s.thdPercentAtMaxOutput = number(amp, "thdPercentAtMaxOutput", s.thdPercentAtMaxOutput);
             s.clipCeilingDbu = number(amp, "clipCeilingDbu", 0, true);
+            s.evenHarmonicShare = number(amp, "evenHarmonicShare", s.evenHarmonicShare);
             s.hfCornerHz = number(amp, "hfCornerHz", 0, true);
             s.noiseDbu = number(amp, "noiseDbu", s.noiseDbu);
 
@@ -48,6 +49,7 @@ namespace console
                 s.publishedThdMaxPercent = number(*pub, "thdMaxPercent", 0.0);
                 s.publishedThdLoHz = number(*pub, "thdLoHz", s.publishedThdLoHz);
                 s.publishedThdHiHz = number(*pub, "thdHiHz", s.publishedThdHiHz);
+                s.publishedThdLevelDbu = number(*pub, "thdLevelDbu", 0.0);
                 if (const Value* bands = pub->find("response"); bands != nullptr && bands->kind == Value::Kind::Array)
                     for (const auto& b : bands->items)
                     {
@@ -104,6 +106,7 @@ namespace console
         range("amplifier.maxOutputDbu", s.maxOutputDbu, s.thdCalLevelDbu + 1.0, 36.0);
         range("amplifier.thdPercentAtMaxOutput", s.thdPercentAtMaxOutput, s.thdPercentAtCal, 10.0);
         range("amplifier.clipCeilingDbu", s.clipCeilingDbu, s.maxOutputDbu + 0.5, 40.0);
+        range("amplifier.evenHarmonicShare", s.evenHarmonicShare, 0.0, 1.0);
         range("amplifier.hfCornerHz", s.hfCornerHz, 15000.0, 300000.0);
         range("amplifier.noiseDbu", s.noiseDbu, -120.0, -50.0);
         range("transformers.hd3PercentAtCal", s.transformerHd3PercentAtCal, 0.0, 2.0);
