@@ -1,0 +1,99 @@
+StudioMind string layers - worked example, key of G vs key of Bb
+Form: verse I V vi IV | chorus IV I V vi | verse 2 | bridge vi IV | chorus. 110 BPM.
+Key G: main acoustic pair G-shape capo 0; high layer C-shape capo 7; Nashville G-shape capo 0
+Key Bb: main acoustic pair G-shape capo 3; high layer D-shape capo 8; Nashville G-shape capo 3
+Notes listed low to high = every pitch the part uses over that chord (first bar of that chord in the section).
+
+== Bass
+  verse   I         G: G2   |   Bb: Bb1
+  verse   V         G: D2   |   Bb: F2
+  verse   vi        G: E2   |   Bb: G2
+  verse   IV        G: C2   |   Bb: Eb2
+  chorus  IV        G: C2 F#2   |   Bb: A1 Eb2
+  chorus  I         G: C2 G2   |   Bb: Bb1 Eb2
+  chorus  V         G: D2   |   Bb: F2
+  chorus  vi        G: E2 F#2   |   Bb: A1 G2
+  bridge  vi        G: E2   |   Bb: G2
+  bridge  IV        G: C2   |   Bb: Eb2
+
+== Acoustic drive (16ths)
+  verse   I         G: G2 D3   |   Bb: Bb2 F3
+  verse   V         G: D3 A3   |   Bb: F2 C3
+  verse   vi        G: E2 B2   |   Bb: G2 D3
+  verse   IV        G: C3 G3   |   Bb: Eb3 Bb3
+
+== Acoustic anchor (repeats)
+  verse   I         G: G3 D4 A4 D5   |   Bb: Bb3 F4 C5 F5
+  verse   V         G: G3 D4 A4 D5   |   Bb: Bb3 F4 C5 F5
+  verse   vi        G: G3 D4 A4 D5   |   Bb: Bb3 F4 C5 F5
+  verse   IV        G: G3 D4 A4 D5   |   Bb: Bb3 F4 C5 F5
+
+== Mandolin (verse 16ths)
+  verse   I         G: B4 D5 G5   |   Bb: D5 F5 Bb5
+  verse   V         G: D5 F#5 A5   |   Bb: C5 F5 A5
+  verse   vi        G: B4 E5 G5   |   Bb: Bb4 D5 G5
+  verse   IV        G: C5 E5 G5   |   Bb: Bb4 Eb5 G5
+
+== Electric pedal (8ths)
+  verse   I         G: G4   |   Bb: Bb4
+  verse   V         G: G4   |   Bb: Bb4
+  verse   vi        G: G4   |   Bb: Bb4
+  verse   IV        G: G4   |   Bb: Bb4
+
+== Acoustic pair L (open)
+  chorus  IV        G: C3 E3 G3 C4 E4   |   Bb: Eb3 G3 Bb3 Eb4 G4
+  chorus  I         G: G2 B2 D3 G3 B3 G4   |   Bb: Bb2 D3 F3 Bb3 D4 Bb4
+  chorus  V         G: D3 A3 D4 F#4   |   Bb: F3 C4 F4 A4
+  chorus  vi        G: E2 B2 E3 G3 B3 E4   |   Bb: G2 D3 G3 Bb3 D4 G4
+  bridge  vi        G: E2 B2 E3 G3 B3 E4   |   Bb: G2 D3 G3 Bb3 D4 G4
+  bridge  IV        G: C3 E3 G3 C4 E4   |   Bb: Eb3 G3 Bb3 Eb4 G4
+
+== Acoustic pair R (open)
+  chorus  IV        G: C3 E3 G3 C4 E4   |   Bb: Eb3 G3 Bb3 Eb4 G4
+  chorus  I         G: G2 B2 D3 G3 B3 G4   |   Bb: Bb2 D3 F3 Bb3 D4 Bb4
+  chorus  V         G: D3 A3 D4 F#4   |   Bb: F3 C4 F4 A4
+  chorus  vi        G: E2 B2 E3 G3 B3 E4   |   Bb: G2 D3 G3 Bb3 D4 G4
+  bridge  vi        G: E2 B2 E3 G3 B3 E4   |   Bb: G2 D3 G3 Bb3 D4 G4
+  bridge  IV        G: C3 E3 G3 C4 E4   |   Bb: Eb3 G3 Bb3 Eb4 G4
+
+== Acoustic capo (high voicing)
+  chorus  IV        G: C4 E4 G4 C5   |   Bb: Bb3 Eb4 G4 Eb5
+  chorus  I         G: B3 D4 G4 B4   |   Bb: Bb3 F4 Bb4 D5
+  chorus  V         G: A3 D4 F#4 D5   |   Bb: C4 F4 A4 C5
+  chorus  vi        G: B3 E4 G4 B4   |   Bb: D4 G4 Bb4 D5
+  bridge  vi        G: B3 E4 G4 B4   |   Bb: D4 G4 Bb4 D5
+  bridge  IV        G: C4 E4 G4 C5   |   Bb: Bb3 Eb4 G4 Eb5
+
+== Acoustic Nashville tuning
+  chorus  IV        G: C4 E4 G4   |   Bb: Eb4 G4 Bb4
+  chorus  I         G: G3 B3 D4 G4   |   Bb: Bb3 D4 F4 Bb4
+  chorus  V         G: D4 F#4 A4   |   Bb: F4 A4 C5
+  chorus  vi        G: E3 B3 E4 G4   |   Bb: G3 D4 G4 Bb4
+  bridge  vi        G: E3 B3 E4 G4   |   Bb: G3 D4 G4 Bb4
+  bridge  IV        G: C4 E4 G4   |   Bb: Eb4 G4 Bb4
+
+== Mandolin (one chord)
+  chorus  I (held)  G: G4 B4 D5 G5   |   Bb: Bb4 D5 F5 Bb5
+
+== Banjo roll (6-string)
+  chorus  IV        G: G3 C4 G4   |   Bb: G3 Bb3 G4
+  chorus  I         G: G3 B3 G4   |   Bb: Bb3 D4 Bb4
+  chorus  V         G: A3 D4 A4   |   Bb: A3 C4 A4
+  chorus  vi        G: G3 B3 G4   |   Bb: G3 Bb3 G4
+
+== Electric power chords L
+  chorus  IV        G: C3 G3 C4   |   Bb: Eb3 Bb3 Eb4
+  chorus  I         G: G2 D3 G3   |   Bb: Bb2 F3 Bb3
+  chorus  V         G: D3 A3 D4   |   Bb: F2 C3 F3
+  chorus  vi        G: E2 B2 E3   |   Bb: G2 D3 G3
+  bridge  vi        G: E2 B2 E3   |   Bb: G2 D3 G3
+  bridge  IV        G: C3 G3 C4   |   Bb: Eb3 Bb3 Eb4
+
+== Electric power chords R
+  chorus  IV        G: C3 G3 C4   |   Bb: Eb3 Bb3 Eb4
+  chorus  I         G: G2 D3 G3   |   Bb: Bb2 F3 Bb3
+  chorus  V         G: D3 A3 D4   |   Bb: F2 C3 F3
+  chorus  vi        G: E2 B2 E3   |   Bb: G2 D3 G3
+  bridge  vi        G: E2 B2 E3   |   Bb: G2 D3 G3
+  bridge  IV        G: C3 G3 C4   |   Bb: Eb3 Bb3 Eb4
+
