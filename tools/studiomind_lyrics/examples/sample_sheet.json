@@ -1,0 +1,600 @@
+{
+  "schema": "studiomind.lyric_sheet/0.1",
+  "title": "The Porch Light Stays On",
+  "seed_phrase": "the porch light stays on",
+  "theme": "Someone keeps a light on for a partner who left, and slowly realises the light is also for themselves.",
+  "point_of_view": "first person, to a 'you' who has gone",
+  "sections": [
+    {
+      "name": "Verse 1",
+      "kind": "verse",
+      "rhyme_scheme": "ABAB",
+      "lines": [
+        {
+          "text": "You took the long road out of town",
+          "syllables": [
+            "you",
+            "took",
+            "the",
+            "long",
+            "road",
+            "out",
+            "of",
+            "town"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "With half your things still in the hall",
+          "syllables": [
+            "with",
+            "half",
+            "your",
+            "things",
+            "still",
+            "in",
+            "the",
+            "hall"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        },
+        {
+          "text": "I watched your taillights wander down",
+          "syllables": [
+            "i",
+            "watched",
+            "your",
+            "tail",
+            "lights",
+            "wan",
+            "der",
+            "down"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "And waited weeks to hear you call",
+          "syllables": [
+            "and",
+            "wai",
+            "ted",
+            "weeks",
+            "to",
+            "hear",
+            "you",
+            "call"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "kind": "chorus",
+      "rhyme_scheme": "ABAB",
+      "lines": [
+        {
+          "text": "However late you're coming home",
+          "syllables": [
+            "how",
+            "ev",
+            "er",
+            "late",
+            "you're",
+            "com",
+            "ing",
+            "home"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "Wherever you have gone",
+          "syllables": [
+            "wher",
+            "ev",
+            "er",
+            "you",
+            "have",
+            "gone"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        },
+        {
+          "text": "There's a key beneath the stone",
+          "syllables": [
+            "there's",
+            "a",
+            "key",
+            "be",
+            "neath",
+            "the",
+            "stone"
+          ],
+          "stress": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "And the porch light stays on",
+          "syllables": [
+            "and",
+            "the",
+            "porch",
+            "light",
+            "stays",
+            "on"
+          ],
+          "stress": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "rhyme": "B"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "kind": "verse",
+      "rhyme_scheme": "ABAB",
+      "lines": [
+        {
+          "text": "Your jacket's hanging by the stair",
+          "syllables": [
+            "your",
+            "jack",
+            "et's",
+            "hang",
+            "ing",
+            "by",
+            "the",
+            "stair"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "The radio still plays our song",
+          "syllables": [
+            "the",
+            "ra",
+            "di",
+            "o",
+            "still",
+            "plays",
+            "our",
+            "song"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        },
+        {
+          "text": "I set two plates, I pull your chair",
+          "syllables": [
+            "i",
+            "set",
+            "two",
+            "plates",
+            "i",
+            "pull",
+            "your",
+            "chair"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "And tell myself that nothing's wrong",
+          "syllables": [
+            "and",
+            "tell",
+            "my",
+            "self",
+            "that",
+            "noth",
+            "ing's",
+            "wrong"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        }
+      ]
+    },
+    {
+      "name": "Chorus 2",
+      "kind": "chorus",
+      "rhyme_scheme": "ABAB",
+      "lines": [
+        {
+          "text": "However late you're coming home",
+          "syllables": [
+            "how",
+            "ev",
+            "er",
+            "late",
+            "you're",
+            "com",
+            "ing",
+            "home"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "Wherever you have gone",
+          "syllables": [
+            "wher",
+            "ev",
+            "er",
+            "you",
+            "have",
+            "gone"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        },
+        {
+          "text": "There's a key beneath the stone",
+          "syllables": [
+            "there's",
+            "a",
+            "key",
+            "be",
+            "neath",
+            "the",
+            "stone"
+          ],
+          "stress": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "And the porch light stays on",
+          "syllables": [
+            "and",
+            "the",
+            "porch",
+            "light",
+            "stays",
+            "on"
+          ],
+          "stress": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "rhyme": "B"
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "kind": "bridge",
+      "rhyme_scheme": "ABAB",
+      "lines": [
+        {
+          "text": "Maybe you won't come back at all",
+          "syllables": [
+            "may",
+            "be",
+            "you",
+            "won't",
+            "come",
+            "back",
+            "at",
+            "all"
+          ],
+          "stress": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "Maybe the light is just for me",
+          "syllables": [
+            "may",
+            "be",
+            "the",
+            "light",
+            "is",
+            "just",
+            "for",
+            "me"
+          ],
+          "stress": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        },
+        {
+          "text": "Something to see by when I fall",
+          "syllables": [
+            "some",
+            "thing",
+            "to",
+            "see",
+            "by",
+            "when",
+            "i",
+            "fall"
+          ],
+          "stress": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "Proof that I'm still who I used to be",
+          "syllables": [
+            "proof",
+            "that",
+            "i'm",
+            "still",
+            "who",
+            "i",
+            "used",
+            "to",
+            "be"
+          ],
+          "stress": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        }
+      ]
+    },
+    {
+      "name": "Final Chorus",
+      "kind": "chorus",
+      "rhyme_scheme": "ABAB",
+      "lines": [
+        {
+          "text": "However late you're coming home",
+          "syllables": [
+            "how",
+            "ev",
+            "er",
+            "late",
+            "you're",
+            "com",
+            "ing",
+            "home"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "Wherever you have gone",
+          "syllables": [
+            "wher",
+            "ev",
+            "er",
+            "you",
+            "have",
+            "gone"
+          ],
+          "stress": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "B"
+        },
+        {
+          "text": "There's a key beneath the stone",
+          "syllables": [
+            "there's",
+            "a",
+            "key",
+            "be",
+            "neath",
+            "the",
+            "stone"
+          ],
+          "stress": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "rhyme": "A"
+        },
+        {
+          "text": "And the porch light stays on",
+          "syllables": [
+            "and",
+            "the",
+            "porch",
+            "light",
+            "stays",
+            "on"
+          ],
+          "stress": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "rhyme": "B"
+        }
+      ]
+    }
+  ],
+  "model": "hand-written example in the generator's output format (no API call)"
+}
