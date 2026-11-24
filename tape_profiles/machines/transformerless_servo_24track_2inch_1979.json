@@ -11,16 +11,17 @@
     "trackWidthInches": 0.043
   },
   "tape": {
-    "coatingThicknessMicrons": 14.0,
+    "coatingThicknessMicrons": 12.7,
     "hd3PercentAtCal": 3.0,
-    "hd3CalLevelDb": 9.0,
+    "hd3CalLevelDb": 12.3,
+    "hd3PercentAtOperatingLevel": 0.1,
     "hasLinearizer": false,
     "overbiasDb": 3.0,
     "overbiasReferenceHz": 10000
   },
   "head": {
     "headBumpWavelengthInches": 0.33,
-    "headBumpGainDb": 0.8
+    "headBumpGainDb": 0.5
   },
   "electronics": {
     "inputTransformer": false,
@@ -93,11 +94,12 @@
   "evidence": {
     "referenceDbfs": "assumed: host convention that operating level sits at -18 dBFS",
     "format.trackWidthInches": "standard: 43 mil tracks of the two-inch 24-track format",
-    "tape.coatingThicknessMicrons": "assumed: about 0.55 mil oxide for a high-output tape of the period; not verified",
-    "tape.hd3PercentAtCal": "assumed: 3 percent third harmonic taken as the usual maximum-output criterion",
-    "tape.hd3CalLevelDb": "assumed: 9 dB above operating level for a high-output tape; not from the manual",
+    "tape.coatingThicknessMicrons": "published: the machine's default tape is the high-output mastering tape of its period (Ampex 456, 1975); its manufacturer data sheet gives a 500 microinch (12.7 micrometre) oxide coat. Which tape a given studio used is not known",
+    "tape.hd3PercentAtCal": "published: maximum output level is defined at 3 percent third harmonic at 1 kHz on the default tape's data sheet",
+    "tape.hd3CalLevelDb": "published: the default tape's data sheet gives +12.3 dB for 3 percent third harmonic at 1 kHz, taken re 185 nWb/m (an assumption about the sheet's reference). The earlier value, +9 dB, was an assumption that made this machine about 3 dB too hot",
+    "tape.hd3PercentAtOperatingLevel": "published: the same data sheet gives 0.1 percent third harmonic at operating level; the curve's shape is fitted to it",
     "head.headBumpWavelengthInches": "assumed: head dimensions unknown; chosen so the model stays inside the published low-frequency limits",
-    "head.headBumpGainDb": "assumed: only an overall +/-2 dB tolerance is published",
+    "head.headBumpGainDb": "assumed: only an overall +/-2 dB tolerance is published. Kept small (0.5 dB) because the published response is flat to 25 Hz, which is a tighter low end than the 16-track's +2/-4 dB tolerance at 30-50 Hz",
     "electronics.transformers": "published: manufacturer advertisements of 1980 state balanced, transformerless inputs and outputs",
     "electronics.maxOutputDb": "assumed: no figure read for this machine",
     "electronics.highpassHz": "assumed: direct-coupled design, low corner chosen",

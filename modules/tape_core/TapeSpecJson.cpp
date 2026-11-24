@@ -39,6 +39,7 @@ namespace tape
             spec.coatingThicknessMicrons = number(tapeObj, "coatingThicknessMicrons", 0, true);
             spec.hd3PercentAtCal = number(tapeObj, "hd3PercentAtCal", 0, true);
             spec.hd3CalLevelDb = number(tapeObj, "hd3CalLevelDb", 0, true);
+            spec.publishedHd3PercentAtOperatingLevel = number(tapeObj, "hd3PercentAtOperatingLevel", 0.0);
             spec.hasLinearizer = flag(tapeObj, "hasLinearizer", false);
             spec.linearizerHd3Percent = number(tapeObj, "linearizerHd3Percent", spec.linearizerHd3Percent);
             spec.biasFrequencyHz = number(tapeObj, "biasFrequencyHz", 0.0);

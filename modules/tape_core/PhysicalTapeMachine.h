@@ -44,7 +44,8 @@ namespace tape
 
         // Calibration results, for reporting.
         double saturationDrive() const { return satDrive; }
-        double linearizerAmount() const { return linAmount; }
+        double linearizerAmount() const { return linAmount - tapeShape; }
+        double tapeCurveShape() const { return tapeShape; }
         double recordLossCornerHz() const { return recordLossHz; }
         double headBumpHz() const { return bumpHz; }
 
@@ -94,7 +95,7 @@ namespace tape
 
         double fs = 48000.0, fsOs = 192000.0;
         double inputGain = 1.0, outputGain = 1.0;
-        double satDrive = 0.3, linAmount = 0.0;
+        double satDrive = 0.3, linAmount = 0.0, tapeShape = 0.0;
         double recordLossHz = 0.0, bumpHz = 0.0;
         double xfmrK = 0.0, outputLimit = 15.8;
         double noiseGain = 0.0;

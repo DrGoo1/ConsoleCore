@@ -3,7 +3,7 @@
 //   tape_machine_bench measure <profile.json> [--ips N] [--rate HZ] [--formula tape.json]
 //   tape_machine_bench render  <profile.json> <in.wav> <out.wav> [--ips N] [--drive DB]
 //                              [--formula tape.json] [--bias DB]
-//                              [--noise] [--no-flutter] [--linearizer-off]
+//                              [--noise] [--no-flutter] [--linearizer-off] [--float]
 //                              [--console stage.json] [--console-drive DB] [--console-stages N] [--no-tape]
 //   tape_machine_bench measure-console <stage.json> [--rate HZ]
 //   tape_machine_bench mix <channel.json> <bus.json> <out.wav> <stem1.wav> [stem2.wav ...]
@@ -127,6 +127,28 @@ namespace
         return static_cast<bool>(f);
     }
 
+    // 32-bit float output, so a level ladder that runs past full scale is not clipped.
+    bool writeWavFloat(const std::string& path, const Wav& wav, std::string& error)
+    {
+        std::ofstream f(path, std::ios::binary);
+        if (!f) { error = "cannot write " + path; return false; }
+        const std::uint32_t frames = static_cast<std::uint32_t>(wav.data.empty() ? 0 : wav.data[0].size());
+        const std::uint32_t dataSize = frames * static_cast<std::uint32_t>(wav.channels) * 4u;
+        auto put32 = [&](std::uint32_t v) { const char b[4] = { char(v), char(v >> 8), char(v >> 16), char(v >> 24) }; f.write(b, 4); };
+        auto put16 = [&](std::uint16_t v) { const char b[2] = { char(v), char(v >> 8) }; f.write(b, 2); };
+        f.write("RIFF", 4); put32(36 + dataSize); f.write("WAVEfmt ", 8); put32(16); put16(3);
+        put16(static_cast<std::uint16_t>(wav.channels)); put32(static_cast<std::uint32_t>(wav.sampleRate));
+        put32(static_cast<std::uint32_t>(wav.sampleRate * wav.channels * 4)); put16(static_cast<std::uint16_t>(wav.channels * 4)); put16(32);
+        f.write("data", 4); put32(dataSize);
+        for (std::uint32_t i = 0; i < frames; ++i)
+            for (int c = 0; c < wav.channels; ++c)
+            {
+                const float v = wav.data[static_cast<std::size_t>(c)][i];
+                f.write(reinterpret_cast<const char*>(&v), 4);
+            }
+        return static_cast<bool>(f);
+    }
+
     const char* option(int argc, char** argv, const char* name)
     {
         for (int i = 1; i + 1 < argc; ++i)
@@ -147,7 +169,7 @@ namespace
     {
         std::cerr << "usage:\n  tape_machine_bench measure <profile.json> [--ips N] [--rate HZ] [--formula tape.json]\n"
                      "  tape_machine_bench render <profile.json> <in.wav> <out.wav> [--ips N] [--drive DB] [--formula tape.json] [--bias DB]\n"
-                     "                            [--noise] [--no-flutter] [--linearizer-off]\n"
+                     "                            [--noise] [--no-flutter] [--linearizer-off] [--float]\n"
                      "                            [--console stage.json] [--console-drive DB] [--console-stages N] [--no-tape]\n"
                      "  tape_machine_bench measure-console <stage.json> [--rate HZ]\n"
                      "  tape_machine_bench mix <channel.json> <bus.json> <out.wav> <stem1.wav> [stem2.wav ...] [--channel-drive DB] [--bus-drive DB] [--noise]\n"
@@ -418,7 +440,7 @@ int main(int argc, char** argv)
         }
         for (auto& ch : wav.data)
             ch.erase(ch.begin(), ch.begin() + static_cast<std::ptrdiff_t>(latency));
-        if (!writeWav24(argv[4], wav, error))
+        if (!(hasFlag(argc, argv, "--float") ? writeWavFloat(argv[4], wav, error) : writeWav24(argv[4], wav, error)))
         {
             std::cerr << "output error: " << error << "\n";
             return 2;
