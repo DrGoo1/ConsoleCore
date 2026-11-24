@@ -255,11 +255,11 @@ namespace tape::bench
             }
             if (spec.publishedHd3PercentAtOperatingLevel > 0.0)
             {
-                // Not used to build the model, so this is an independent check of the curve's shape.
+                // The tape curve's shape is fitted to this figure, so this checks the fit.
                 const double at0 = hd3Percent(off, 1000.0, 0.0);
                 const double want = spec.publishedHd3PercentAtOperatingLevel;
-                rows.push_back({ "third harmonic, 1 kHz at operating level", fmt("%.3f %%", at0), fmt("%.2f %% within a factor of 2", want),
-                                 "published, independent check", true, at0 <= 2.0 * want && at0 >= 0.5 * want });
+                rows.push_back({ "third harmonic, 1 kHz at operating level", fmt("%.3f %%", at0), fmt("%.2f %% within 20 %%", want),
+                                 "published, curve shape fitted to it", true, at0 <= 1.2 * want && at0 >= 0.8 * want });
             }
             else
                 rows.push_back({ "third harmonic, 1 kHz at operating level", fmt("%.2f %%", hd3Percent(rig, 1000.0, 0.0)), "", "follows from the calibration", false, true });

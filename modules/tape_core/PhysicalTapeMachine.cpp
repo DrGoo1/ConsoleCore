@@ -95,21 +95,46 @@ namespace tape
 
         // Drive so the unlinearised tape shows the published third harmonic at the calibration level.
         const double target = machine.hd3PercentAtCal / 100.0;
-        double lo = 1.0e-3, hi = 3.0;
-        for (int i = 0; i < 40; ++i)
+        auto solveDrive = [&](double shape, int steps)
         {
-            core.drive = 0.5 * (lo + hi);
-            core.lin = 0.0;
-            (measureHd3(core, machine.hd3CalLevelDb + molShiftDb, rate) < target ? lo : hi) = core.drive;
-        }
-        satDrive = 0.5 * (lo + hi);
+            double lo = 1.0e-3, hi = 3.0;
+            for (int i = 0; i < steps; ++i)
+            {
+                core.drive = 0.5 * (lo + hi);
+                core.lin = shape;
+                (measureHd3(core, machine.hd3CalLevelDb + molShiftDb, rate) < target ? lo : hi) = core.drive;
+            }
+            return 0.5 * (lo + hi);
+        };
 
-        linAmount = 0.0;
+        // Shape of the tape's own curve. A plain tanh fixes the third harmonic at every level
+        // once the maximum output level is set: it falls 6 dB for every 3 dB of level. Real
+        // tapes differ. When the data sheet also gives the third harmonic at operating level,
+        // the cubic part of the curve is solved so both published points are met: a positive
+        // shape makes the tape cleaner at normal levels with a firmer knee near its maximum,
+        // a negative one softer. Without that figure the curve stays a plain tanh.
+        tapeShape = 0.0;
+        if (machine.publishedHd3PercentAtOperatingLevel > 0.0)
+        {
+            const double want = machine.publishedHd3PercentAtOperatingLevel / 100.0;
+            double a = -0.6, b = 0.9;
+            for (int i = 0; i < 16; ++i)
+            {
+                const double shape = 0.5 * (a + b);
+                core.drive = solveDrive(shape, 30);
+                core.lin = shape;
+                (measureHd3(core, molShiftDb, rate) > want ? a : b) = shape;
+            }
+            tapeShape = 0.5 * (a + b);
+        }
+        satDrive = solveDrive(tapeShape, 40);
+
+        linAmount = tapeShape;
         if (linearizerOn && machine.hasLinearizer)
         {
             const double linTarget = machine.linearizerHd3Percent / 100.0;
             core.drive = satDrive;
-            core.lin = 0.0;
+            core.lin = tapeShape;
             double reference[2] = { 0.0, 0.0 };
             measureHd3(core, machine.hd3CalLevelDb, rate, reference);
 
@@ -118,7 +143,7 @@ namespace tape
             // uncorrected harmonic.
             // A cubic correction of exactly 1 cancels the cubic term but leaves the
             // third harmonic produced by the fifth-order term, so the range runs past 1.
-            double a = 0.0, b = 1.8;
+            double a = tapeShape, b = tapeShape + 1.8;
             for (int i = 0; i < 40; ++i)
             {
                 core.lin = 0.5 * (a + b);
@@ -128,6 +153,28 @@ namespace tape
                 ((sameSign && magnitude > linTarget) ? a : b) = core.lin;
             }
             linAmount = 0.5 * (a + b);
+
+            // A cubic linearizer cannot remove the higher-order bend of a tape whose curve is
+            // already firm, and pushed that far it inverts the harmonic at normal levels and
+            // makes the tape expand. A technician aligning the machine to such a tape would stop
+            // short of that, so the correction is held below the point where the third harmonic
+            // at operating level changes sign. The machine's own tape (a plain curve) is not
+            // affected; this only matters when another formula is threaded.
+            if (tapeShape != 0.0)
+            {
+                core.lin = tapeShape;
+                double low[2] = { 0.0, 0.0 };
+                measureHd3(core, molShiftDb, rate, low);
+                double c = tapeShape, d = tapeShape + 1.8;
+                for (int i = 0; i < 30; ++i)
+                {
+                    core.lin = 0.5 * (c + d);
+                    double now[2] = { 0.0, 0.0 };
+                    measureHd3(core, molShiftDb, rate, now);
+                    (now[0] * low[0] + now[1] * low[1] >= 0.0 ? c : d) = core.lin;
+                }
+                linAmount = std::min(linAmount, c);
+            }
         }
     }
 
@@ -159,10 +206,10 @@ namespace tape
         {
             // The linearizer is a fixed circuit set up at alignment, so its correction is
             // held in tape terms while the tape's own curve moves with bias.
-            const double alignedDrive = satDrive, alignedLin = linAmount;
+            const double alignedDrive = satDrive, alignedLinearizer = linAmount - tapeShape;
             molShiftDb = offset < 0.0 ? -0.25 * offset * offset : -0.10 * offset * offset;
             calibrateSaturation(*speed, fsOs, false);
-            linAmount = alignedLin * (alignedDrive / satDrive) * (alignedDrive / satDrive);
+            linAmount = tapeShape + alignedLinearizer * (alignedDrive / satDrive) * (alignedDrive / satDrive);
         }
 
         Core core;

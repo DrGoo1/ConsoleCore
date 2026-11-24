@@ -15,7 +15,7 @@
     "biasFrequencyHz": 120000,
     "overbiasDb": 4.0, "overbiasReferenceHz": 15000
   },
-  "head": { "headBumpWavelengthInches": 0.30, "headBumpGainDb": 1.0 },
+  "head": { "headBumpWavelengthInches": 0.30, "headBumpGainDb": 1.8 },
   "electronics": {
     "inputTransformer": true,
     "outputTransformer": true,
@@ -43,7 +43,7 @@
     },
     {
       "ips": 15.0, "equalization": "NAB", "hfTimeConstantUs": 50.0, "lfTimeConstantUs": 3180.0,
-      "playbackHfCornerHz": 26000, "flutterLowBandRmsPercent": 0.024, "scrapeFlutterRmsPercent": 0.038,
+      "playbackHfCornerHz": 21000, "flutterLowBandRmsPercent": 0.024, "scrapeFlutterRmsPercent": 0.038,
       "snrDb": 62.0, "referenceHz": 700.0, "publishedFlutterMaxPercent": 0.04,
       "publishedResponse": [
         { "loHz": 100, "hiHz": 15000, "plusDb": 2.0, "minusDb": 2.0 },
@@ -65,13 +65,13 @@
     "tape.linearizer": "published: under 0.8 percent third harmonic with the linearizer on at the same level; 0.7 chosen below the limit",
     "tape.bias": "published: 120 kHz bias, set 4 dB over peak at 15 kHz; recorded for reference, bias is not simulated as a signal",
     "head.headBumpWavelengthInches": "assumed: head contour dimensions are not in the manual; 0.30 inch puts the bump near 50 Hz at 15 ips",
-    "head.headBumpGainDb": "assumed: 1 dB, chosen inside the published low-frequency tolerance",
+    "head.headBumpGainDb": "assumed: 1.8 dB, inside the published +2 dB allowance at 30-50 Hz. The manual allows a larger low-frequency excursion than the 24-track's published flat-to-25 Hz response, so this machine is given the larger bump",
     "electronics.transformers": "published: AES paper describes input and output transformers and a transformer-coupled 600 ohm line amplifier; applying the same core model to the input transformer is an assumption",
     "electronics.maxOutputDb": "published: line amplifier maximum +28 dBm, 24 dB above operating level; distortion under 1 percent from 30 Hz to 15 kHz at that level, 0.8 percent at 30 Hz chosen",
     "electronics.highpassHz": "assumed: amplifier coupling corner is not given",
     "transport.flutterComponents": "assumed: component rates are placeholders; capstan and idler dimensions are not in the manual text read. Only the band totals are tied to published limits",
     "speeds.equalization": "published: NAB-format calibration tapes at 7.5 and 15 ips, with time constants from the NAB standard. The 30 ips curve is an assumption: the manual text read gives none, and 17.5 microseconds is the usual 30 ips standard",
-    "speeds.playbackHfCornerHz": "assumed: nominal roll-off placed inside the published response tolerance",
+    "speeds.playbackHfCornerHz": "assumed: at 15 ips the corner is set so the response is about 1 dB down at 15 kHz, half the published -2 dB tolerance, which is published only to 15 kHz (the 24-track's survey figure runs to 20 kHz). 7.5 and 30 ips are assumptions",
     "speeds.flutter": "derived: low band set to 60 percent of the published limits (0.04 percent at 15 ips, 0.07 at 7.5 ips, 0.5-300 Hz); scrape band from the AES paper's 0.075 percent wideband maximum less the low band, also at 60 percent. 30 ips has no published figure and reuses 15 ips",
     "speeds.snrDb": "assumed: the manual describes the noise test but prints no figure",
     "speeds.publishedResponse": "published: overall record tolerance, plus or minus 2 VU from 100 Hz to 15 kHz at 15 ips (to 10 kHz at 7.5 ips) and +2/-4 VU at 30 and 50 Hz, referred to 700 Hz"

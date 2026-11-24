@@ -317,14 +317,14 @@ int main()
             ordered = ordered && at6 < previous;
             previous = at6;
             if (f.hd3PercentAtOperatingLevel > 0.0)
-                checksOk = checksOk && at0 < 2.0 * f.hd3PercentAtOperatingLevel && at0 > 0.5 * f.hd3PercentAtOperatingLevel;
+                checksOk = checksOk && at0 < 1.2 * f.hd3PercentAtOperatingLevel && at0 > 0.8 * f.hd3PercentAtOperatingLevel;
             const double ref = tape::bench::responseDb(r, 1000.0);
             check(std::abs(tape::bench::responseDb(r, 15000.0) - ref) < 2.0 && std::abs(tape::bench::responseDb(r, 40.0) - ref) < 2.0,
                   f.id + ": response stays flat at low level, as an aligned machine's would");
         }
         check(molOk, "each formula reaches 3 percent third harmonic at its documented level");
         check(ordered, "higher-output tape is cleaner at the same recorded level");
-        check(checksOk, "distortion at operating level is within a factor of two of the data sheets (values not used to build the model)");
+        check(checksOk, "distortion at operating level is within 20 percent of the data sheets (the curve shape is fitted to them)");
     }
 
     // --- Bias ---------------------------------------------------------------------------------------
@@ -426,6 +426,70 @@ int main()
         check(physical.latencySamples() == 0, "latency drops to zero when the tape stage is switched off");
         physical.clearTrackMachine();
         check(!physical.hasTrackMachine(), "the machine can be cleared, returning to the generic stage");
+    }
+
+    // --- Machine distinctness and treble (added after the first blind listening round) -----------
+    {
+        tape::TapeFormula f456;
+        std::string error;
+        tape::loadTapeFormulaFile(std::string(TAPE_PROFILE_DIR) + "/../formulas/high_output_1975.json", f456, error);
+        const tape::MachineSpec m56 = tape::withFormula(closedLoop, f456), atr = tape::withFormula(servo, f456);
+        using tape::bench::responseDb;
+        using tape::bench::hd3Percent;
+
+        // Small-signal treble: the documented machines differ here, and neither is dull.
+        for (double ips : { 15.0, 30.0 })
+        {
+            const auto a = rig(atr, ips), m = rig(m56, ips);
+            const double a1 = responseDb(a, 1000.0), m1 = responseDb(m, 1000.0);
+            check(std::abs(responseDb(a, 10000.0) - a1) < 0.5 && std::abs(responseDb(m, 10000.0) - m1) < 0.5,
+                  label("both machines are within 0.5 dB at 10 kHz at low level", ips));
+            check(std::abs(responseDb(a, 15000.0) - a1) < 0.5, label("the 24-track is within 0.5 dB at 15 kHz (published flat to 20 kHz)", ips));
+        }
+        {
+            const auto a = rig(atr, 15.0), m = rig(m56, 15.0);
+            const double aHf = responseDb(a, 15000.0) - responseDb(a, 1000.0), mHf = responseDb(m, 15000.0) - responseDb(m, 1000.0);
+            check(mHf < aHf - 0.5 && mHf > -2.0, "at 15 ips the 16-track is softer at 15 kHz than the 24-track, inside its published -2 dB");
+            const double aBump = responseDb(a, 50.0) - responseDb(a, 1000.0), mBump = responseDb(m, 50.0) - responseDb(m, 1000.0);
+            check(mBump > aBump + 0.75 && mBump <= 2.0, "the 16-track has the larger head bump, inside its published +2 dB at 30-50 Hz");
+        }
+
+        // Driven treble: with a 1975 tape at 15 ips, a hot signal loses no more than 1 dB of 10 kHz
+        // relative to 1 kHz, so the tape stage does not dull the top end on its own.
+        for (const auto* spec : { &atr, &m56 })
+        {
+            auto r = rig(*spec, 15.0);
+            const double low = responseDb(r, 10000.0, -20.0) - responseDb(r, 1000.0, -20.0);
+            const double hot = responseDb(r, 10000.0, 6.0) - responseDb(r, 1000.0, 6.0);
+            check(std::abs(hot - low) < 1.0, spec->id + ": 10 kHz holds within 1 dB of 1 kHz at +6 dB on a 1975 tape");
+        }
+
+        // Saturation character with the same tape threaded: the linearized machine is far cleaner at
+        // operating level, and both still bend near the tape's maximum output level.
+        {
+            auto a = rig(atr, 15.0), m = rig(m56, 15.0);
+            const double aLow = hd3Percent(a, 1000.0, 0.0), mLow = hd3Percent(m, 1000.0, 0.0);
+            check(mLow < 0.5 * aLow, "same tape: the linearized 16-track has under half the 24-track's distortion at operating level");
+            const double aSquash = responseDb(a, 1000.0, 12.0) - responseDb(a, 1000.0, -20.0);
+            const double mSquash = responseDb(m, 1000.0, 12.0) - responseDb(m, 1000.0, -20.0);
+            const double mMid = responseDb(m, 1000.0, 6.0) - responseDb(m, 1000.0, -20.0);
+            check(aSquash < -0.3 && mSquash < -0.3, "same tape: both machines compress near the tape's maximum output level");
+            check(mMid <= 0.05, "the realigned linearizer never makes the tape expand");
+        }
+
+        // The 24-track's own tape is now the 1975 data sheet: light at operating level.
+        {
+            auto r = rig(servo, 15.0);
+            check(hd3Percent(r, 1000.0, 0.0) < 0.12, "24-track default tape: about 0.1 percent third harmonic at operating level (data sheet)");
+            check(responseDb(r, 1000.0, 6.0) - responseDb(r, 1000.0, -20.0) > -0.3, "24-track default tape: under 0.3 dB of compression at +6 dB");
+        }
+
+        // Speed matters more than the machine: the head bump moves an octave and treble headroom changes.
+        {
+            auto s15 = rig(atr, 15.0), s30 = rig(atr, 30.0);
+            const double d15 = responseDb(s15, 100.0) - responseDb(s15, 1000.0), d30 = responseDb(s30, 100.0) - responseDb(s30, 1000.0);
+            check(std::abs(d30 - d15) > 0.3, "changing speed changes the low end by more than 0.3 dB");
+        }
     }
 
     std::printf("\n%s: %d failure(s)\n", failures == 0 ? "PASS" : "FAIL", failures);
